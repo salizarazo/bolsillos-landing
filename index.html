@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bolsillo — Tu plata, organizada 🇨🇴</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --verde: #00C48C;
+      --verde-oscuro: #009E72;
+      --negro: #0D0D0D;
+      --crema: #F5F0E8;
+      --crema-oscuro: #EAE3D2;
+      --gris: #6B6B6B;
+      --blanco: #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--negro);
+      color: var(--crema);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 17px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── GRADIENT BLOB ── */
+    .blob {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0,196,140,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      top: -100px;
+      right: -200px;
+      pointer-events: none;
+      z-index: 0;
+      animation: blobFloat 8s ease-in-out infinite;
+    }
+    .blob2 {
+      width: 400px;
+      height: 400px;
+      top: auto;
+      bottom: -100px;
+      left: -150px;
+      right: auto;
+      background: radial-gradient(circle, rgba(0,196,140,0.07) 0%, transparent 70%);
+      animation: blobFloat 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes blobFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(20px, 30px) scale(1.05); }
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: relative;
+      z-index: 2;
+      padding: 28px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--crema);
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--verde);
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.7; }
+    }
+
+    .flag {
+      font-size: 20px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 80px 0 64px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,196,140,0.12);
+      border: 1px solid rgba(0,196,140,0.3);
+      color: var(--verde);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 32px;
+      animation: fadeUp 0.8s ease 0.1s both;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--verde);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(38px, 7vw, 62px);
+      line-height: 1.05;
+      letter-spacing: -2px;
+      color: var(--crema);
+      margin-bottom: 24px;
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+
+    h1 .accent {
+      color: var(--verde);
+      position: relative;
+      display: inline-block;
+    }
+
+    h1 .accent::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--verde);
+      opacity: 0.4;
+      border-radius: 2px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      font-weight: 300;
+      color: rgba(245,240,232,0.65);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+      animation: fadeUp 0.8s ease 0.3s both;
+    }
+
+    .subtitle strong {
+      color: var(--crema);
+      font-weight: 500;
+    }
+
+    /* ── PROOF PILLS ── */
+    .proof {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 48px;
+      animation: fadeUp 0.8s ease 0.4s both;
+    }
+
+    .pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 14px;
+      color: rgba(245,240,232,0.75);
+      transition: all 0.2s;
+    }
+
+    .pill:hover {
+      background: rgba(0,196,140,0.1);
+      border-color: rgba(0,196,140,0.25);
+      color: var(--crema);
+    }
+
+    .pill-icon { font-size: 15px; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
+      margin: 0 0 56px;
+      animation: fadeUp 0.8s ease 0.5s both;
+    }
+
+    /* ── FORM SECTION ── */
+    .form-section {
+      animation: fadeUp 0.8s ease 0.5s both;
+    }
+
+    .form-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--verde);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    /* Google Form embed */
+    .form-embed-wrapper {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .form-embed-wrapper:hover {
+      border-color: rgba(0,196,140,0.2);
+    }
+
+    .form-embed-wrapper iframe {
+      width: 100%;
+      min-height: 520px;
+      border: none;
+      display: block;
+      background: transparent;
+    }
+
+    /* Placeholder cuando no hay iframe */
+    .form-placeholder {
+      padding: 48px 32px;
+      text-align: center;
+    }
+
+    .form-placeholder p {
+      color: rgba(245,240,232,0.4);
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    .form-placeholder code {
+      background: rgba(0,196,140,0.1);
+      color: var(--verde);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: monospace;
+    }
+
+    /* ── OFFER BANNER ── */
+    .offer-banner {
+      margin-top: 24px;
+      background: linear-gradient(135deg, rgba(0,196,140,0.15) 0%, rgba(0,196,140,0.05) 100%);
+      border: 1px solid rgba(0,196,140,0.25);
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      animation: fadeUp 0.8s ease 0.7s both;
+    }
+
+    .offer-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .offer-text {
+      font-size: 15px;
+      color: rgba(245,240,232,0.8);
+      line-height: 1.5;
+    }
+
+    .offer-text strong {
+      color: var(--verde);
+      font-weight: 600;
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 64px 0;
+      animation: fadeUp 0.8s ease 0.6s both;
+    }
+
+    .features-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.35);
+      margin-bottom: 32px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 500px) {
+      .features-grid { grid-template-columns: 1fr; }
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 24px;
+      transition: all 0.25s;
+      cursor: default;
+    }
+
+    .feature-card:hover {
+      background: rgba(0,196,140,0.06);
+      border-color: rgba(0,196,140,0.18);
+      transform: translateY(-2px);
+    }
+
+    .feature-emoji {
+      font-size: 24px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .feature-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--crema);
+      margin-bottom: 6px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: rgba(245,240,232,0.5);
+      line-height: 1.5;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 32px 0;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: rgba(245,240,232,0.25);
+    }
+
+    footer a {
+      color: rgba(245,240,232,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--verde); }
+
+  </style>
+</head>
+<body>
+
+  <div class="blob"></div>
+  <div class="blob blob2"></div>
+
+  <div class="container">
+
+    <!-- NAV -->
+    <nav>
+      <div class="logo">
+        <span class="logo-dot"></span>
+        Bolsillo
+      </div>
+      <span class="flag">🇨🇴</span>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Beta VIP — cupos limitados
+      </div>
+
+      <h1>
+        Las apps de<br>
+        presupuesto no son<br>
+        para <span class="accent">Colombia.</span>
+      </h1>
+
+      <p class="subtitle">
+        Por eso creamos Bolsillo. <strong>Privado. Simple.</strong>
+        Hecho para cómo ganamos aquí — quincenas, ingresos variables,
+        bancos colombianos. Sin Excel. Sin dramas.
+      </p>
+
+      <div class="proof">
+        <span class="pill"><span class="pill-icon">🔒</span> 100% privado</span>
+        <span class="pill"><span class="pill-icon">📱</span> Hecho para Colombia</span>
+        <span class="pill"><span class="pill-icon">📊</span> Sin Excel</span>
+        <span class="pill"><span class="pill-icon">💸</span> Funciona con ingresos variables</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- FORM -->
+      <div class="form-section">
+        <span class="form-label">Únete a la Beta VIP</span>
+
+        <div class="form-embed-wrapper">
+          <!--
+            INSTRUCCIONES PARA SERGIO:
+            Reemplaza el src de abajo con tu Google Form.
+            Para obtenerlo: Abre tu Form → clic en el ícono de enviar →
+            pestaña "</>" (Insertar) → copia la URL del src del iframe.
+            Debe verse así:
+            https://docs.google.com/forms/d/e/TU_ID/viewform?embedded=true
+          -->
+          <iframe
+            src="https://docs.google.com/forms/d/e/1FAIpQLScD7kwfo7_gda4-i0CbbD9ZOpV1VoFWuK5oYGhyb38ep4a7mw/viewform?embedded=true"
+            width="100%"
+            height="620"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0"
+            title="Registro Beta Bolsillo">
+            Cargando formulario…
+          </iframe>
+        </div>
+
+        <div class="offer-banner">
+          <span class="offer-icon">🎁</span>
+          <p class="offer-text">
+            Los primeros usuarios de la Beta VIP obtienen
+            <strong>1 año completo gratis</strong> — sin tarjeta de crédito,
+            sin letra pequeña.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+      <p class="features-title">¿Qué es Bolsillo?</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-emoji">🏦</span>
+          <p class="feature-title">Hecho para Colombia</p>
+          <p class="feature-desc">Pensado para quincenas, pagos por PSE y cómo manejamos la plata aquí.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-emoji">🔒</span>
+          <p class="feature-title">100% privado</p>
+          <p class="feature-desc">Tu información financiera es tuya. Sin acceso a tus cuentas bancarias.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-emoji">📈</span>
+          <p class="feature-title">Ingresos variables</p>
+          <p class="feature-desc">Funciona aunque tu ingreso cambie cada mes. Ideal para freelancers.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-emoji">🧠</span>
+          <p class="feature-title">Te educa mientras usas</p>
+          <p class="feature-desc">No solo registra tu plata — te ayuda a entenderla y tomar mejores decisiones.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>© 2025 Bolsillo 🇨🇴 · <a href="mailto:hola@bolsillo.app">hola@bolsillo.app</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>
