@@ -1,521 +1,774 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bolsillos — Tu plata, organizada 🇨🇴</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bolsillos — Vuelve a disfrutar la vida por la que tanto trabajas</title>
+  <meta name="description" content="La app hecha para Colombia que te permite organizar tu plata en 3 segundos y viajar sin sentir una gota de culpa. 50 accesos de Usuario Fundador — totalmente gratis.">
+  <meta property="og:title" content="Bolsillos — Disfruta la vida sin culpa financiera">
+  <meta property="og:description" content="En solo 3 segundos, le das un propósito a cada peso. Hecha para Colombia.">
+  <meta property="og:url" content="https://www.bolsillos.app">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --verde: #00C48C;
+      --verde:        #00C48C;
       --verde-oscuro: #009E72;
-      --negro: #0D0D0D;
-      --crema: #F5F0E8;
+      --negro:        #0D0D0D;
+      --crema:        #F5F0E8;
       --crema-oscuro: #EAE3D2;
-      --gris: #6B6B6B;
-      --blanco: #FFFFFF;
+      --gris:         #6B6B6B;
+      --blanco:       #FFFFFF;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background-color: var(--negro);
-      color: var(--crema);
       font-family: 'DM Sans', sans-serif;
-      font-size: 17px;
-      line-height: 1.6;
+      background: var(--crema);
+      color: var(--negro);
+      line-height: 1.65;
       overflow-x: hidden;
-    }
-
-    /* ── NOISE TEXTURE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
-    }
-
-    /* ── GRADIENT BLOB ── */
-    .blob {
-      position: fixed;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(0,196,140,0.12) 0%, transparent 70%);
-      border-radius: 50%;
-      top: -100px;
-      right: -200px;
-      pointer-events: none;
-      z-index: 0;
-      animation: blobFloat 8s ease-in-out infinite;
-    }
-    .blob2 {
-      width: 400px;
-      height: 400px;
-      top: auto;
-      bottom: -100px;
-      left: -150px;
-      right: auto;
-      background: radial-gradient(circle, rgba(0,196,140,0.07) 0%, transparent 70%);
-      animation: blobFloat 10s ease-in-out infinite reverse;
-    }
-
-    @keyframes blobFloat {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(20px, 30px) scale(1.05); }
-    }
-
-    /* ── LAYOUT ── */
-    .container {
-      position: relative;
-      z-index: 1;
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 24px;
     }
 
     /* ── NAV ── */
     nav {
-      position: relative;
-      z-index: 2;
-      padding: 28px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245,240,232,0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--crema-oscuro);
+      padding: 14px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    .logo {
+    .nav-logo {
       font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 22px;
-      color: var(--crema);
-      letter-spacing: -0.5px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--negro);
+      text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
     }
 
-    .logo-dot {
+    .nav-dot {
       width: 8px;
       height: 8px;
       background: var(--verde);
       border-radius: 50%;
-      display: inline-block;
-      animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+      animation: blink 2s ease-in-out infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.4); opacity: 0.7; }
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.75); }
     }
 
-    .flag {
-      font-size: 20px;
+    .nav-cta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--blanco);
+      background: var(--negro);
+      padding: 9px 20px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      white-space: nowrap;
     }
 
-    /* ── HERO ── */
-    .hero {
-      padding: 80px 0 64px;
-      animation: fadeUp 0.8s ease both;
+    .nav-cta:hover { opacity: 0.8; }
+
+    /* ── HERO IMAGE (Ogilvy: Visual primero) ──
+       Para agregar tu foto real:
+       1. Sube la imagen al repo (ej: hero.jpg)
+       2. Agrega al div.hero-image:
+          style="background-image:url('hero.jpg');background-size:cover;background-position:center top;"
+       3. Elimina el div.hero-ph completo.
+       Foto ideal: F.R.E.D. sonriendo, relajado, a punto de abordar un avión
+       o disfrutando una cena con amigos. Real y natural — nada de stock.
+    ── */
+    .hero-image {
+      width: 100%;
+      background: linear-gradient(140deg, #007a5a 0%, #004a38 45%, #0c1f19 100%);
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      min-height: 280px;
+      max-height: 520px;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 30%, rgba(12,31,25,0.55) 100%);
+    }
+
+    .hero-ph {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      padding: 24px;
+      pointer-events: none;
+    }
+
+    .hero-ph .icon { font-size: 2.5rem; margin-bottom: 8px; }
+    .hero-ph p    { font-size: 0.78rem; line-height: 1.5; max-width: 300px; }
+
+    /* ── CAPTION (Ogilvy: el más leído de la página) ── */
+    .caption {
+      background: var(--negro);
+      padding: 18px 28px;
+    }
+
+    .caption-inner {
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    .caption p {
+      font-family: 'DM Sans', sans-serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .caption strong {
+      font-style: normal;
+      color: var(--verde);
+    }
+
+    /* ── LAYOUT WRAPPER ── */
+    .w {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ── TITULAR ── */
+    .s-headline {
+      background: var(--crema);
+      padding: 72px 0 60px;
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(0,196,140,0.12);
-      border: 1px solid rgba(0,196,140,0.3);
-      color: var(--verde);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      padding: 6px 14px;
-      border-radius: 100px;
-      margin-bottom: 32px;
-      animation: fadeUp 0.8s ease 0.1s both;
-    }
-
-    .badge-dot {
-      width: 6px;
-      height: 6px;
       background: var(--verde);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
+      color: var(--negro);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 28px;
     }
 
     h1 {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: clamp(38px, 7vw, 62px);
-      line-height: 1.05;
-      letter-spacing: -2px;
-      color: var(--crema);
-      margin-bottom: 24px;
-      animation: fadeUp 0.8s ease 0.2s both;
+      font-size: clamp(2.1rem, 5.5vw, 3.1rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--negro);
     }
 
-    h1 .accent {
-      color: var(--verde);
+    h1 em {
+      font-style: italic;
+      color: var(--verde-oscuro);
+    }
+
+    /* ── SECCIONES ── */
+    .s-white  { background: var(--blanco); }
+    .s-crema  { background: var(--crema); }
+    .s-dark   { background: var(--negro); color: var(--blanco); }
+    .s-pad    { padding: 64px 0; }
+    .s-pad-lg { padding: 80px 0; }
+
+    hr.div {
+      border: none;
+      border-top: 1px solid var(--crema-oscuro);
+    }
+
+    /* ── TIPOGRAFÍA ── */
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--negro);
+      margin-bottom: 20px;
+    }
+
+    .s-dark h2 { color: var(--blanco); }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.78;
+      color: var(--negro);
+      margin-bottom: 18px;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    .s-dark p { color: rgba(255,255,255,0.72); }
+
+    .lead {
+      font-size: 1.15rem;
+      line-height: 1.78;
+    }
+
+    /* ── BULLETS: One-Two Punch ── */
+    .bullets {
+      list-style: none;
+      margin: 32px 0 40px;
+    }
+
+    .bullets li {
       position: relative;
-      display: inline-block;
+      padding-left: 22px;
+      margin-bottom: 22px;
+      font-size: 1.05rem;
+      line-height: 1.72;
+      color: var(--negro);
     }
 
-    h1 .accent::after {
+    .bullets li::before {
       content: '';
       position: absolute;
-      bottom: 4px;
       left: 0;
-      width: 100%;
-      height: 3px;
+      top: 11px;
+      width: 7px;
+      height: 7px;
       background: var(--verde);
-      opacity: 0.4;
-      border-radius: 2px;
+      border-radius: 50%;
     }
 
-    .subtitle {
-      font-size: 18px;
-      font-weight: 300;
-      color: rgba(245,240,232,0.65);
-      max-width: 520px;
-      line-height: 1.7;
-      margin-bottom: 48px;
-      animation: fadeUp 0.8s ease 0.3s both;
+    .bullets li em {
+      color: var(--gris);
+      font-style: italic;
     }
 
-    .subtitle strong {
-      color: var(--crema);
-      font-weight: 500;
-    }
+    /* ── CTA BUTTON — Second Deck ── */
+    .cta-wrap { text-align: center; margin: 36px 0 12px; }
 
-    /* ── PROOF PILLS ── */
-    .proof {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 48px;
-      animation: fadeUp 0.8s ease 0.4s both;
-    }
-
-    .pill {
-      display: flex;
+    .cta-btn {
+      display: inline-flex;
+      flex-direction: column;
       align-items: center;
-      gap: 7px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 8px 16px;
-      border-radius: 100px;
-      font-size: 14px;
-      color: rgba(245,240,232,0.75);
-      transition: all 0.2s;
+      background: var(--negro);
+      color: var(--blanco);
+      text-decoration: none;
+      padding: 22px 40px;
+      border-radius: 14px;
+      box-shadow: 0 4px 22px rgba(13,13,13,0.18);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      max-width: 500px;
+      width: 100%;
     }
 
-    .pill:hover {
-      background: rgba(0,196,140,0.1);
-      border-color: rgba(0,196,140,0.25);
-      color: var(--crema);
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 36px rgba(13,13,13,0.24);
     }
 
-    .pill-icon { font-size: 15px; }
-
-    /* ── DIVIDER ── */
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
-      margin: 0 0 56px;
-      animation: fadeUp 0.8s ease 0.5s both;
-    }
-
-    /* ── FORM SECTION ── */
-    .form-section {
-      animation: fadeUp 0.8s ease 0.5s both;
-    }
-
-    .form-label {
+    .cta-main {
       font-family: 'Syne', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--verde);
-      margin-bottom: 20px;
-      display: block;
+      font-weight: 700;
+      font-size: 1.1rem;
+      line-height: 1.3;
+      color: var(--blanco);
     }
 
-    /* Google Form embed */
-    .form-embed-wrapper {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
+    .cta-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.84rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.58);
+      margin-top: 7px;
+    }
+
+    .cta-micro {
+      font-size: 0.78rem;
+      color: var(--gris);
+      margin-top: 12px;
+    }
+
+    /* ── FORM ── */
+    .form-title { text-align: center; margin-bottom: 8px; }
+    .form-sub   { text-align: center; color: var(--gris); font-size: 0.95rem; margin-bottom: 36px; }
+
+    .form-frame {
+      background: var(--crema);
+      border: 1px solid var(--crema-oscuro);
       border-radius: 16px;
       overflow: hidden;
-      transition: border-color 0.3s;
+      margin-top: 36px;
     }
 
-    .form-embed-wrapper:hover {
-      border-color: rgba(0,196,140,0.2);
-    }
-
-    .form-embed-wrapper iframe {
+    .form-frame iframe {
+      display: block;
       width: 100%;
-      min-height: 520px;
       border: none;
-      display: block;
-      background: transparent;
     }
 
-    /* Placeholder cuando no hay iframe */
-    .form-placeholder {
-      padding: 48px 32px;
-      text-align: center;
+    /* ── GARANTÍA ── */
+    .guarantee-box {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 44px;
     }
 
-    .form-placeholder p {
-      color: rgba(245,240,232,0.4);
-      font-size: 15px;
-      margin-bottom: 12px;
-    }
-
-    .form-placeholder code {
-      background: rgba(0,196,140,0.1);
-      color: var(--verde);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-family: monospace;
-    }
-
-    /* ── OFFER BANNER ── */
-    .offer-banner {
-      margin-top: 24px;
-      background: linear-gradient(135deg, rgba(0,196,140,0.15) 0%, rgba(0,196,140,0.05) 100%);
-      border: 1px solid rgba(0,196,140,0.25);
-      border-radius: 14px;
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      animation: fadeUp 0.8s ease 0.7s both;
-    }
-
-    .offer-icon {
-      font-size: 28px;
-      flex-shrink: 0;
-    }
-
-    .offer-text {
-      font-size: 15px;
-      color: rgba(245,240,232,0.8);
-      line-height: 1.5;
-    }
-
-    .offer-text strong {
-      color: var(--verde);
-      font-weight: 600;
-    }
-
-    /* ── FEATURES ── */
-    .features {
-      padding: 64px 0;
-      animation: fadeUp 0.8s ease 0.6s both;
-    }
-
-    .features-title {
+    .g-icon  { font-size: 2.75rem; margin-bottom: 20px; display: block; }
+    .g-title {
       font-family: 'Syne', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: rgba(245,240,232,0.35);
-      margin-bottom: 32px;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    @media (max-width: 500px) {
-      .features-grid { grid-template-columns: 1fr; }
-    }
-
-    .feature-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 14px;
-      padding: 24px;
-      transition: all 0.25s;
-      cursor: default;
-    }
-
-    .feature-card:hover {
-      background: rgba(0,196,140,0.06);
-      border-color: rgba(0,196,140,0.18);
-      transform: translateY(-2px);
-    }
-
-    .feature-emoji {
-      font-size: 24px;
-      margin-bottom: 12px;
-      display: block;
-    }
-
-    .feature-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 15px;
+      font-size: 1.3rem;
       font-weight: 700;
-      color: var(--crema);
-      margin-bottom: 6px;
+      color: var(--verde);
+      margin-bottom: 20px;
+    }
+    .g-body  {
+      font-size: 1.05rem;
+      line-height: 1.82;
+      color: rgba(255,255,255,0.72);
+      margin: 0;
+    }
+    .g-body strong { color: var(--verde); }
+
+    /* ── FAQ ── */
+    .faq-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--verde-oscuro);
+      margin-bottom: 12px;
     }
 
-    .feature-desc {
-      font-size: 14px;
-      color: rgba(245,240,232,0.5);
-      line-height: 1.5;
+    .faq-list { margin-top: 36px; }
+
+    .faq-item {
+      border-bottom: 1px solid var(--crema-oscuro);
+      padding: 26px 0;
+    }
+
+    .faq-item:first-child { border-top: 1px solid var(--crema-oscuro); }
+
+    .faq-q {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--negro);
+      margin-bottom: 10px;
+    }
+
+    .faq-a {
+      font-size: 0.98rem;
+      color: var(--gris);
+      line-height: 1.78;
+      margin: 0;
+    }
+
+    /* ── CIERRE FINAL ── */
+    .spots-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #FFF3CD;
+      border: 1px solid #FFDC6A;
+      color: #7A5C00;
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 28px;
+    }
+
+    .urgency-p {
+      font-size: 1.05rem;
+      color: var(--gris);
+      line-height: 1.78;
+      margin-bottom: 40px;
     }
 
     /* ── FOOTER ── */
     footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 32px 0;
+      background: var(--negro);
+      padding: 36px 28px;
       text-align: center;
     }
 
-    footer p {
-      font-size: 13px;
-      color: rgba(245,240,232,0.25);
+    .f-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      color: var(--blanco);
+      font-size: 1rem;
+      margin-bottom: 10px;
     }
 
-    footer a {
-      color: rgba(245,240,232,0.4);
+    .f-email {
+      display: inline-block;
+      color: rgba(255,255,255,0.42);
+      font-size: 0.875rem;
       text-decoration: none;
+      margin-bottom: 14px;
       transition: color 0.2s;
     }
 
-    footer a:hover { color: var(--verde); }
+    .f-email:hover { color: var(--verde); }
 
+    .f-copy {
+      font-size: 0.76rem;
+      color: rgba(255,255,255,0.28);
+      margin: 0;
+    }
+
+    /* ── FADE-UP ── */
+    .fu {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fu.on {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav           { padding: 12px 20px; }
+      .w            { padding: 0 20px; }
+      .s-pad        { padding: 52px 0; }
+      .s-pad-lg     { padding: 64px 0; }
+      .s-headline   { padding: 56px 0 44px; }
+      h1            { font-size: 1.95rem; }
+      h2            { font-size: 1.5rem; }
+      .guarantee-box{ padding: 28px 22px; }
+      .cta-btn      { padding: 18px 22px; }
+      .cta-main     { font-size: 1rem; }
+      .hero-image   { aspect-ratio: 4/3; min-height: 220px; }
+      .caption      { padding: 16px 20px; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="blob"></div>
-  <div class="blob blob2"></div>
+  <!-- ════════════════════════════════════
+       NAV — sticky, siempre visible
+       ════════════════════════════════════ -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <span class="nav-dot"></span>
+      Bolsillos 🇨🇴
+    </a>
+    <a href="#formulario" class="nav-cta">Únete gratis →</a>
+  </nav>
 
-  <div class="container">
 
-    <!-- NAV -->
-    <nav>
-      <div class="logo">
-        <span class="logo-dot"></span>
-        Bolsillos
-      </div>
-      <span class="flag">🇨🇴</span>
-    </nav>
-
-    <!-- HERO -->
-    <section class="hero">
-      <div class="badge">
-        <span class="badge-dot"></span>
-        Beta VIP — 50 usuarios fundadores
-      </div>
-
-      <h1>
-        Las apps de<br>
-        presupuesto no son<br>
-        para <span class="accent">Colombia.</span>
-      </h1>
-
-      <p class="subtitle">
-        Por eso creamos Bolsillos. <strong>Privado. Simple.</strong>
-        Hecho para cómo ganamos aquí — quincenas, ingresos variables,
-        bancos colombianos. Sin Excel. Sin dramas.
+  <!-- ════════════════════════════════════
+       IMAGEN PRINCIPAL (Fórmula Ogilvy)
+       ════════════════════════════════════ -->
+  <div class="hero-image">
+    <div class="hero-overlay"></div>
+    <div class="hero-ph">
+      <div class="icon">📸</div>
+      <p>Aquí va tu foto de héroe<br>
+        <small>Ver instrucciones en el código HTML (líneas ~50-58)</small>
       </p>
+    </div>
+  </div>
 
-      <div class="proof">
-        <span class="pill"><span class="pill-icon">🔒</span> 100% privado</span>
-        <span class="pill"><span class="pill-icon">📱</span> Hecho para Colombia</span>
-        <span class="pill"><span class="pill-icon">📊</span> Sin Excel</span>
-        <span class="pill"><span class="pill-icon">💸</span> Funciona con ingresos variables</span>
+  <!-- Caption — el pie de foto se lee 2× más que el cuerpo del texto (Ogilvy) -->
+  <div class="caption">
+    <div class="caption-inner">
+      <p>
+        <strong>Bolsillos</strong> — Con Bolsillos, organizas tu plata en 3 segundos
+        para que por fin armes las maletas sin sentir una sola gota de culpa.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════
+       TITULAR — La Promesa Principal
+       ════════════════════════════════════ -->
+  <div class="s-crema s-headline">
+    <div class="w">
+      <div class="fu">
+        <div class="badge">🎁 50 accesos de Usuario Fundador — Totalmente gratis</div>
+        <h1>
+          Vuelve a disfrutar la vida<br>
+          por la que tanto trabajas
+          <em>(y viaja sin sentir<br>ni una gota de culpa).</em>
+        </h1>
+      </div>
+    </div>
+  </div>
+
+  <hr class="div">
+
+
+  <!-- ════════════════════════════════════
+       EMPATÍA — El Problema Interno
+       ════════════════════════════════════ -->
+  <div class="s-white s-pad">
+    <div class="w">
+      <div class="fu">
+        <p class="lead">
+          Hiciste todo lo que la sociedad te pidió: el trabajo estable, el carro, el apartamento.
+          Pero es abrumador llegar a fin de mes sintiendo que trabajas solo para pagar deudas
+          y que tus verdaderos sueños siguen en pausa.
+        </p>
+        <p>
+          Tu sueldo llega. Y casi sin darte cuenta, se va. Sin lujos exagerados,
+          sin irresponsabilidades obvias. Simplemente… desaparece. Y al final del mes
+          estás revisando el extracto preguntándote: <em>¿a dónde fue todo?</em>
+        </p>
+        <p>
+          No es que seas malo manejando plata. Es que nadie te enseñó un sistema que funcione
+          para cómo realmente funciona la vida en Colombia — con quincenas, pagos por PSE,
+          tarjetas de crédito y meses donde el ingreso cambia.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="div">
+
+
+  <!-- ════════════════════════════════════
+       SOLUCIÓN — Beneficios, no características
+       ════════════════════════════════════ -->
+  <div class="s-crema s-pad">
+    <div class="w">
+      <div class="fu">
+        <h2>La solución no es más disciplina.<br>Es un mejor sistema.</h2>
+        <p class="lead">
+          Con Bolsillos, no necesitas ser un experto financiero ni usar hojas de Excel.
+          En solo 3 segundos, le das un propósito a cada peso. Separa tu dinero para salir
+          a cenar, viajar o comprarte esa tecnología que tanto quieres,
+          <strong>sabiendo que tus deudas ya están cubiertas.</strong>
+        </p>
       </div>
 
-      <div class="divider"></div>
+      <ul class="bullets fu">
+        <li>
+          Organiza todo tu mes en solo 3 segundos usando tu voz
+          <em>(para que puedas despedirte para siempre de esas aburridas y complicadas
+          plantillas de Excel que te roban horas de vida).</em>
+        </li>
+        <li>
+          Separa automáticamente el dinero exacto para tus viajes y salidas a cenar
+          <em>(sabiendo que las cuotas de tu apartamento y tu carro ya están 100% cubiertas,
+          sin sentir una sola gota de culpa).</em>
+        </li>
+        <li>
+          Detén la fuga oculta de dinero que te deja asfixiado cada fin de mes
+          <em>(y descubre el simple cambio en tu celular que te permitirá por fin disfrutar
+          el estilo de vida por el que tanto has trabajado).</em>
+        </li>
+      </ul>
 
-      <!-- FORM -->
-      <div class="form-section">
-        <span class="form-label">Únete a la Beta VIP</span>
+      <div class="cta-wrap fu">
+        <a href="#formulario" class="cta-btn">
+          <span class="cta-main">Reclama tu acceso de Usuario Fundador 👉</span>
+          <span class="cta-sub">Y empieza a disfrutar tu plata sin culpa.</span>
+        </a>
+        <p class="cta-micro">Sin tarjeta de crédito &middot; 100% gratis &middot; 30 días de prueba</p>
+      </div>
+    </div>
+  </div>
 
-        <div class="form-embed-wrapper">
-          <!--
-            INSTRUCCIONES PARA SERGIO:
-            Reemplaza el src de abajo con tu Google Form.
-            Para obtenerlo: Abre tu Form → clic en el ícono de enviar →
-            pestaña "</>" (Insertar) → copia la URL del src del iframe.
-            Debe verse así:
-            https://docs.google.com/forms/d/e/TU_ID/viewform?embedded=true
-          -->
+
+  <!-- ════════════════════════════════════
+       FORMULARIO — CTA principal
+       ════════════════════════════════════ -->
+  <div id="formulario" class="s-white s-pad-lg">
+    <div class="w">
+      <div class="fu">
+        <h2 class="form-title">Reclama uno de los 50 accesos<br>de Usuario Fundador hoy.</h2>
+        <p class="form-sub">
+          De todos los que se inscriban, seleccionaremos 50 usuarios fundadores
+          que obtendrán 1 año completo gratis — y su voz para darle forma a Bolsillos.
+        </p>
+
+        <div class="cta-wrap">
+          <a href="#google-form" class="cta-btn">
+            <span class="cta-main">Sí, quiero mi acceso de Usuario Fundador 👉</span>
+            <span class="cta-sub">Y empezar a armar mis maletas hoy mismo, sin sentir culpa.</span>
+          </a>
+          <p class="cta-micro">Sin tarjeta &middot; Cancelas cuando quieras &middot; Sin letras pequeñas</p>
+        </div>
+
+        <div id="google-form" class="form-frame">
           <iframe
             src="https://docs.google.com/forms/d/e/1FAIpQLScD7kwfo7_gda4-i0CbbD9ZOpV1VoFWuK5oYGhyb38ep4a7mw/viewform?embedded=true"
             width="100%"
-            height="620"
+            height="560"
             frameborder="0"
             marginheight="0"
             marginwidth="0"
-            title="Registro Beta Bolsillos">
+            loading="lazy"
+            title="Registro Usuario Fundador Bolsillos">
             Cargando formulario…
           </iframe>
         </div>
-
-        <div class="offer-banner">
-          <span class="offer-icon">🎁</span>
-          <p class="offer-text">
-            De todos los que se inscriban, seleccionaremos
-            <strong>50 usuarios fundadores</strong> que obtendrán
-            1 año completo gratis — y su voz para darle forma a Bolsillos.
-          </p>
-        </div>
       </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section class="features">
-      <p class="features-title">¿Qué es Bolsillos?</p>
-      <div class="features-grid">
-        <div class="feature-card">
-          <span class="feature-emoji">🏦</span>
-          <p class="feature-title">Hecho para Colombia</p>
-          <p class="feature-desc">Pensado para quincenas, pagos por PSE y cómo manejamos la plata aquí.</p>
-        </div>
-        <div class="feature-card">
-          <span class="feature-emoji">🔒</span>
-          <p class="feature-title">100% privado</p>
-          <p class="feature-desc">Tu información financiera es tuya. Sin acceso a tus cuentas bancarias.</p>
-        </div>
-        <div class="feature-card">
-          <span class="feature-emoji">📈</span>
-          <p class="feature-title">Ingresos variables</p>
-          <p class="feature-desc">Funciona aunque tu ingreso cambie cada mes. Ideal para freelancers.</p>
-        </div>
-        <div class="feature-card">
-          <span class="feature-emoji">🧠</span>
-          <p class="feature-title">Te educa mientras usas</p>
-          <p class="feature-desc">No solo registra tu plata — te ayuda a entenderla y tomar mejores decisiones.</p>
-        </div>
-      </div>
-    </section>
-
+    </div>
   </div>
 
-  <!-- FOOTER -->
+
+  <!-- ════════════════════════════════════
+       GARANTÍA — "Cero Culpa y Cero Riesgo"
+       ════════════════════════════════════ -->
+  <div class="s-dark s-pad">
+    <div class="w">
+      <div class="guarantee-box fu">
+        <span class="g-icon">🛡️</span>
+        <div class="g-title">La Garantía "Cero Culpa y Cero Riesgo"</div>
+        <p class="g-body">
+          Quiero que todo el riesgo caiga sobre mis hombros. Descarga Bolsillos y úsala
+          totalmente gratis por 30 días. Si en este mes no logras organizar tu mes en 3 segundos,
+          y si no te sientes con total libertad para planear ese viaje a la playa sin sentir
+          una sola gota de culpa, simplemente cancelas con un clic.
+          <strong>No pagas ni un solo peso.</strong>
+          Sin preguntas incómodas, sin llamadas de retención y sin letras pequeñas.
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════
+       FAQ — Eliminar los FUDs de F.R.E.D.
+       ════════════════════════════════════ -->
+  <div class="s-crema s-pad">
+    <div class="w">
+      <div class="fu">
+        <p class="faq-label">Preguntas frecuentes</p>
+        <h2>Resolvemos tus últimas dudas.</h2>
+
+        <div class="faq-list">
+
+          <div class="faq-item fu">
+            <p class="faq-q">¿Es seguro usar la app con mi dinero?</p>
+            <p class="faq-a">
+              Absolutamente. Usamos seguridad de encriptación nivel bancario para proteger
+              tu información. Tu dinero no se mueve de tu banco — Bolsillos solo lo organiza
+              visualmente para que sepas exactamente qué hacer con él.
+            </p>
+          </div>
+
+          <div class="faq-item fu">
+            <p class="faq-q">Ya intenté usar Excel y fallé, ¿por qué esto funcionaría para mí?</p>
+            <p class="faq-a">
+              Porque Bolsillos hace el trabajo por ti. Olvídate de fórmulas aburridas y horas
+              frente a la computadora. Está diseñada para que, en solo 3 segundos y usando
+              tu voz, tu plata quede organizada para todo el mes.
+            </p>
+          </div>
+
+          <div class="faq-item fu">
+            <p class="faq-q">¿De verdad puedo probarla sin riesgo?</p>
+            <p class="faq-a">
+              Sí. Tienes 30 días para usarla totalmente gratis. Si no sientes un alivio real
+              y empiezas a planear tus gustos sin culpa, cancelas con un solo clic. Cero preguntas.
+            </p>
+          </div>
+
+          <div class="faq-item fu">
+            <p class="faq-q">¿Cómo me aseguro de que podré hacer ese viaje sin endeudarme más?</p>
+            <p class="faq-a">
+              El sistema aparta automáticamente el dinero de tus gastos fijos (como tu carro
+              y apartamento) primero. Así, el dinero que sobra está 100% libre para que armes
+              tus maletas o salgas a cenar sabiendo que cumpliste con todas tus responsabilidades.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════
+       CIERRE FINAL — Urgencia + CTA
+       ════════════════════════════════════ -->
+  <div class="s-white s-pad-lg" style="text-align:center;">
+    <div class="w">
+      <div class="fu">
+        <div class="spots-pill">
+          🔴 Los cupos se están llenando — Solo quedan algunos accesos
+        </div>
+
+        <h2>Es momento de decidir.</h2>
+
+        <p class="urgency-p">
+          No dejes que pase otro mes trabajando durísimo solo para pagar deudas.
+          Prueba Bolsillos totalmente gratis y sin riesgo por 30 días para recuperar tu libertad.
+          Recuerda que el acceso de Usuario Fundador solo está disponible para los primeros 50
+          inscritos, <strong>y los cupos se están llenando rápido.</strong>
+        </p>
+
+        <div class="cta-wrap">
+          <a href="#formulario" class="cta-btn">
+            <span class="cta-main">Sí, quiero mi acceso de Usuario Fundador 👉</span>
+            <span class="cta-sub">Y empezar a armar mis maletas hoy mismo, sin sentir culpa.</span>
+          </a>
+          <p class="cta-micro">Sin tarjeta de crédito &middot; Cancelas cuando quieras &middot; 30 días gratis</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════ -->
   <footer>
-    <div class="container">
-      <p>© 2025 Bolsillos 🇨🇴 · <a href="/cdn-cgi/l/email-protection#620a0d0e0322000d0e110b0e0e0d4c031212"><span class="__cf_email__"
+    <p class="f-logo">Bolsillos 🇨🇴</p>
+    <a href="mailto:hola@bolsillos.app" class="f-email">hola@bolsillos.app</a>
+    <p class="f-copy">© 2025 Bolsillos &middot; Hecho con 💚 para Colombia</p>
+  </footer>
+
+
+  <!-- ════════════════════════════════════
+       JS — Fade-in al hacer scroll
+       ════════════════════════════════════ -->
+  <script>
+    const els = document.querySelectorAll('.fu');
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); }
+      }),
+      { threshold: 0.1 }
+    );
+    els.forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>
