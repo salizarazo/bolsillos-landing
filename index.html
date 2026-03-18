@@ -754,7 +754,22 @@
 
 
   <!-- ════════════════════════════════════
-       JS — Fade-in al hacer scroll
+       REFERRAL BANNER — solo visible con ?ref=
+       ════════════════════════════════════ -->
+  <div id="referral-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:#0D0D0D;border-top:3px solid #00C48C;padding:20px 28px;box-shadow:0 -4px 24px rgba(0,0,0,0.2);animation:slideUp 0.5s ease;">
+    <div style="max-width:740px;margin:0 auto;text-align:center;">
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.7);margin:0 0 8px 0;">Un amigo te invitó a Bolsillos. Descarga la app e ingresa este código:</p>
+      <div style="display:inline-block;background:rgba(0,196,140,0.12);border:2px dashed #00C48C;border-radius:12px;padding:8px 24px;margin-bottom:10px;">
+        <span id="referral-code" style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:#00C48C;letter-spacing:3px;"></span>
+      </div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.45);margin:0;">En la app: Configuración → Referir a un amigo → "¿Alguien te refirió?"</p>
+    </div>
+    <button onclick="document.getElementById('referral-banner').style.display='none'" style="position:absolute;top:8px;right:12px;background:none;border:none;color:rgba(255,255,255,0.4);font-size:1.2rem;cursor:pointer;">&times;</button>
+  </div>
+  <style>@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}</style>
+
+  <!-- ════════════════════════════════════
+       JS — Fade-in al hacer scroll + referral
        ════════════════════════════════════ -->
   <script>
     const els = document.querySelectorAll('.fu');
@@ -765,6 +780,16 @@
       { threshold: 0.1 }
     );
     els.forEach(el => obs.observe(el));
+
+    // Referral banner: show if ?ref= is present
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var code = params.get('ref');
+      if (code && /^BOLSI-[A-Z0-9]{4,}$/i.test(code)) {
+        document.getElementById('referral-code').textContent = code.toUpperCase();
+        document.getElementById('referral-banner').style.display = 'block';
+      }
+    })();
   </script>
 
 </body>
