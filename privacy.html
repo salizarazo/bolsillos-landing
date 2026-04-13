@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pol&iacute;tica de Privacidad &mdash; Bolsillos</title>
+  <meta name="description" content="Pol&iacute;tica de privacidad de Bolsillos. Tus datos financieros se quedan en tu dispositivo, siempre.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== CUSTOM PROPERTIES ===== */
+    :root {
+      --azul: #4FA5CF;
+      --azul-hover: #3A7FA3;
+      --azul-oscuro: #2B6B85;
+      --verde: #8DB87C;
+      --verde-oscuro: #5A8A2F;
+      --verde-claro: #F0F7E9;
+      --crema: #FCF8E1;
+      --crema-borde: #F0E9C0;
+      --cielo: #B8DFF0;
+      --cielo-claro: #E8F4FA;
+      --papel: #F5F3EE;
+      --texto: #3D3D3D;
+      --texto-hint: #8B8B7D;
+      --blanco: #ffffff;
+      --sombra: rgba(43,107,133,0.12);
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 400;
+      color: var(--texto);
+      background: var(--papel);
+      line-height: 1.7;
+    }
+    a { color: var(--azul); text-decoration: underline; }
+    img { display: block; max-width: 100%; }
+
+    /* ===== NAV ===== */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .nav-logo {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      color: var(--verde-oscuro);
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--texto);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--azul); }
+    .nav-cta-btn {
+      display: inline-block;
+      background: var(--azul);
+      color: var(--blanco);
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 0 var(--azul-hover);
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .nav-cta-btn:hover { background: var(--azul-hover); }
+    .nav-cta-btn:active { transform: translateY(1px); box-shadow: none; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      height: 2px;
+      background: var(--texto);
+      border-radius: 2px;
+      transition: opacity 0.2s;
+    }
+
+    /* Mobile overlay menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(16px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-weight: 600;
+      font-size: 22px;
+      color: var(--texto);
+      text-decoration: none;
+    }
+    .mobile-menu a:hover { color: var(--azul); }
+    .mobile-menu .mobile-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--texto-hint);
+    }
+
+    /* ===== PROSE ===== */
+    .prose {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+    .prose h1 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      color: var(--azul-oscuro);
+      margin-bottom: 8px;
+    }
+    .prose h2 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--azul-oscuro);
+      margin-top: 32px;
+      margin-bottom: 12px;
+    }
+    .prose p {
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .prose ul, .prose ol {
+      padding-left: 20px;
+      margin: 12px 0;
+    }
+    .prose li {
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    .prose a {
+      color: var(--azul);
+      text-decoration: underline;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: var(--papel);
+      padding: 48px 24px;
+      border-top: 1px solid #E8E3DB;
+    }
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .footer-logo {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 500;
+      font-size: 20px;
+      color: var(--verde-oscuro);
+      margin-bottom: 32px;
+      display: block;
+      text-decoration: none;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--texto-hint);
+      margin-bottom: 12px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 8px; }
+    .footer-col ul li a {
+      font-size: 14px;
+      color: var(--texto);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--azul); }
+    .footer-copy {
+      font-size: 13px;
+      color: var(--texto-hint);
+      border-top: 1px solid #E8E3DB;
+      padding-top: 24px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-cta-btn.desktop-only { display: none; }
+      .footer-grid { grid-template-columns: 1fr; text-align: center; }
+      .footer-logo { text-align: center; }
+      .prose { padding: 40px 20px; }
+      .prose h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">~ bolsillos ~</a>
+      <ul class="nav-links">
+        <li><a href="index.html#caracteristicas">Caracter&iacute;sticas</a></li>
+        <li><a href="index.html#precios">Precios</a></li>
+        <li><a href="support.html">Soporte</a></li>
+      </ul>
+      <a href="index.html" class="nav-cta-btn desktop-only">Descargar</a>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Abrir men&uacute;">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose">&times;</button>
+    <a href="index.html#caracteristicas">Caracter&iacute;sticas</a>
+    <a href="index.html#precios">Precios</a>
+    <a href="support.html">Soporte</a>
+    <a href="index.html" class="nav-cta-btn">Descargar</a>
+  </div>
+
+  <!-- ===== CONTENIDO ===== -->
+  <main>
+    <div class="prose">
+      <h1>Pol&iacute;tica de Privacidad</h1>
+      <p>&Uacute;ltima actualizaci&oacute;n: 12 de abril de 2026</p>
+
+      <h2>1. Informaci&oacute;n que recopilamos</h2>
+      <p>Bolsillos NO recopila informaci&oacute;n personal. Todos tus datos financieros se almacenan exclusivamente en tu dispositivo.</p>
+
+      <h2>2. Almacenamiento de datos</h2>
+      <p>Tus datos se guardan localmente en tu iPhone, protegidos con encriptaci&oacute;n de grado bancario (AES-256 via SQLCipher). Nadie &mdash; ni siquiera nosotros &mdash; puede acceder a tu informaci&oacute;n.</p>
+
+      <h2>3. Servicios de terceros</h2>
+      <p>El &uacute;nico servicio externo que utilizamos es RevenueCat para procesar pagos de suscripci&oacute;n in-app. RevenueCat recibe &uacute;nicamente la informaci&oacute;n necesaria para gestionar tu suscripci&oacute;n (identificador an&oacute;nimo de compra de Apple). No recibe tus datos financieros, transacciones ni informaci&oacute;n personal. Puedes consultar la pol&iacute;tica de privacidad de RevenueCat en su sitio web.</p>
+
+      <h2>4. Analytics y seguimiento</h2>
+      <p>No usamos analytics. No usamos cookies de seguimiento. No usamos p&iacute;xeles de tracking. No vendemos ni compartimos datos con terceros. No existe perfil de usuario en nuestros servidores.</p>
+
+      <h2>5. Backups</h2>
+      <p>Si activas los backups en iCloud (funci&oacute;n Pro), tus datos se almacenan en tu cuenta personal de iCloud Drive, protegidos por la seguridad de Apple. Nosotros no tenemos acceso a estos archivos. Los backups locales se guardan en tu dispositivo.</p>
+
+      <h2>6. Datos de menores</h2>
+      <p>Bolsillos no est&aacute; dirigida a menores de 13 a&ntilde;os y no recopilamos informaci&oacute;n de menores de forma consciente.</p>
+
+      <h2>7. Cambios a esta pol&iacute;tica</h2>
+      <p>Si realizamos cambios significativos, actualizaremos la fecha de &ldquo;&uacute;ltima actualizaci&oacute;n&rdquo; en esta p&aacute;gina.</p>
+
+      <h2>8. Contacto</h2>
+      <p>Si tienes preguntas sobre esta pol&iacute;tica, esc&iacute;benos a <a href="mailto:hola@bolsillos.app">hola@bolsillos.app</a>.</p>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="index.html" class="footer-logo">~ bolsillos ~</a>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Producto</h4>
+          <ul>
+            <li><a href="index.html#caracteristicas">Caracter&iacute;sticas</a></li>
+            <li><a href="index.html#precios">Precios</a></li>
+            <li><a href="index.html">Descargar iOS</a></li>
+            <li><a href="index.html#android">Android (pronto)</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="privacy.html">Privacidad</a></li>
+            <li><a href="terms.html">T&eacute;rminos de Servicio</a></li>
+            <li><a href="support.html">Soporte</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contacto</h4>
+          <ul>
+            <li><a href="mailto:hola@bolsillos.app">hola@bolsillos.app</a></li>
+            <li><a href="https://instagram.com/bolsillos.app" target="_blank" rel="noopener">@bolsillos.app</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer-copy">&copy; 2026 Bolsillos &middot; Hecho con &#x1F49A; en Colombia</p>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      var btn = document.getElementById('hamburgerBtn');
+      var menu = document.getElementById('mobileMenu');
+      var closeBtn = document.getElementById('mobileClose');
+      if (!btn || !menu || !closeBtn) return;
+      btn.addEventListener('click', function() { menu.classList.add('open'); });
+      closeBtn.addEventListener('click', function() { menu.classList.remove('open'); });
+      menu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() { menu.classList.remove('open'); });
+      });
+    })();
+  </script>
+
+</body>
+</html>
