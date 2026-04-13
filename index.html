@@ -217,6 +217,42 @@
       transition: color 0.2s;
     }
     .btn-android:hover { color: var(--azul-hover); }
+    .btn-appstore-soon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #E8E8E4;
+      color: var(--texto-hint);
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      height: 52px;
+      padding: 0 24px;
+      border-radius: 12px;
+      cursor: default;
+      user-select: none;
+    }
+    .launch-note {
+      width: 100%;
+      font-size: 13px;
+      color: var(--texto-hint);
+      margin-top: -4px;
+      text-align: center;
+    }
+    .btn-coming-soon {
+      display: block;
+      width: 100%;
+      background: #E8E8E4;
+      color: var(--texto-hint);
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 24px;
+      border-radius: 14px;
+      cursor: default;
+      text-align: center;
+      user-select: none;
+    }
 
     /* Screenshot stack */
     .screenshots {
@@ -834,7 +870,6 @@
         <li><a href="support.html">Soporte</a></li>
         <li><a href="en/" class="lang-switch">EN</a></li>
       </ul>
-      <a href="#" class="nav-cta-btn desktop-only"><!-- TODO: Replace with App Store URL -->Descargar</a>
       <button class="hamburger" id="hamburgerBtn" aria-label="Abrir men&uacute;">
         <span></span>
         <span></span>
@@ -850,7 +885,6 @@
     <a href="#precios" class="mobile-link">Precios</a>
     <a href="support.html" class="mobile-link">Soporte</a>
     <a href="en/" class="mobile-link lang-switch">EN</a>
-    <a href="#" class="nav-cta-btn"><!-- TODO: Replace with App Store URL -->Descargar</a>
   </div>
 
   <!-- ===== HERO ===== -->
@@ -858,8 +892,9 @@
     <h1><span id="hero-rotate">Organiza tu plata</span></h1>
     <p class="subtitle">La app de finanzas personales para freelancers e independientes en Colombia. Sin Excel. Sin complicaciones.</p>
     <div class="hero-ctas">
-      <a href="#" class="btn-appstore"><!-- TODO: Replace with App Store URL -->Descargar en el App Store</a>
+      <div class="btn-appstore-soon">Pr&oacute;ximamente en el App Store</div>
       <a href="#android" class="btn-android">Pronto en Android &rarr;</a>
+      <p class="launch-note">Beta con fundadores cerrada &middot; Lanzamiento pr&oacute;ximo en iOS</p>
     </div>
     <div class="screenshots">
       <img src="images/screenshot-budget.png" alt="Presupuesto en Bolsillos" class="screenshot-card side left" loading="eager">
@@ -872,7 +907,7 @@
   <div class="social-proof">
     <div class="social-proof-inner">
       <span class="proof-item">&#11088; 4.8 en App Store</span>
-      <span class="proof-item">50 fundadores activos</span>
+      <span class="proof-item">50 fundadores &middot; beta cerrada ✓</span>
       <span class="proof-item">Hecha en Colombia &#x1F1E8;&#x1F1F4;</span>
     </div>
   </div>
@@ -1005,7 +1040,7 @@
           <li>Metas</li>
           <li>Backup local</li>
         </ul>
-        <a href="#" class="btn-secondary"><!-- TODO: Replace with App Store URL -->Descargar</a>
+        <div class="btn-coming-soon">Pr&oacute;ximamente</div>
       </div>
 
       <!-- Pro -->
@@ -1027,7 +1062,7 @@
           <li>Backup en iCloud</li>
           <li>Import desde YNAB</li>
         </ul>
-        <a href="#" class="btn-primary"><!-- TODO: Replace with App Store URL -->Prueba gratis</a>
+        <div class="btn-coming-soon">Pr&oacute;ximamente</div>
         <p class="trial-text" id="pro-trial">3 meses gratis con plan anual</p>
       </div>
 
@@ -1117,7 +1152,7 @@
   <section class="cta-final" id="android">
     <h2>Tu plata merece un sistema que funcione</h2>
     <p class="sub">No otro mes haciendo c&aacute;lculos mentales. No otra hoja de Excel.</p>
-    <a href="#" class="btn-appstore"><!-- TODO: Replace with App Store URL -->Descargar en el App Store</a>
+    <div class="btn-appstore-soon">Pr&oacute;ximamente en el App Store</div>
 
     <hr class="cta-divider">
 
@@ -1148,7 +1183,7 @@
           <ul>
             <li><a href="#caracteristicas">Caracter&iacute;sticas</a></li>
             <li><a href="#precios">Precios</a></li>
-            <li><a href="#">Descargar iOS</a></li>
+            <li><span style="color:var(--texto-hint)">iOS (pr&oacute;ximamente)</span></li>
             <li><a href="#android">Android (pronto)</a></li>
           </ul>
         </div>

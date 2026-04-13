@@ -217,6 +217,42 @@
       transition: color 0.2s;
     }
     .btn-android:hover { color: var(--azul-hover); }
+    .btn-appstore-soon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #E8E8E4;
+      color: var(--texto-hint);
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      height: 52px;
+      padding: 0 24px;
+      border-radius: 12px;
+      cursor: default;
+      user-select: none;
+    }
+    .launch-note {
+      width: 100%;
+      font-size: 13px;
+      color: var(--texto-hint);
+      margin-top: -4px;
+      text-align: center;
+    }
+    .btn-coming-soon {
+      display: block;
+      width: 100%;
+      background: #E8E8E4;
+      color: var(--texto-hint);
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 24px;
+      border-radius: 14px;
+      cursor: default;
+      text-align: center;
+      user-select: none;
+    }
 
     /* Screenshot stack */
     .screenshots {
@@ -834,7 +870,6 @@
         <li><a href="support.html">Support</a></li>
         <li><a href="../" class="lang-switch">ES</a></li>
       </ul>
-      <a href="#" class="nav-cta-btn desktop-only"><!-- TODO: Replace with App Store URL -->Download</a>
       <button class="hamburger" id="hamburgerBtn" aria-label="Open menu">
         <span></span>
         <span></span>
@@ -850,7 +885,6 @@
     <a href="#pricing" class="mobile-link">Pricing</a>
     <a href="support.html" class="mobile-link">Support</a>
     <a href="../" class="mobile-link">ES</a>
-    <a href="#" class="nav-cta-btn"><!-- TODO: Replace with App Store URL -->Download</a>
   </div>
 
   <!-- ===== HERO ===== -->
@@ -858,8 +892,9 @@
     <h1><span id="hero-rotate">Organize your money</span></h1>
     <p class="subtitle">The personal finance app for freelancers and independent workers. No spreadsheets. No hassle.</p>
     <div class="hero-ctas">
-      <a href="#" class="btn-appstore"><!-- TODO: Replace with App Store URL -->Download on the App Store</a>
+      <div class="btn-appstore-soon">Coming Soon on the App Store</div>
       <a href="#android" class="btn-android">Coming soon on Android &rarr;</a>
+      <p class="launch-note">Founder beta closed &middot; Launching soon on iOS</p>
     </div>
     <div class="screenshots">
       <img src="../images/screenshot-budget.png" alt="Budget in Bolsillos" class="screenshot-card side left" loading="eager">
@@ -872,7 +907,7 @@
   <div class="social-proof">
     <div class="social-proof-inner">
       <span class="proof-item">&#11088; 4.8 on App Store</span>
-      <span class="proof-item">50 active founders</span>
+      <span class="proof-item">50 founders &middot; beta closed ✓</span>
       <span class="proof-item">Made in Colombia &#x1F1E8;&#x1F1F4;</span>
     </div>
   </div>
@@ -1005,7 +1040,7 @@
           <li>Goals</li>
           <li>Local backup</li>
         </ul>
-        <a href="#" class="btn-secondary"><!-- TODO: Replace with App Store URL -->Download</a>
+        <div class="btn-coming-soon">Coming Soon</div>
       </div>
 
       <!-- Pro -->
@@ -1027,7 +1062,7 @@
           <li>iCloud backup</li>
           <li>YNAB import</li>
         </ul>
-        <a href="#" class="btn-primary"><!-- TODO: Replace with App Store URL -->Start free trial</a>
+        <div class="btn-coming-soon">Coming Soon</div>
         <p class="trial-text" id="pro-trial">3 months free with annual plan</p>
       </div>
 
@@ -1117,7 +1152,7 @@
   <section class="cta-final" id="android">
     <h2>Your money deserves a system that works</h2>
     <p class="sub">Not another month doing mental math. Not another spreadsheet.</p>
-    <a href="#" class="btn-appstore"><!-- TODO: Replace with App Store URL -->Download on the App Store</a>
+    <div class="btn-appstore-soon">Coming Soon on the App Store</div>
 
     <hr class="cta-divider">
 
@@ -1148,7 +1183,7 @@
           <ul>
             <li><a href="#features">Features</a></li>
             <li><a href="#pricing">Pricing</a></li>
-            <li><a href="#">Download iOS</a></li>
+            <li><span style="color:var(--texto-hint)">iOS (coming soon)</span></li>
             <li><a href="#android">Android (coming soon)</a></li>
           </ul>
         </div>
