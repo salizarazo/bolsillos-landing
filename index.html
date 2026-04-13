@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bolsillos — Organiza tu plata como freelancer en Colombia</title>
-  <meta name="description" content="La app de finanzas personales para freelancers e independientes en Colombia. Registra gastos con tu voz, organiza tus bolsillos, sin Excel.">
+  <title>Bolsillos &mdash; Organiza tu plata | App de finanzas para Colombia</title>
+  <meta name="description" content="La app de finanzas personales para freelancers e independientes en Colombia. Organiza tu plata en bolsillos, registra gastos con tu voz. Sin Excel.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Bolsillos &mdash; Organiza tu plata">
+  <meta property="og:description" content="La app de finanzas personales para freelancers e independientes en Colombia. Organiza tu plata en bolsillos, registra gastos con tu voz. Sin Excel.">
+  <meta property="og:url" content="https://bolsillos.app">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bolsillos &mdash; Organiza tu plata">
+  <meta name="twitter:description" content="La app de finanzas personales para freelancers e independientes en Colombia. Sin Excel. Sin complicaciones.">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
+    /* ===== CUSTOM PROPERTIES ===== */
     :root {
       --azul: #4FA5CF;
       --azul-hover: #3A7FA3;
@@ -27,396 +42,720 @@
       --sombra: rgba(43,107,133,0.12);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: 'Quicksand', sans-serif;
+      font-weight: 400;
       color: var(--texto);
-      background: var(--papel);
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
+      background: var(--blanco);
+      line-height: 1.6;
     }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
 
     /* ===== NAV ===== */
     .nav {
-      position: sticky; top: 0; z-index: 100;
+      position: sticky;
+      top: 0;
+      z-index: 100;
       background: rgba(255,255,255,0.95);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(0,0,0,0.06);
-      padding: 12px 0;
     }
     .nav-inner {
-      max-width: 720px; margin: 0 auto; padding: 0 24px;
-      display: flex; justify-content: space-between; align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
     .nav-logo {
       font-family: 'Fredoka', sans-serif;
-      font-size: 18px; font-weight: 500;
+      font-weight: 500;
+      font-size: 18px;
       color: var(--verde-oscuro);
-      text-decoration: none;
-      letter-spacing: 1px;
+      white-space: nowrap;
     }
-    .nav-cta {
-      background: var(--azul); color: #fff;
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--texto);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--azul); }
+    .nav-cta-btn {
+      display: inline-block;
+      background: var(--azul);
+      color: var(--blanco);
       font-family: 'Quicksand', sans-serif;
-      font-size: 14px; font-weight: 700;
-      padding: 10px 20px; border-radius: 10px;
-      text-decoration: none; border: none;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 10px;
       box-shadow: 0 2px 0 var(--azul-hover);
-      transition: transform 0.15s, box-shadow 0.15s;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
     }
-    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 3px 0 var(--azul-hover); }
+    .nav-cta-btn:hover { background: var(--azul-hover); }
+    .nav-cta-btn:active { transform: translateY(1px); box-shadow: none; }
 
-    /* ===== CONTAINER ===== */
-    .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      height: 2px;
+      background: var(--texto);
+      border-radius: 2px;
+      transition: opacity 0.2s;
+    }
+
+    /* Mobile overlay menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(16px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-weight: 600;
+      font-size: 22px;
+      color: var(--texto);
+    }
+    .mobile-menu a:hover { color: var(--azul); }
+    .mobile-menu .mobile-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--texto-hint);
+    }
 
     /* ===== HERO ===== */
     .hero {
       background: linear-gradient(180deg, var(--cielo) 0%, var(--cielo-claro) 60%, var(--blanco) 100%);
+      padding: 64px 24px 0;
       text-align: center;
-      padding: 48px 24px 0;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-badge {
-      display: inline-block;
-      font-family: 'Fredoka', sans-serif;
-      font-size: 13px; font-weight: 500;
-      color: var(--verde-oscuro);
-      background: var(--verde-claro);
-      padding: 6px 16px; border-radius: 20px;
-      margin-bottom: 20px;
     }
     .hero h1 {
       font-family: 'Quicksand', sans-serif;
-      font-size: clamp(28px, 5vw, 40px);
       font-weight: 700;
+      font-size: clamp(32px, 6vw, 48px);
       color: var(--azul-oscuro);
-      line-height: 1.25;
-      max-width: 600px;
-      margin: 0 auto 16px;
+      line-height: 1.2;
+      margin-bottom: 20px;
     }
-    .hero h1 em {
-      font-style: normal;
-      color: var(--verde-oscuro);
+    #hero-rotate {
+      display: inline-block;
+      transition: opacity 0.4s ease;
     }
-    .hero-sub {
+    .hero p.subtitle {
       font-size: 17px;
       color: #5C8A9E;
       max-width: 520px;
-      margin: 0 auto 28px;
-      line-height: 1.6;
+      margin: 0 auto 32px;
     }
-    .hero-bolo {
-      display: block;
-      width: 200px; height: 200px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 5px solid var(--blanco);
-      box-shadow: 0 6px 24px var(--sombra);
-      margin: 0 auto;
-      position: relative;
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .btn-appstore {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      color: #fff;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      height: 48px;
+      padding: 0 24px;
+      border-radius: 12px;
+      transition: opacity 0.2s;
+    }
+    .btn-appstore:hover { opacity: 0.85; }
+    .btn-android {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--azul);
+      transition: color 0.2s;
+    }
+    .btn-android:hover { color: var(--azul-hover); }
+
+    /* Screenshot stack */
+    .screenshots {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 12px;
+    }
+    .screenshot-card {
+      border-radius: 20px;
+      box-shadow: 0 8px 32px var(--sombra);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--texto-hint);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .screenshot-card.center {
+      width: 200px;
+      height: 400px;
+      transform: translateY(-10px);
+      background: linear-gradient(135deg, var(--cielo-claro), var(--cielo));
       z-index: 2;
     }
-    .hero-bolo-caption {
-      font-family: 'Fredoka', sans-serif;
-      font-size: 14px;
-      color: var(--verde-oscuro);
-      text-align: center;
-      margin: 12px auto 0;
-      padding-bottom: 24px;
+    .screenshot-card.side {
+      width: 180px;
+      height: 360px;
+      background: linear-gradient(135deg, var(--cielo-claro), var(--cielo));
     }
+    .screenshot-card.left { transform: rotate(-3deg); }
+    .screenshot-card.right { transform: rotate(3deg); }
 
-    /* Grass strip */
-    .grass {
-      height: 14px;
-      background: linear-gradient(180deg, var(--verde) 0%, #6B9B3A 100%);
-      border-top: 2px solid var(--verde-oscuro);
-      text-align: center;
-      font-size: 8px;
-      letter-spacing: 24px;
-      opacity: 0.3;
-      color: #fff;
-      line-height: 14px;
-    }
-
-    /* ===== SECTIONS ===== */
-    .section {
+    /* ===== SOCIAL PROOF BAR ===== */
+    .social-proof {
       background: var(--blanco);
-      padding: 48px 24px;
+      padding: 24px;
+      text-align: center;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
-    .section-paper {
-      background: var(--papel);
-      padding: 48px 24px;
+    .social-proof-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+    .proof-item {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--texto-hint);
     }
 
-    .section h2 {
-      font-family: 'Quicksand', sans-serif;
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--azul-oscuro);
-      text-align: center;
-      margin-bottom: 8px;
-      line-height: 1.3;
-    }
+    /* ===== SECTION HELPERS ===== */
+    .section { padding: 64px 24px; }
+    .section-paper { padding: 64px 24px; background: var(--papel); }
+    .section-white { padding: 64px 24px; background: var(--blanco); }
+    .section-center { text-align: center; }
     .section-label {
-      display: block;
       font-family: 'Fredoka', sans-serif;
-      font-size: 13px;
       font-weight: 500;
-      color: var(--azul);
+      font-size: 13px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      text-align: center;
-      margin-bottom: 8px;
-    }
-    .section p {
-      max-width: 580px;
-      margin: 0 auto 16px;
-      font-size: 16px;
-    }
-
-    /* ===== DIVIDER ===== */
-    .divider {
-      text-align: center;
-      padding: 16px 0;
-    }
-    .divider-dots {
-      font-size: 12px; opacity: 0.35; letter-spacing: 8px;
-      display: block; margin-bottom: 8px;
-    }
-    .divider-line {
-      border: none;
-      border-top: 2px dashed #E8E3DB;
-      width: 100%;
-    }
-
-    /* ===== PAIN CARDS ===== */
-    .pain-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      max-width: 580px;
-      margin: 24px auto;
-    }
-    @media (max-width: 520px) { .pain-grid { grid-template-columns: 1fr; } }
-
-    .pain-card {
-      background: var(--blanco);
-      border: 2px solid var(--cielo);
-      border-radius: 4px 16px 16px 16px;
-      padding: 20px;
-      box-shadow: 2px 2px 0 var(--cielo);
-    }
-    .pain-card.right {
-      background: var(--crema);
-      border-color: var(--crema-borde);
-      box-shadow: 2px 2px 0 var(--crema-borde);
-    }
-    .pain-card h3 {
-      font-family: 'Fredoka', sans-serif;
-      font-size: 14px; font-weight: 600;
       color: var(--azul);
-      margin-bottom: 8px;
+      text-align: center;
+      margin-bottom: 12px;
     }
-    .pain-card.right h3 { color: #B8860B; }
-    .pain-card p {
-      font-size: 14px;
-      line-height: 1.6;
-      margin: 0;
-      color: var(--texto);
+    h2.section-title {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 26px;
+      color: var(--azul-oscuro);
+      text-align: center;
+      margin-bottom: 40px;
     }
 
     /* ===== BOLO PILL ===== */
     .bolo-pill {
-      display: flex;
+      display: inline-flex;
       align-items: flex-start;
-      gap: 12px;
-      max-width: 580px;
-      margin: 16px auto;
+      gap: 10px;
+      margin-top: 32px;
     }
-    .bolo-pill-avatar {
-      flex-shrink: 0;
-      width: 36px; height: 36px;
+    .bolo-pill img {
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      object-fit: cover;
       border: 2px solid var(--verde);
-      margin-top: 2px;
+      flex-shrink: 0;
+      object-fit: cover;
     }
-    .bolo-pill-bubble {
+    .bolo-bubble {
       background: var(--verde-claro);
       border-radius: 4px 12px 12px 12px;
       padding: 10px 16px;
       font-family: 'Fredoka', sans-serif;
+      font-weight: 400;
       font-size: 14px;
       font-style: italic;
       color: var(--verde-oscuro);
-      line-height: 1.5;
-      flex: 1;
+      text-align: left;
     }
 
-    /* ===== FEATURE LIST ===== */
-    .feature-list {
-      max-width: 580px;
-      margin: 24px auto;
-      list-style: none;
+    /* ===== HOW IT WORKS ===== */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 860px;
+      margin: 0 auto 32px;
     }
-    .feature-list li {
-      display: flex;
-      gap: 14px;
-      margin-bottom: 20px;
-      align-items: flex-start;
-    }
-    .feature-icon {
-      flex-shrink: 0;
-      width: 40px; height: 40px;
-      background: var(--cielo-claro);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-    }
-    .feature-text h4 {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--azul-oscuro);
-      margin-bottom: 4px;
-    }
-    .feature-text p {
-      font-size: 14px;
-      color: var(--texto-hint);
-      margin: 0;
-      line-height: 1.5;
-    }
-
-    /* ===== CTA CARD ===== */
-    .cta-card {
-      background: linear-gradient(135deg, var(--cielo-claro) 0%, #D4EBF8 100%);
-      border: 2px solid var(--cielo);
-      border-radius: 20px;
-      padding: 32px;
-      text-align: center;
-      max-width: 580px;
-      margin: 32px auto;
-      box-shadow: 3px 3px 0 var(--cielo);
-    }
-    .cta-card h3 {
-      font-size: 22px; font-weight: 700;
-      color: var(--azul-oscuro);
-      margin-bottom: 8px;
-    }
-    .cta-card p {
-      font-size: 15px; color: #5C8A9E;
-      margin: 0 auto 12px;
-      max-width: 440px;
-    }
-    .cta-btn {
-      display: inline-block;
-      background: var(--azul);
-      color: #fff;
-      font-family: 'Quicksand', sans-serif;
-      font-size: 16px; font-weight: 700;
-      padding: 16px 32px;
-      border-radius: 12px;
-      text-decoration: none;
-      box-shadow: 0 3px 0 var(--azul-hover);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .cta-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 0 var(--azul-hover); }
-    .cta-fine {
-      font-size: 13px;
-      color: var(--texto-hint);
-      margin-top: 32px;
-    }
-
-    /* ===== GUARANTEE ===== */
-    .guarantee {
-      background: var(--crema);
-      border: 2px solid var(--crema-borde);
+    .step-card {
+      background: var(--blanco);
       border-radius: 16px;
       padding: 28px;
-      max-width: 580px;
-      margin: 32px auto;
-      box-shadow: 2px 2px 0 var(--crema-borde);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      text-align: center;
     }
-    .guarantee h3 {
-      font-size: 18px; font-weight: 700;
+    .step-card .emoji {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+    .step-card h3 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
       color: var(--azul-oscuro);
       margin-bottom: 8px;
     }
-    .guarantee p {
+    .step-card p {
+      font-size: 14px;
+      color: var(--texto-hint);
+      line-height: 1.5;
+    }
+    .steps-dots {
+      text-align: center;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--azul);
+      margin-bottom: 0;
+    }
+    .bolo-pill-center {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ===== FEATURES ===== */
+    .features-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .feature-row {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      margin-bottom: 80px;
+    }
+    .feature-row:last-child { margin-bottom: 0; }
+    .feature-row.reverse { flex-direction: row-reverse; }
+    .feature-screenshot {
+      flex: 1;
+      max-width: 280px;
+      aspect-ratio: 9/19.5;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--cielo-claro), var(--cielo));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--texto-hint);
+      font-weight: 500;
+      box-shadow: 0 8px 32px var(--sombra);
+      flex-shrink: 0;
+    }
+    .feature-text {
+      flex: 1;
+    }
+    .feature-text h3 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--azul-oscuro);
+      margin-bottom: 12px;
+    }
+    .feature-text p {
+      font-size: 16px;
+      color: var(--texto);
+      line-height: 1.7;
+    }
+
+    /* ===== BOLO SECTION ===== */
+    .bolo-section {
+      background: linear-gradient(180deg, var(--verde-claro) 0%, var(--blanco) 100%);
+      padding: 64px 24px;
+      text-align: center;
+    }
+    .bolo-section .bolo-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid var(--verde);
+      box-shadow: 0 6px 24px var(--sombra);
+      margin: 0 auto 20px;
+      object-fit: cover;
+    }
+    .bolo-section h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 24px;
+      color: var(--verde-oscuro);
+      margin-bottom: 12px;
+    }
+    .bolo-section p.desc {
+      max-width: 480px;
+      margin: 0 auto 24px;
+      font-size: 16px;
+      color: var(--texto);
+    }
+
+    /* ===== TESTIMONIALS (hidden) ===== */
+    .testimonials { display: none; }
+    .testimonial-card {
+      background: var(--crema);
+      border: 1px solid var(--crema-borde);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    /* ===== PRICING ===== */
+    .pricing-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    .toggle-btn {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 8px 20px;
+      border-radius: 10px;
+      border: 2px solid var(--azul);
+      background: transparent;
+      color: var(--azul);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .toggle-btn.active {
+      background: var(--azul);
+      color: var(--blanco);
+    }
+    .savings-badge {
+      background: var(--verde-claro);
+      color: var(--verde-oscuro);
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 10px;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .pricing-card {
+      background: var(--blanco);
+      border: 1px solid #E8E3DB;
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+    }
+    .pricing-card.pro {
+      border: 2px solid var(--azul);
+    }
+    .popular-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: var(--azul);
+      color: var(--blanco);
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .pricing-card h3 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--azul-oscuro);
+      margin-bottom: 8px;
+    }
+    .pricing-price {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      color: var(--texto);
+      margin-bottom: 20px;
+    }
+    .pricing-price span {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--texto-hint);
+      display: block;
+      margin-top: 2px;
+    }
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+    .pricing-features li {
+      font-size: 14px;
+      color: var(--texto);
+      padding: 5px 0;
+      padding-left: 22px;
+      position: relative;
+    }
+    .pricing-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--verde);
+      font-weight: 700;
+    }
+    .pricing-features li.separator {
+      font-weight: 700;
+      color: var(--azul-oscuro);
+      font-size: 13px;
+      padding-left: 0;
+      margin-top: 8px;
+    }
+    .pricing-features li.separator::before { display: none; }
+    .btn-primary {
+      display: block;
+      width: 100%;
+      background: var(--azul);
+      color: var(--blanco);
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
       font-size: 15px;
-      margin: 0;
+      padding: 13px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--azul-hover); }
+    .btn-secondary {
+      display: block;
+      width: 100%;
+      background: var(--blanco);
+      color: var(--azul);
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 13px;
+      border-radius: 12px;
+      border: 2px solid var(--azul);
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover { background: var(--cielo-claro); }
+    .trial-text {
+      font-size: 13px;
+      color: var(--texto-hint);
+      text-align: center;
+      margin-top: 8px;
     }
 
     /* ===== FAQ ===== */
-    .faq { max-width: 580px; margin: 24px auto; }
+    .faq-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
     .faq-item {
       border-bottom: 2px dashed #E8E3DB;
       padding: 20px 0;
     }
-    .faq-item:last-child { border: none; }
-    .faq-q {
-      font-size: 16px; font-weight: 700;
-      color: var(--azul-oscuro);
-      cursor: pointer;
+    .faq-question {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--azul-oscuro);
+      gap: 12px;
     }
-    .faq-q::after {
-      content: '+';
-      font-size: 20px; font-weight: 400;
+    .faq-toggle {
+      font-size: 22px;
       color: var(--azul);
       flex-shrink: 0;
-      margin-left: 12px;
-      transition: transform 0.2s;
+      line-height: 1;
+      user-select: none;
     }
-    .faq-item.open .faq-q::after {
-      content: '-';
-    }
-    .faq-a {
+    .faq-answer {
+      display: none;
       font-size: 15px;
       color: var(--texto);
-      margin-top: 12px;
-      display: none;
       line-height: 1.7;
+      margin-top: 12px;
+      padding-right: 32px;
     }
-    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .faq-toggle::after { content: '−'; }
+    .faq-toggle::after { content: '+'; }
 
-    /* ===== FORM ===== */
-    .form-embed {
-      max-width: 580px;
-      margin: 24px auto;
-      border-radius: 12px;
-      overflow: hidden;
-      background: var(--blanco);
-      border: 1px solid #E8E3DB;
+    /* ===== CTA FINAL ===== */
+    .cta-final {
+      background: linear-gradient(180deg, var(--cielo-claro) 0%, var(--blanco) 100%);
+      padding: 64px 24px;
+      text-align: center;
     }
-    .form-embed iframe {
-      width: 100%; height: 600px; border: none;
+    .cta-final h2 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: clamp(24px, 4vw, 34px);
+      color: var(--azul-oscuro);
+      margin-bottom: 12px;
+    }
+    .cta-final p.sub {
+      font-size: 16px;
+      color: var(--texto-hint);
+      margin-bottom: 28px;
+    }
+    .cta-divider {
+      border: none;
+      border-top: 2px dashed #D0E8F0;
+      max-width: 200px;
+      margin: 32px auto;
+    }
+    .cta-final h3 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--azul-oscuro);
+      margin-bottom: 8px;
+    }
+    .cta-final p.android-sub {
+      font-size: 15px;
+      color: var(--texto-hint);
+      margin-bottom: 20px;
+    }
+    .waitlist-form {
+      display: flex;
+      gap: 10px;
+      max-width: 400px;
+      margin: 0 auto 12px;
+    }
+    .waitlist-form input[type="email"] {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid #D0E8F0;
+      border-radius: 12px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 15px;
+      color: var(--texto);
+      background: var(--blanco);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .waitlist-form input[type="email"]:focus { border-color: var(--azul); }
+    .waitlist-form button {
+      background: var(--azul);
+      color: var(--blanco);
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .waitlist-form button:hover { background: var(--azul-hover); }
+    .privacy-note {
+      font-size: 13px;
+      color: var(--texto-hint);
+      margin-top: 8px;
     }
 
     /* ===== FOOTER ===== */
     .footer {
       background: var(--papel);
-      padding: 32px 24px;
-      text-align: center;
+      padding: 48px 24px;
+    }
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
     }
     .footer-logo {
       font-family: 'Fredoka', sans-serif;
-      font-size: 16px; font-weight: 500;
+      font-weight: 500;
+      font-size: 20px;
       color: var(--verde-oscuro);
-      letter-spacing: 1px;
-      margin-bottom: 8px;
+      margin-bottom: 32px;
+      display: block;
     }
-    .footer p {
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--texto-hint);
+      margin-bottom: 12px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 8px; }
+    .footer-col ul li a {
+      font-size: 14px;
+      color: var(--texto);
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--azul); }
+    .footer-copy {
       font-size: 13px;
       color: var(--texto-hint);
-      margin: 4px 0;
-    }
-    .footer a {
-      color: var(--azul);
-      text-decoration: underline;
+      border-top: 1px solid #E8E3DB;
+      padding-top: 24px;
     }
 
     /* ===== REFERRAL BANNER ===== */
@@ -425,7 +764,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: #fff;
+      background: var(--blanco);
       border-top: 3px solid var(--verde);
       padding: 16px 24px;
       z-index: 200;
@@ -438,7 +777,7 @@
       text-align: center;
     }
     .referral-banner .code {
-      font-family: 'Fredoka', monospace;
+      font-family: 'Fredoka', sans-serif;
       font-size: 20px;
       font-weight: 700;
       color: var(--verde-oscuro);
@@ -464,11 +803,37 @@
     }
 
     /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-cta-btn.desktop-only { display: none; }
+
+      .steps-grid { grid-template-columns: 1fr; }
+
+      .feature-row,
+      .feature-row.reverse { flex-direction: column; gap: 28px; }
+      .feature-screenshot { max-width: 220px; width: 100%; }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .pricing-card.pro { order: -1; }
+
+      .footer-grid { grid-template-columns: 1fr; text-align: center; }
+      .footer-logo { text-align: center; }
+
+      .screenshots { gap: 6px; }
+      .screenshot-card.center { width: 150px; height: 300px; }
+      .screenshot-card.side { width: 130px; height: 260px; }
+
+      .waitlist-form { flex-direction: column; }
+    }
+
     @media (max-width: 480px) {
-      .hero { padding: 32px 16px 0; }
-      .section, .section-paper { padding: 32px 16px; }
-      .cta-card { padding: 24px 16px; }
-      .hero-bolo { width: 160px; height: 160px; }
+      .social-proof-inner { gap: 16px; }
+      .hero { padding: 40px 16px 0; }
+      .screenshot-card.side { display: none; }
+      .screenshot-card.center { width: 180px; height: 360px; }
     }
   </style>
 </head>
@@ -478,280 +843,346 @@
   <nav class="nav">
     <div class="nav-inner">
       <a href="#" class="nav-logo">~ bolsillos ~</a>
-      <a href="#formulario" class="nav-cta">Solicita acceso &rarr;</a>
+      <ul class="nav-links">
+        <li><a href="#caracteristicas">Caracter&iacute;sticas</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="support.html">Soporte</a></li>
+      </ul>
+      <a href="#" class="nav-cta-btn desktop-only"><!-- TODO: Replace with App Store URL -->Descargar</a>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Abrir men&uacute;">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </nav>
 
-  <!-- ===== HERO ===== -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-badge">&#x1F389; 50 cupos de Usuario Fundador &mdash; Gratis para quienes se la jueguen</div>
-      <h1>Organiza tu plata como freelancer en Colombia <em>sin Excel y sin volverte loco</em></h1>
-      <p class="hero-sub">La primera app de finanzas personales dise&ntilde;ada para ingresos variables, quincenas irregulares y la vida real de los independientes colombianos.</p>
-      <img
-        src="images/bolo_avatar.png"
-        alt="Bolo, la mascota de Bolsillos, te da la bienvenida"
-        class="hero-bolo"
-        width="200" height="200"
-        loading="eager"
-      >
-      <p class="hero-bolo-caption">Este es <strong>Bolo</strong> &mdash; el chig&uuml;iro que cuida tus bolsillos. Lo vas a ver por aqu&iacute;.</p>
-    </div>
-  </section>
-  <div class="grass">&bull; &bull; &bull; &bull; &bull;</div>
-
-  <!-- ===== PAIN: DUAL TARGET ===== -->
-  <section class="section">
-    <div class="container">
-      <span class="section-label">&#x1F4A1; El problema real</span>
-      <h2>&iquest;Tu plata llega&hellip; y desaparece?</h2>
-      <p style="text-align:center;color:#5C8A9E;margin-bottom:24px;">No es que seas malo con la plata. Es que nadie te ense&ntilde;&oacute; un sistema que funcione para <strong>c&oacute;mo realmente vives</strong>.</p>
-
-      <div class="pain-grid">
-        <div class="pain-card">
-          <h3>&#x1F4BC; Si eres freelancer</h3>
-          <p>Un mes facturas $8 millones, el siguiente $2. No sabes cu&aacute;nto separar para salud, pensi&oacute;n y PILA. Vives haciendo c&aacute;lculos mentales que nunca cuadran.</p>
-        </div>
-        <div class="pain-card right">
-          <h3>&#x1F3E2; Si eres asalariado</h3>
-          <p>Trabajas dur&iacute;simo pero la plata se va en deudas autom&aacute;ticas. Sientes que tu sueldo existe para pagar cuentas &mdash; y tus sue&ntilde;os siguen en pausa.</p>
-        </div>
-      </div>
-
-      <p style="text-align:center;">En ambos casos, el nudo en el est&oacute;mago es el mismo: <strong>no saber si lo que gastas hoy te va a hacer falta ma&ntilde;ana</strong>.</p>
-
-      <!-- BOLO 1 de 3 -->
-      <div class="bolo-pill">
-        <img src="images/bolo_avatar.png" alt="Bolo" class="bolo-pill-avatar" width="36" height="36">
-        <div class="bolo-pill-bubble">&ldquo;Bolo conoce ese nudo. Una vez cancel&oacute; un plan con amigos porque no sab&iacute;a si le alcanzaba. Spoiler: s&iacute; le alcanzaba.&rdquo;</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DIVIDER -->
-  <div class="divider">
-    <span class="divider-dots">&#x1FA99; &middot; &#x1F343; &middot; &#x1FA99;</span>
-    <hr class="divider-line">
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose">&times;</button>
+    <a href="#caracteristicas" class="mobile-link">Caracter&iacute;sticas</a>
+    <a href="#precios" class="mobile-link">Precios</a>
+    <a href="support.html" class="mobile-link">Soporte</a>
+    <a href="#" class="nav-cta-btn"><!-- TODO: Replace with App Store URL -->Descargar</a>
   </div>
 
-  <!-- ===== SOLUTION ===== -->
-  <section class="section">
-    <div class="container">
-      <span class="section-label">&#x2728; La soluci&oacute;n</span>
-      <h2>No necesitas m&aacute;s disciplina. Necesitas un mejor sistema.</h2>
-      <p style="text-align:center;color:#5C8A9E;">Bolsillos le da un prop&oacute;sito a cada peso que te entra &mdash; ya sea un contrato de $10 millones o tu quincena. Sin f&oacute;rmulas, sin Excel, sin complicaciones.</p>
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <h1><span id="hero-rotate">Organiza tu plata</span></h1>
+    <p class="subtitle">La app de finanzas personales para freelancers e independientes en Colombia. Sin Excel. Sin complicaciones.</p>
+    <div class="hero-ctas">
+      <a href="#" class="btn-appstore"><!-- TODO: Replace with App Store URL -->Descargar en el App Store</a>
+      <a href="#android" class="btn-android">Pronto en Android &rarr;</a>
+    </div>
+    <div class="screenshots">
+      <div class="screenshot-card side left">Presupuesto</div>
+      <div class="screenshot-card center">Inicio</div>
+      <div class="screenshot-card side right">Reportes</div>
+    </div>
+  </section>
 
-      <ul class="feature-list">
-        <li>
-          <div class="feature-icon">&#x1F399;</div>
-          <div class="feature-text">
-            <h4>Registra gastos con tu voz</h4>
-            <p>Di &ldquo;Compra en Tienda Ara por $50.000&rdquo; y listo. Si ya registraste esa tienda antes, la app le asigna la categor&iacute;a autom&aacute;ticamente. Solo das guardar.</p>
-          </div>
-        </li>
-        <li>
-          <div class="feature-icon">&#x1F4B0;</div>
-          <div class="feature-text">
-            <h4>Cada peso tiene su bolsillo</h4>
-            <p>Gastos fijos, PILA, ahorro, y lo que quieras disfrutar &mdash; todo separado antes de que te lo gastes sin darte cuenta.</p>
-          </div>
-        </li>
-        <li>
-          <div class="feature-icon">&#x2708;</div>
-          <div class="feature-text">
-            <h4>Gasta tranquilo</h4>
-            <p>Cuando la plata de tus responsabilidades ya est&aacute; apartada, lo que queda es tuyo de verdad. Sal a cenar, planea el viaje, sin culpa.</p>
-          </div>
-        </li>
-        <li>
-          <div class="feature-icon">&#x1F4CA;</div>
-          <div class="feature-text">
-            <h4>Hecho para Colombia</h4>
-            <p>Quincenas, Nequi, PSE, ingresos variables, seguridad social para independientes. No es una app gringa traducida &mdash; es colombiana de nacimiento.</p>
-          </div>
-        </li>
-        <li>
-          <div class="feature-icon">&#x1F512;</div>
-          <div class="feature-text">
-            <h4>100% local y privada</h4>
-            <p>Tu informaci&oacute;n financiera se queda en tu celular. No usamos IA, no subimos tus datos a la nube, no vendemos nada. Tu plata es asunto tuyo.</p>
-          </div>
-        </li>
-      </ul>
+  <!-- ===== SOCIAL PROOF BAR ===== -->
+  <div class="social-proof">
+    <div class="social-proof-inner">
+      <span class="proof-item">&#11088; 4.8 en App Store</span>
+      <span class="proof-item">50 fundadores activos</span>
+      <span class="proof-item">Hecha en Colombia &#x1F1E8;&#x1F1F4;</span>
+    </div>
+  </div>
 
-      <!-- BOLO 2 de 3 -->
+  <!-- ===== C&Oacute;MO FUNCIONA ===== -->
+  <section class="section-paper section-center">
+    <h2 class="section-title">&Aacute;s&iacute; de simple</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="emoji">&#x1F4B0;</div>
+        <h3>Registra tu ingreso</h3>
+        <p>&iquest;Te lleg&oacute; plata? Dile a la app cu&aacute;nto y de d&oacute;nde.</p>
+      </div>
+      <div class="step-card">
+        <div class="emoji">&#x1F4C2;</div>
+        <h3>Organiza en bolsillos</h3>
+        <p>Cada peso tiene su lugar. Arriendo, mercado, ahorro, lo que quieras disfrutar.</p>
+      </div>
+      <div class="step-card">
+        <div class="emoji">&#x1F60C;</div>
+        <h3>Gasta tranquilo</h3>
+        <p>Lo que queda es tuyo de verdad. Sin culpa.</p>
+      </div>
+    </div>
+    <p class="steps-dots">1 &middot; 2 &middot; 3</p>
+    <div class="bolo-pill-center">
       <div class="bolo-pill">
-        <img src="images/bolo_avatar.png" alt="Bolo" class="bolo-pill-avatar" width="36" height="36">
-        <div class="bolo-pill-bubble">&ldquo;A Bolo le gusta esta parte. La parte donde ya sabes qu&eacute; plata es tuya y puedes gastar tranquilo. Bolo respira profundo.&rdquo;</div>
+        <img src="images/bolo_avatar.png" alt="Bolo">
+        <div class="bolo-bubble">Bolo recomienda empezar con 5 bolsillos. No necesitas 47. Relax.</div>
       </div>
     </div>
   </section>
 
-  <!-- GRASS -->
-  <div class="grass">&bull; &bull; &bull; &bull; &bull;</div>
+  <!-- ===== FEATURES ===== -->
+  <section class="section-white" id="caracteristicas">
+    <p class="section-label">Lo que puedes hacer</p>
+    <div class="features-inner">
 
-  <!-- ===== CTA 1 ===== -->
-  <section class="section-paper" id="formulario">
-    <div class="container">
-      <div class="cta-card">
-        <h3>S&eacute; uno de los 50 Usuarios Fundadores</h3>
-        <p>No buscamos 50 personas que descarguen la app y la olviden. Buscamos 50 que la usen de verdad, reporten lo que no funciona, y nos digan qu&eacute; construir despu&eacute;s. A cambio: 1 a&ntilde;o gratis y acceso directo a m&iacute;.</p>
-        <a href="#form-section" class="cta-btn">Quiero ser Fundador &rarr;</a>
-        <p class="cta-fine">Solo 50 cupos &middot; 100% gratis &middot; Solo pedimos tu feedback</p>
+      <div class="feature-row">
+        <div class="feature-screenshot">Presupuesto</div>
+        <div class="feature-text">
+          <h3>Cada peso tiene su bolsillo</h3>
+          <p>Asigna tu plata apenas llega. Fijos, mercado, ahorro &mdash; todo separado antes de que te lo gastes sin darte cuenta.</p>
+        </div>
+      </div>
+
+      <div class="feature-row reverse">
+        <div class="feature-screenshot">Voz</div>
+        <div class="feature-text">
+          <h3>Registra con tu voz</h3>
+          <p>Di &laquo;Almuerzo en El Corral por $25.000&raquo; y listo. La app reconoce la tienda y asigna el bolsillo.</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-screenshot">Reportes</div>
+        <div class="feature-text">
+          <h3>Entiende tu plata</h3>
+          <p>Reportes claros: a d&oacute;nde se va, cu&aacute;nto ahorras, tu ritmo de gasto. Sin jerga financiera.</p>
+        </div>
+      </div>
+
+      <div class="feature-row reverse">
+        <div class="feature-screenshot">Metas</div>
+        <div class="feature-text">
+          <h3>Metas que se cumplen</h3>
+          <p>Vacaciones, moto, fondo de emergencia &mdash; ponle imagen y Bolsillos calcula cu&aacute;nto apartar cada mes.</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-screenshot">Privacidad</div>
+        <div class="feature-text">
+          <h3>100% privada y local</h3>
+          <p>Tu plata se queda en tu celular. Encriptada. Sin nube. Sin rastreo. Tu informaci&oacute;n es solo tuya.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== BOLO SECTION ===== -->
+  <section class="bolo-section">
+    <img src="images/bolo_avatar.png" alt="Bolo" class="bolo-avatar">
+    <h2>Conoce a Bolo</h2>
+    <p class="desc">Tu chig&uuml;iro financiero personal. Te acompa&ntilde;a, te celebra, y de vez en cuando te recuerda que Excel no es un plan financiero.</p>
+    <div class="bolo-pill-center">
+      <div class="bolo-pill">
+        <img src="images/bolo_avatar.png" alt="Bolo">
+        <div class="bolo-bubble">Bolo organiz&oacute; sus bellotas en bolsillos antes de que fuera cool. Ahora te ense&ntilde;a a ti.</div>
       </div>
     </div>
   </section>
 
-  <!-- ===== CERO RIESGO ===== -->
-  <section class="section">
-    <div class="container">
-      <div class="guarantee">
-        <h3>&#x1F91D; Sin riesgo, con prop&oacute;sito</h3>
-        <p>No te pedimos plata, no te pedimos tarjeta, y si en alg&uacute;n momento sientes que la app no es para ti, simplemente la borras. Lo &uacute;nico que te pedimos es que mientras la tengas, <strong>la uses de verdad y nos cuentes c&oacute;mo te fue</strong>. Eso es lo que hace a un Fundador.</p>
-      </div>
+  <!-- ===== TESTIMONIALS (hidden placeholder) ===== -->
+  <section class="testimonials">
+    <div class="testimonial-card">
+      <p>&ldquo;[Testimonio pendiente]&rdquo;</p>
+      <p>&mdash; Nombre, Ciudad</p>
+    </div>
+    <div class="testimonial-card">
+      <p>&ldquo;[Testimonio pendiente]&rdquo;</p>
+      <p>&mdash; Nombre, Ciudad</p>
+    </div>
+    <div class="testimonial-card">
+      <p>&ldquo;[Testimonio pendiente]&rdquo;</p>
+      <p>&mdash; Nombre, Ciudad</p>
     </div>
   </section>
 
-  <!-- ===== WHO IS THIS FOR ===== -->
-  <section class="section-paper">
-    <div class="container">
-      <span class="section-label">&#x1F3AF; &iquest;Para qui&eacute;n es Bolsillos?</span>
-      <h2>Para cualquiera que est&eacute; cansado de hacer malabares con su plata</h2>
+  <!-- ===== PRICING ===== -->
+  <section class="section-paper" id="precios">
+    <h2 class="section-title">Planes</h2>
+    <div class="pricing-toggle">
+      <button class="toggle-btn" id="toggle-mensual">Mensual</button>
+      <button class="toggle-btn active" id="toggle-anual">Anual</button>
+      <span class="savings-badge">ahorras 2 meses</span>
+    </div>
+    <div class="pricing-grid">
 
-      <div class="pain-grid" style="margin-top:24px;">
-        <div class="pain-card">
-          <h3>Freelancers</h3>
-          <p>Dise&ntilde;adores, devs, consultores, creadores de contenido, abogados independientes. Si tus ingresos cambian cada mes, Bolsillos es para ti.</p>
-        </div>
-        <div class="pain-card right">
-          <h3>Independientes</h3>
-          <p>Due&ntilde;os de negocio, conductores, profes particulares, vendedores. Si te toca pagar PILA y seguridad social por tu cuenta, entendemos tu dolor.</p>
-        </div>
-        <div class="pain-card">
-          <h3>Asalariados audaces</h3>
-          <p>Si quieres que tu sueldo haga m&aacute;s que pagar deudas. Si sue&ntilde;as con viajar, emprender o simplemente vivir sin ese nudo en el est&oacute;mago cada fin de mes.</p>
-        </div>
-        <div class="pain-card right">
-          <h3>Parejas</h3>
-          <p>Si manejan la plata juntos (o intentan hacerlo), Bolsillos les da claridad a los dos. Cada quien sabe qu&eacute; hay y para qu&eacute; alcanza.</p>
-        </div>
+      <!-- Gratis -->
+      <div class="pricing-card">
+        <h3>Gratis</h3>
+        <div class="pricing-price">$0<span>/mes</span></div>
+        <ul class="pricing-features">
+          <li>2 cuentas</li>
+          <li>5 grupos de bolsillos</li>
+          <li>50 transacciones/mes</li>
+          <li>Reportes b&aacute;sicos</li>
+          <li>Metas</li>
+          <li>Backup local</li>
+        </ul>
+        <a href="#" class="btn-secondary"><!-- TODO: Replace with App Store URL -->Descargar</a>
       </div>
+
+      <!-- Pro -->
+      <div class="pricing-card pro">
+        <div class="popular-badge">Popular</div>
+        <h3>Pro</h3>
+        <div class="pricing-price" id="pro-price">
+          $220.000/a&ntilde;o
+          <span>$18.333/mes</span>
+        </div>
+        <ul class="pricing-features">
+          <li>Todo lo de Gratis sin l&iacute;mites</li>
+          <li class="separator">M&aacute;s:</li>
+          <li>Cuentas y bolsillos ilimitados</li>
+          <li>Transacciones ilimitadas</li>
+          <li>Entrada por voz</li>
+          <li>Tu A&ntilde;o en Bolsillos</li>
+          <li>Iconos y temas</li>
+          <li>Backup en iCloud</li>
+          <li>Import desde YNAB</li>
+        </ul>
+        <a href="#" class="btn-primary"><!-- TODO: Replace with App Store URL -->Prueba gratis</a>
+        <p class="trial-text" id="pro-trial">3 meses gratis con plan anual</p>
+      </div>
+
     </div>
   </section>
 
   <!-- ===== FAQ ===== -->
-  <section class="section">
-    <div class="container">
-      <span class="section-label">&#x2753; Preguntas frecuentes</span>
-      <h2>Resolvemos tus dudas</h2>
+  <section class="section-white" id="faq">
+    <p class="section-label">Preguntas frecuentes</p>
+    <h2 class="section-title">Resolvemos tus dudas</h2>
+    <div class="faq-inner">
 
-      <div class="faq">
-        <div class="faq-item open">
-          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-            &iquest;Es seguro usar la app con mi plata?
-          </div>
-          <div class="faq-a">
-            Bolsillos es 100% local &mdash; tu informaci&oacute;n financiera se queda en tu celular, no se sube a la nube ni se comparte con nadie. No usamos inteligencia artificial ni vendemos datos. Tu plata no se mueve de tu banco &mdash; la app solo te ayuda a organizarla visualmente.
-          </div>
+      <div class="faq-item open">
+        <div class="faq-question">
+          <span>&iquest;Es seguro usar Bolsillos con mi plata?</span>
+          <span class="faq-toggle"></span>
         </div>
-
-        <div class="faq-item">
-          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-            Ya intent&eacute; con Excel y fall&eacute;. &iquest;Por qu&eacute; esto funcionar&iacute;a?
-          </div>
-          <div class="faq-a">
-            Porque Bolsillos hace el trabajo pesado por ti. En vez de abrir una hoja de c&aacute;lculo, dices &ldquo;Almuerzo en El Corral por $25.000&rdquo; y la app registra tu gasto. Si ya has ido a El Corral antes, le asigna la categor&iacute;a autom&aacute;ticamente. Solo das guardar y sigues con tu vida.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-            Soy freelancer y mis ingresos cambian cada mes. &iquest;Funciona para m&iacute;?
-          </div>
-          <div class="faq-a">
-            Fue dise&ntilde;ada exactamente para eso. No importa si un mes facturas $2 millones y el siguiente $8. Bolsillos se adapta a lo que te entra y te ayuda a separar tus gastos fijos, PILA y ahorro antes de que te gastes lo que no debes.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-            &iquest;Qu&eacute; es un Usuario Fundador?
-          </div>
-          <div class="faq-a">
-            No es solo alguien que descarga la app &mdash; es alguien que se compromete a usarla activamente y a darnos retroalimentaci&oacute;n. Como Fundador, tu misi&oacute;n es usar Bolsillos como si fuera tuya, reportar bugs, sugerir mejoras, y decirnos qu&eacute; funciona y qu&eacute; no. A cambio tienes 1 a&ntilde;o gratis, acceso directo a m&iacute; (Sergio, el fundador), y la garant&iacute;a de que tu voz moldea directamente lo que construyo. Solo hay 50 cupos porque quiero poder hablar con cada uno personalmente.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-            &iquest;Solo funciona en iPhone?
-          </div>
-          <div class="faq-a">
-            Por ahora la beta est&aacute; disponible en iPhone a trav&eacute;s de TestFlight. Android viene en camino &mdash; si te inscribes, te aviso apenas est&eacute; lista.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-            &iquest;C&oacute;mo manejo la seguridad social y PILA?
-          </div>
-          <div class="faq-a">
-            Bolsillos te ayuda a separar autom&aacute;ticamente el porcentaje de tus ingresos que necesitas para salud, pensi&oacute;n y ARL. As&iacute; cuando llega la fecha de PILA, la plata ya est&aacute; ah&iacute; esperando &mdash; no tienes que salir a buscarla.
-          </div>
+        <div class="faq-answer">
+          S&iacute;, 100%. Toda tu informaci&oacute;n se guarda localmente en tu celular, encriptada con AES-256. No hay servidor nuestro que la almacene, no hay nube, no hay rastreo. Ni nosotros podemos ver tus datos.
         </div>
       </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Ya intent&eacute; con Excel y fall&eacute;. &iquest;Por qu&eacute; esto funcionar&iacute;a?</span>
+          <span class="faq-toggle"></span>
+        </div>
+        <div class="faq-answer">
+          Porque Bolsillos hace el trabajo pesado por ti. No tienes que crear f&oacute;rmulas ni mantener una hoja actualizada. Registras un gasto en segundos &mdash;hasta con tu voz&mdash; y la app hace las cuentas sola.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Soy freelancer con ingresos variables. &iquest;Funciona para m&iacute;?</span>
+          <span class="faq-toggle"></span>
+        </div>
+        <div class="faq-answer">
+          Fue dise&ntilde;ada exactamente para eso. Puedes registrar ingresos irregulares, asignar lo que lleg&oacute; a los bolsillos que necesitas, y ver siempre con claridad cu&aacute;nto tienes disponible para gastar sin culpa.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>&iquest;Puedo probar Pro gratis?</span>
+          <span class="faq-toggle"></span>
+        </div>
+        <div class="faq-answer">
+          S&iacute;. Con el plan mensual tienes 15 d&iacute;as gratis. Con el plan anual, 3 meses gratis. Sin tarjeta de cr&eacute;dito requerida para iniciar.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>&iquest;Solo funciona en iPhone?</span>
+          <span class="faq-toggle"></span>
+        </div>
+        <div class="faq-answer">
+          Por ahora s&iacute;, est&aacute; disponible solo para iOS. Android est&aacute; en camino &mdash; deja tu correo en la secci&oacute;n de abajo y te avisamos apenas est&eacute; lista.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>&iquest;Qu&eacute; pasa si pierdo mi celular?</span>
+          <span class="faq-toggle"></span>
+        </div>
+        <div class="faq-answer">
+          Con Pro, tienes backup autom&aacute;tico en iCloud que puedes restaurar en cualquier iPhone. Con el plan Gratis, puedes exportar tu backup manualmente y guardarlo donde quieras.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>&iquest;Se conecta con mi banco?</span>
+          <span class="faq-toggle"></span>
+        </div>
+        <div class="faq-answer">
+          No todav&iacute;a. Registrar los gastos manualmente (o con voz) es parte de la experiencia &mdash; te mantiene consciente de tu plata. La conexi&oacute;n con Open Finance est&aacute; en el roadmap para 2027.
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- DIVIDER -->
-  <div class="divider">
-    <span class="divider-dots">&#x1F343; &middot; &#x1F338; &middot; &#x1F343;</span>
-    <hr class="divider-line">
-  </div>
+  <!-- ===== CTA FINAL + WAITLIST ===== -->
+  <section class="cta-final" id="android">
+    <h2>Tu plata merece un sistema que funcione</h2>
+    <p class="sub">No otro mes haciendo c&aacute;lculos mentales. No otra hoja de Excel.</p>
+    <a href="#" class="btn-appstore"><!-- TODO: Replace with App Store URL -->Descargar en el App Store</a>
 
-  <!-- ===== FORM SECTION ===== -->
-  <section class="section" id="form-section">
-    <div class="container">
-      <span class="section-label">&#x1F4DD; Inscr&iacute;bete</span>
-      <h2>Apl&iacute;ca para ser Usuario Fundador</h2>
-      <p style="text-align:center;color:#5C8A9E;margin-bottom:8px;">1 a&ntilde;o gratis a cambio de usar la app de verdad y darnos tu feedback honesto.</p>
+    <hr class="cta-divider">
 
-      <!-- BOLO 3 de 3 -->
+    <h3>&iquest;Usas Android?</h3>
+    <p class="android-sub">D&eacute;janos tu correo y te avisamos apenas est&eacute; lista.</p>
+
+    <form class="waitlist-form" action="https://formspree.io/f/FORM_ID" method="POST">
+      <input type="email" name="email" placeholder="tu@correo.com" required>
+      <button type="submit">Av&iacute;same &rarr;</button>
+    </form>
+    <p class="privacy-note">&#x1F512; No spam. Solo el aviso de lanzamiento.</p>
+
+    <div class="bolo-pill-center" style="margin-top:32px;">
       <div class="bolo-pill">
-        <img src="images/bolo_avatar.png" alt="Bolo" class="bolo-pill-avatar" width="36" height="36">
-        <div class="bolo-pill-bubble">&ldquo;Bolo promete no mandarte spam. Odia el spam casi tanto como odia Excel. Casi.&rdquo;</div>
-      </div>
-
-      <div class="cta-card" style="margin-top:24px;">
-        <h3>&#x1F4CB; Llena el formulario</h3>
-        <p>Son 2 minutos. Solo necesitamos tu nombre, c&oacute;mo manejas tu plata hoy, y qu&eacute; tan dispuesto est&aacute;s a darnos feedback.</p>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScD7kwfo7_gda4-i0CbbD9ZOpV1VoFWuK5oYGhyb38ep4a7mw/viewform?usp=header" target="_blank" rel="noopener" class="cta-btn">Abrir formulario &rarr;</a>
-        <p class="cta-fine">Se abre en Google Forms &middot; No pedimos datos bancarios</p>
+        <img src="images/bolo_avatar.png" alt="Bolo">
+        <div class="bolo-bubble">Bolo dice: lo peor que puede pasar es que organices tu plata. Lo mejor&hellip; bueno, eso lo decides t&uacute;.</div>
       </div>
     </div>
   </section>
-
-  <!-- ===== FINAL CTA ===== -->
-  <section class="section-paper">
-    <div class="container">
-      <div class="cta-card">
-        <h3>Tu plata merece un sistema que funcione</h3>
-        <p>No otro mes haciendo c&aacute;lculos mentales. No otra hoja de Excel. Si est&aacute;s dispuesto a probar y dar feedback, te queremos en el equipo.</p>
-        <a href="#form-section" class="cta-btn">Quiero ser Fundador &rarr;</a>
-        <p class="cta-fine">100% gratis &middot; Solo te pedimos que la uses de verdad</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- GRASS -->
-  <div class="grass">&bull; &bull; &bull; &bull; &bull;</div>
 
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
-    <div class="footer-logo">~ bolsillos ~</div>
-    <p>Tu app de finanzas personales para freelancers en Colombia</p>
-    <p><a href="mailto:hola@bolsillos.app">hola@bolsillos.app</a> &middot; <a href="https://instagram.com/bolsillos.app" target="_blank" rel="noopener">@bolsillos.app</a></p>
-    <p style="margin-top:12px;">&copy; 2026 Bolsillos &middot; Hecho con &#x1F49A; para Colombia</p>
+    <div class="footer-inner">
+      <a href="#" class="footer-logo">~ bolsillos ~</a>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Producto</h4>
+          <ul>
+            <li><a href="#caracteristicas">Caracter&iacute;sticas</a></li>
+            <li><a href="#precios">Precios</a></li>
+            <li><a href="#">Descargar iOS</a></li>
+            <li><a href="#android">Android (pronto)</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="privacy.html">Privacidad</a></li>
+            <li><a href="terms.html">T&eacute;rminos de Servicio</a></li>
+            <li><a href="support.html">Soporte</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contacto</h4>
+          <ul>
+            <li><a href="mailto:hola@bolsillos.app">hola@bolsillos.app</a></li>
+            <li><a href="https://instagram.com/bolsillos.app" target="_blank" rel="noopener">@bolsillos.app</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer-copy">&copy; 2026 Bolsillos &middot; Hecho con &#x1F49A; en Colombia</p>
+    </div>
   </footer>
 
   <!-- ===== REFERRAL BANNER ===== -->
@@ -764,8 +1195,85 @@
     </div>
   </div>
 
+  <!-- ===== JAVASCRIPT ===== -->
   <script>
-    // Referral banner
+    // --- Hero headline rotation ---
+    (function() {
+      var headlines = ['Organiza tu plata', 'Gasta sin culpa', 'Ahorra tranquilo'];
+      var idx = 0;
+      var el = document.getElementById('hero-rotate');
+      if (!el) return;
+      setInterval(function() {
+        el.style.opacity = '0';
+        setTimeout(function() {
+          idx = (idx + 1) % headlines.length;
+          el.textContent = headlines[idx];
+          el.style.opacity = '1';
+        }, 400);
+      }, 3000);
+    })();
+
+    // --- FAQ accordion ---
+    (function() {
+      var items = document.querySelectorAll('.faq-item');
+      items.forEach(function(item) {
+        var question = item.querySelector('.faq-question');
+        if (!question) return;
+        question.addEventListener('click', function() {
+          var isOpen = item.classList.contains('open');
+          // Close all
+          items.forEach(function(i) { i.classList.remove('open'); });
+          // Toggle current
+          if (!isOpen) { item.classList.add('open'); }
+        });
+      });
+    })();
+
+    // --- Pricing toggle ---
+    (function() {
+      var btnMensual = document.getElementById('toggle-mensual');
+      var btnAnual = document.getElementById('toggle-anual');
+      var proPrice = document.getElementById('pro-price');
+      var proTrial = document.getElementById('pro-trial');
+      if (!btnMensual || !btnAnual || !proPrice || !proTrial) return;
+
+      btnMensual.addEventListener('click', function() {
+        btnMensual.classList.add('active');
+        btnAnual.classList.remove('active');
+        proPrice.innerHTML = '$25.000/mes';
+        proTrial.textContent = '15 d\u00edas gratis';
+      });
+
+      btnAnual.addEventListener('click', function() {
+        btnAnual.classList.add('active');
+        btnMensual.classList.remove('active');
+        proPrice.innerHTML = '$220.000/a\u00f1o<span>$18.333/mes</span>';
+        proTrial.textContent = '3 meses gratis con plan anual';
+      });
+    })();
+
+    // --- Hamburger menu ---
+    (function() {
+      var btn = document.getElementById('hamburgerBtn');
+      var menu = document.getElementById('mobileMenu');
+      var closeBtn = document.getElementById('mobileClose');
+      if (!btn || !menu || !closeBtn) return;
+
+      btn.addEventListener('click', function() {
+        menu.classList.add('open');
+      });
+      closeBtn.addEventListener('click', function() {
+        menu.classList.remove('open');
+      });
+      // Close on link click
+      menu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          menu.classList.remove('open');
+        });
+      });
+    })();
+
+    // --- Referral banner ---
     (function() {
       var params = new URLSearchParams(window.location.search);
       var ref = params.get('ref');
