@@ -1013,8 +1013,8 @@
         <div class="popular-badge">Popular</div>
         <h3>Pro</h3>
         <div class="pricing-price" id="pro-price">
-          $220,000/year
-          <span>$18,333/month</span>
+          $50/year
+          <span>~$4.17/month</span>
         </div>
         <ul class="pricing-features">
           <li>Everything in Free with no limits</li>
@@ -1163,7 +1163,7 @@
         <div class="footer-col">
           <h4>Contact</h4>
           <ul>
-            <li><a href="mailto:soporte@bolsillos.app">soporte@bolsillos.app</a></li>
+            <li><a href="mailto:hello@bolsillos.app">hello@bolsillos.app</a></li>
             <li><a href="https://instagram.com/bolsillos.app" target="_blank" rel="noopener">@bolsillos.app</a></li>
           </ul>
         </div>
@@ -1227,14 +1227,14 @@
       btnMensual.addEventListener('click', function() {
         btnMensual.classList.add('active');
         btnAnual.classList.remove('active');
-        proPrice.innerHTML = '$25,000/month';
+        proPrice.innerHTML = '$5/month';
         proTrial.textContent = '15 days free';
       });
 
       btnAnual.addEventListener('click', function() {
         btnAnual.classList.add('active');
         btnMensual.classList.remove('active');
-        proPrice.innerHTML = '$220,000/year<span>$18,333/month</span>';
+        proPrice.innerHTML = '$50/year<span>~$4.17/month</span>';
         proTrial.textContent = '3 months free with annual plan';
       });
     })();
