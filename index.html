@@ -226,27 +226,17 @@
       gap: 12px;
     }
     .screenshot-card {
+      width: 180px;
+      height: auto;
       border-radius: 20px;
-      box-shadow: 0 8px 32px var(--sombra);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      color: var(--texto-hint);
-      font-weight: 500;
+      box-shadow: 0 12px 40px rgba(43,107,133,0.15);
+      object-fit: contain;
       flex-shrink: 0;
     }
     .screenshot-card.center {
       width: 200px;
-      height: 400px;
-      transform: translateY(-10px);
-      background: linear-gradient(135deg, var(--cielo-claro), var(--cielo));
       z-index: 2;
-    }
-    .screenshot-card.side {
-      width: 180px;
-      height: 360px;
-      background: linear-gradient(135deg, var(--cielo-claro), var(--cielo));
+      transform: translateY(-10px);
     }
     .screenshot-card.left { transform: rotate(-3deg); }
     .screenshot-card.right { transform: rotate(3deg); }
@@ -381,18 +371,13 @@
     .feature-row:last-child { margin-bottom: 0; }
     .feature-row.reverse { flex-direction: row-reverse; }
     .feature-screenshot {
-      flex: 1;
+      width: 100%;
       max-width: 280px;
-      aspect-ratio: 9/19.5;
       border-radius: 20px;
-      background: linear-gradient(135deg, var(--cielo-claro), var(--cielo));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      color: var(--texto-hint);
-      font-weight: 500;
-      box-shadow: 0 8px 32px var(--sombra);
+      box-shadow: 0 8px 30px rgba(43,107,133,0.12);
+      display: block;
+      margin: 0 auto;
+      object-fit: contain;
       flex-shrink: 0;
     }
     .feature-text {
@@ -823,8 +808,8 @@
       .footer-logo { text-align: center; }
 
       .screenshots { gap: 6px; }
-      .screenshot-card.center { width: 150px; height: 300px; }
-      .screenshot-card.side { width: 130px; height: 260px; }
+      .screenshot-card.center { width: 150px; }
+      .screenshot-card.side { width: 130px; }
 
       .waitlist-form { flex-direction: column; }
     }
@@ -833,7 +818,7 @@
       .social-proof-inner { gap: 16px; }
       .hero { padding: 40px 16px 0; }
       .screenshot-card.side { display: none; }
-      .screenshot-card.center { width: 180px; height: 360px; }
+      .screenshot-card.center { width: 180px; }
     }
   </style>
 </head>
@@ -875,9 +860,9 @@
       <a href="#android" class="btn-android">Pronto en Android &rarr;</a>
     </div>
     <div class="screenshots">
-      <div class="screenshot-card side left">Presupuesto</div>
-      <div class="screenshot-card center">Inicio</div>
-      <div class="screenshot-card side right">Reportes</div>
+      <img src="images/screenshot-budget.png" alt="Presupuesto en Bolsillos" class="screenshot-card side left" loading="eager">
+      <img src="images/screenshot-home.png" alt="Inicio de Bolsillos" class="screenshot-card center" loading="eager">
+      <img src="images/screenshot-reports.png" alt="Reportes en Bolsillos" class="screenshot-card side right" loading="eager">
     </div>
   </section>
 
@@ -925,7 +910,7 @@
     <div class="features-inner">
 
       <div class="feature-row">
-        <div class="feature-screenshot">Presupuesto</div>
+        <img src="images/screenshot-budget.png" alt="Organiza tu plata en bolsillos" class="feature-screenshot" loading="lazy">
         <div class="feature-text">
           <h3>Cada peso tiene su bolsillo</h3>
           <p>Asigna tu plata apenas llega. Fijos, mercado, ahorro &mdash; todo separado antes de que te lo gastes sin darte cuenta.</p>
@@ -933,7 +918,7 @@
       </div>
 
       <div class="feature-row reverse">
-        <div class="feature-screenshot">Voz</div>
+        <img src="images/screenshot-voice.png" alt="Registra gastos con tu voz" class="feature-screenshot" loading="lazy">
         <div class="feature-text">
           <h3>Registra con tu voz</h3>
           <p>Di &laquo;Almuerzo en El Corral por $25.000&raquo; y listo. La app reconoce la tienda y asigna el bolsillo.</p>
@@ -941,7 +926,7 @@
       </div>
 
       <div class="feature-row">
-        <div class="feature-screenshot">Reportes</div>
+        <img src="images/screenshot-reports.png" alt="Reportes de gastos" class="feature-screenshot" loading="lazy">
         <div class="feature-text">
           <h3>Entiende tu plata</h3>
           <p>Reportes claros: a d&oacute;nde se va, cu&aacute;nto ahorras, tu ritmo de gasto. Sin jerga financiera.</p>
@@ -949,7 +934,7 @@
       </div>
 
       <div class="feature-row reverse">
-        <div class="feature-screenshot">Metas</div>
+        <img src="images/screenshot-goals.png" alt="Dream Board de metas" class="feature-screenshot" loading="lazy">
         <div class="feature-text">
           <h3>Metas que se cumplen</h3>
           <p>Vacaciones, moto, fondo de emergencia &mdash; ponle imagen y Bolsillos calcula cu&aacute;nto apartar cada mes.</p>
@@ -957,7 +942,7 @@
       </div>
 
       <div class="feature-row">
-        <div class="feature-screenshot">Privacidad</div>
+        <img src="images/screenshot-privacy.png" alt="Privacidad y seguridad" class="feature-screenshot" loading="lazy">
         <div class="feature-text">
           <h3>100% privada y local</h3>
           <p>Tu plata se queda en tu celular. Encriptada. Sin nube. Sin rastreo. Tu informaci&oacute;n es solo tuya.</p>
