@@ -17,6 +17,33 @@
   <meta name="twitter:title" content="Bolsillos &mdash; Organize your money">
   <meta name="twitter:description" content="The personal finance app for freelancers and independent workers in Colombia. No spreadsheets. No hassle.">
 
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://plausible.io/js/pa-NfOdtGZ3wQtwoDxZc6xLN.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
+
+  <!-- Sender.net forms SDK -->
+  <script>
+    (function (s, e, n, d, er) {
+      s['Sender'] = er;
+      s[er] = s[er] || function () {
+        (s[er].q = s[er].q || []).push(arguments)
+      }, s[er].l = 1 * new Date();
+      s[er].on = function(event, callback) {
+        s[er].listeners = s[er].listeners || {};
+        (s[er].listeners[event] = s[er].listeners[event] || []).push(callback);
+      };
+      var a = e.createElement(n),
+          m = e.getElementsByTagName(n)[0];
+      a.async = 1;
+      a.src = d;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://cdn.sender.net/accounts_resources/universal.js', 'sender');
+    sender('8dcfe82a080065')
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -229,9 +256,11 @@
       height: 52px;
       padding: 0 24px;
       border-radius: 12px;
-      cursor: default;
-      user-select: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
     }
+    .btn-appstore-soon:hover { background: #DCDCD8; color: var(--azul-oscuro); }
     .launch-note {
       width: 100%;
       font-size: 13px;
@@ -890,9 +919,9 @@
   <!-- ===== HERO ===== -->
   <section class="hero">
     <h1><span id="hero-rotate">Organize your money</span></h1>
-    <p class="subtitle">The personal finance app for freelancers and independent workers. No spreadsheets. No hassle.</p>
+    <p class="subtitle">It&rsquo;s not a bank&rsquo;s pocket feature. It&rsquo;s a method to organize all the money you have everywhere &mdash;across banks, cash, and dollars&mdash; before you spend it.</p>
     <div class="hero-ctas">
-      <div class="btn-appstore-soon">Coming Soon on the App Store</div>
+      <a href="#ios" class="btn-appstore-soon">Coming Soon on the App Store &rarr;</a>
       <a href="#android" class="btn-android">Coming soon on Android &rarr;</a>
       <p class="launch-note">Founder beta closed &middot; Launching soon on iOS</p>
     </div>
@@ -1077,6 +1106,18 @@
 
       <div class="faq-item open">
         <div class="faq-question">
+          <span>Is this like the &ldquo;Bolsillos&rdquo; feature in my bank (Bancolombia, Davivienda, Nequi, Bold)?</span>
+          <span class="faq-toggle"></span>
+        </div>
+        <div class="faq-answer">
+          No. A bank&rsquo;s &ldquo;bolsillos&rdquo; are compartments to separate money within that specific bank. Bolsillos App is something different: a method to plan and organize ALL your money &mdash; what you have in Bancolombia, in Davivienda, in Nequi, in cash, in dollars &mdash; before you spend it.<br><br>
+          If your money is spread across multiple places (typical when you&rsquo;re a freelancer or have variable income), Bolsillos App gives you a single view. Your bank&rsquo;s bolsillos only see the money in that specific bank.<br><br>
+          Bolsillos App doesn&rsquo;t compete with your bank&rsquo;s bolsillos &mdash; it complements them. If you have interest-earning savings somewhere, those stay where they are; Bolsillos App helps you know how much money you have available to spend this month without touching them.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
           <span>Is it safe to use Bolsillos with my money?</span>
           <span class="faq-toggle"></span>
         </div>
@@ -1149,21 +1190,21 @@
   </section>
 
   <!-- ===== CTA FINAL + WAITLIST ===== -->
-  <section class="cta-final" id="android">
+  <section class="cta-final" id="waitlist">
     <h2>Your money deserves a system that works</h2>
     <p class="sub">Not another month doing mental math. Not another spreadsheet.</p>
-    <div class="btn-appstore-soon">Coming Soon on the App Store</div>
 
     <hr class="cta-divider">
 
-    <h3>Use Android?</h3>
-    <p class="android-sub">Leave your email and we&rsquo;ll let you know when it&rsquo;s ready.</p>
+    <!-- iOS waitlist -->
+    <div id="ios" class="sender-embed-wrapper" style="max-width: 520px; margin: 32px auto 24px;">
+      <div style="text-align: left" class="sender-form-field" data-sender-form-id="egJqW9"></div>
+    </div>
 
-    <form class="waitlist-form" action="https://formspree.io/f/FORM_ID" method="POST">
-      <input type="email" name="email" placeholder="your@email.com" required>
-      <button type="submit">Notify me &rarr;</button>
-    </form>
-    <p class="privacy-note">&#x1F512; No spam. Just the launch notification.</p>
+    <!-- Android waitlist -->
+    <div id="android" class="sender-embed-wrapper" style="max-width: 520px; margin: 0 auto;">
+      <div style="text-align: left" class="sender-form-field" data-sender-form-id="en5AW4"></div>
+    </div>
 
     <div class="bolo-pill-center" style="margin-top:32px;">
       <div class="bolo-pill">

@@ -17,6 +17,33 @@
   <meta name="twitter:title" content="Bolsillos &mdash; Organiza tu plata">
   <meta name="twitter:description" content="La app de finanzas personales para freelancers e independientes en Colombia. Sin Excel. Sin complicaciones.">
 
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://plausible.io/js/pa-NfOdtGZ3wQtwoDxZc6xLN.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
+
+  <!-- Sender.net forms SDK -->
+  <script>
+    (function (s, e, n, d, er) {
+      s['Sender'] = er;
+      s[er] = s[er] || function () {
+        (s[er].q = s[er].q || []).push(arguments)
+      }, s[er].l = 1 * new Date();
+      s[er].on = function(event, callback) {
+        s[er].listeners = s[er].listeners || {};
+        (s[er].listeners[event] = s[er].listeners[event] || []).push(callback);
+      };
+      var a = e.createElement(n),
+          m = e.getElementsByTagName(n)[0];
+      a.async = 1;
+      a.src = d;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://cdn.sender.net/accounts_resources/universal.js', 'sender');
+    sender('8dcfe82a080065')
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -229,9 +256,11 @@
       height: 52px;
       padding: 0 24px;
       border-radius: 12px;
-      cursor: default;
-      user-select: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
     }
+    .btn-appstore-soon:hover { background: #DCDCD8; color: var(--azul-oscuro); }
     .launch-note {
       width: 100%;
       font-size: 13px;
@@ -890,9 +919,9 @@
   <!-- ===== HERO ===== -->
   <section class="hero">
     <h1><span id="hero-rotate">Organiza tu plata</span></h1>
-    <p class="subtitle">La app de finanzas personales para freelancers e independientes en Colombia. Sin Excel. Sin complicaciones.</p>
+    <p class="subtitle">No es un bolsillo de banco. Es el m&eacute;todo para organizar la plata que tienes en todos lados &mdash;Nequi, Bancolombia, efectivo, d&oacute;lares&mdash; antes de gastarla.</p>
     <div class="hero-ctas">
-      <div class="btn-appstore-soon">Pr&oacute;ximamente en el App Store</div>
+      <a href="#ios" class="btn-appstore-soon">Pr&oacute;ximamente en el App Store &rarr;</a>
       <a href="#android" class="btn-android">Pronto en Android &rarr;</a>
       <p class="launch-note">Beta con fundadores cerrada &middot; Lanzamiento pr&oacute;ximo en iOS</p>
     </div>
@@ -1077,6 +1106,18 @@
 
       <div class="faq-item open">
         <div class="faq-question">
+          <span>&iquest;Esto es como los Bolsillos de mi banco (Bancolombia, Davivienda, Nequi, Bold)?</span>
+          <span class="faq-toggle"></span>
+        </div>
+        <div class="faq-answer">
+          No. Los bolsillos de un banco son compartimentos para separar plata dentro de ese banco espec&iacute;fico. Bolsillos App es algo distinto: un m&eacute;todo para planear y organizar TODA tu plata &mdash;la que tienes en Bancolombia, en Davivienda, en Nequi, en efectivo, en d&oacute;lares&mdash; antes de gastarla.<br><br>
+          Si tu plata est&aacute; repartida entre varios lugares (t&iacute;pico cuando eres freelancer o tienes ingresos variables), Bolsillos App te da una vista &uacute;nica. Los bolsillos de tu banco solo ven la plata que est&aacute; en ese banco.<br><br>
+          Bolsillos App no compite con los bolsillos de tu banco &mdash; los complementa. Si tienes ahorros con rentabilidad en alg&uacute;n banco, siguen ah&iacute;; Bolsillos App te ayuda a saber cu&aacute;nta plata tienes disponible para gastar este mes sin tocarlos.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
           <span>&iquest;Es seguro usar Bolsillos con mi plata?</span>
           <span class="faq-toggle"></span>
         </div>
@@ -1149,21 +1190,21 @@
   </section>
 
   <!-- ===== CTA FINAL + WAITLIST ===== -->
-  <section class="cta-final" id="android">
+  <section class="cta-final" id="waitlist">
     <h2>Tu plata merece un sistema que funcione</h2>
     <p class="sub">No otro mes haciendo c&aacute;lculos mentales. No otra hoja de Excel.</p>
-    <div class="btn-appstore-soon">Pr&oacute;ximamente en el App Store</div>
 
     <hr class="cta-divider">
 
-    <h3>&iquest;Usas Android?</h3>
-    <p class="android-sub">D&eacute;janos tu correo y te avisamos apenas est&eacute; lista.</p>
+    <!-- iOS waitlist -->
+    <div id="ios" class="sender-embed-wrapper" style="max-width: 520px; margin: 32px auto 24px;">
+      <div style="text-align: left" class="sender-form-field" data-sender-form-id="bkRxWx"></div>
+    </div>
 
-    <form class="waitlist-form" action="https://formspree.io/f/FORM_ID" method="POST">
-      <input type="email" name="email" placeholder="tu@correo.com" required>
-      <button type="submit">Av&iacute;same &rarr;</button>
-    </form>
-    <p class="privacy-note">&#x1F512; No spam. Solo el aviso de lanzamiento.</p>
+    <!-- Android waitlist -->
+    <div id="android" class="sender-embed-wrapper" style="max-width: 520px; margin: 0 auto;">
+      <div style="text-align: left" class="sender-form-field" data-sender-form-id="elYyWl"></div>
+    </div>
 
     <div class="bolo-pill-center" style="margin-top:32px;">
       <div class="bolo-pill">
