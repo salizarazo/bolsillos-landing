@@ -297,10 +297,15 @@
       <p>Bolsillos NO recopila informaci&oacute;n personal. Todos tus datos financieros se almacenan exclusivamente en tu dispositivo.</p>
 
       <h2>2. Almacenamiento de datos</h2>
-      <p>Tus datos se guardan localmente en tu iPhone, protegidos con encriptaci&oacute;n de grado bancario (AES-256 via SQLCipher). Nadie &mdash; ni siquiera nosotros &mdash; puede acceder a tu informaci&oacute;n.</p>
+      <p>Tus datos se guardan localmente en tu dispositivo, protegidos con encriptaci&oacute;n AES-256 a nivel de base de datos (SQLite3 Multiple Ciphers / sqlite3mc) y, en iOS, una capa adicional de Data Protection del sistema operativo. Nadie &mdash; ni siquiera nosotros &mdash; puede acceder a tu informaci&oacute;n financiera.</p>
 
       <h2>3. Servicios de terceros</h2>
-      <p>El &uacute;nico servicio externo que utilizamos es RevenueCat para procesar pagos de suscripci&oacute;n in-app. RevenueCat recibe &uacute;nicamente la informaci&oacute;n necesaria para gestionar tu suscripci&oacute;n (identificador an&oacute;nimo de compra de Apple). No recibe tus datos financieros, transacciones ni informaci&oacute;n personal. Puedes consultar la pol&iacute;tica de privacidad de RevenueCat en su sitio web.</p>
+      <p>Bolsillos usa dos servicios externos, con propósitos limitados y sin transmitir tus datos financieros:</p>
+      <ul>
+        <li><strong>RevenueCat</strong> &mdash; Procesa pagos de suscripci&oacute;n in-app. Recibe &uacute;nicamente un identificador an&oacute;nimo de compra de Apple necesario para gestionar tu suscripci&oacute;n. No recibe tus transacciones ni datos financieros.</li>
+        <li><strong>Supabase</strong> &mdash; Lleva la cuenta de cupos limitados (programa Fundador, cohort Pionero) y del programa de referidos. Recibe &uacute;nicamente: el SKU comprado, un identificador an&oacute;nimo de evento, y c&oacute;digos de referido. No recibe tus transacciones, montos, payees ni nombres de bolsillos. Los datos viven en servidores propios de Bolsillos en Supabase, protegidos con Row Level Security.</li>
+      </ul>
+      <p>Puedes consultar las pol&iacute;ticas de privacidad de RevenueCat y Supabase en sus respectivos sitios.</p>
 
       <h2>4. Analytics y seguimiento</h2>
       <p>No usamos analytics. No usamos cookies de seguimiento. No usamos p&iacute;xeles de tracking. No vendemos ni compartimos datos con terceros. No existe perfil de usuario en nuestros servidores.</p>
@@ -310,10 +315,10 @@
 
       <h2>6. Voz y reconocimiento on-device</h2>
       <p>Bolsillos Pro incluye dos funciones que pueden parecer "IA" pero corren completamente en tu dispositivo:</p>
-      <p><strong>Transcripci&oacute;n de voz (voice input).</strong> En iOS, usamos Apple Speech Framework con la opci&oacute;n <code>requiresOnDeviceRecognition</code> activada &mdash; el audio nunca sale de tu iPhone. Si tu iPhone no tiene el modelo de espa&ntilde;ol on-device descargado, voice input se deshabilita autom&aacute;ticamente.</p>
-      <p>En Android, voice input est&aacute; <strong>apagado por defecto</strong>. Bolsillos verifica si tu dispositivo (Android 13 o superior) tiene reconocimiento on-device para espa&ntilde;ol instalado y solo entonces ofrece activarlo. En versiones anteriores de Android o si el paquete de espa&ntilde;ol no est&aacute; instalado localmente, voice input no funciona &mdash; preferimos desactivarlo a usar Google Speech Services y mandar tu audio a la nube.</p>
-      <p><strong>Lectura de recibos (OCR).</strong> En iOS usamos Apple Vision Framework. En Android usamos ML Kit Text Recognition en modo on-device. En ambos casos el procesamiento ocurre en tu dispositivo.</p>
-      <p>En todos los casos el reconocimiento solo transcribe audio o texto. <strong>La categor&iacute;a de cada transacci&oacute;n la eliges t&uacute;, siempre.</strong> No usamos LLMs (modelos de lenguaje tipo GPT, Claude, Gemini) para sugerir, categorizar o predecir nada.</p>
+      <p><strong>Transcripci&oacute;n de voz (voice input).</strong> En iOS, usamos Apple Speech Framework con la opci&oacute;n <code>requiresOnDeviceRecognition</code> activada &mdash; el audio nunca sale de tu iPhone.</p>
+      <p>En Android, el comportamiento depende del modelo de tu dispositivo. Dispositivos modernos con reconocimiento de voz on-device (Pixel 6 y superiores, Galaxy S22 y superiores, y otros equivalentes) procesan el audio localmente. En dispositivos sin esa capacidad, el sistema operativo Android puede enviar el audio temporalmente a Google Speech Services para transcripci&oacute;n &mdash; este comportamiento lo gestiona Android, no Bolsillos. Si esto te incomoda y no est&aacute;s seguro de la capacidad de tu dispositivo, no uses voice input: cualquier transacci&oacute;n se puede registrar manualmente. Bolsillos no almacena ni env&iacute;a a sus servidores el audio ni la transcripci&oacute;n.</p>
+      <p><strong>Lectura de recibos (OCR).</strong> Tanto en iOS como en Android usamos Google ML Kit Text Recognition en modo on-device &mdash; el modelo de reconocimiento de texto Latin viene embedded en el bundle de la app y nunca contacta servidores externos. La imagen del recibo se procesa localmente.</p>
+      <p>En todos los casos, el reconocimiento solo transcribe audio o texto. <strong>La categor&iacute;a de cada transacci&oacute;n la eliges t&uacute;, siempre.</strong> No usamos LLMs (modelos de lenguaje tipo GPT, Claude, Gemini) para sugerir, categorizar o predecir nada. No mandamos tus transacciones ni patrones de gasto a ning&uacute;n servicio de IA.</p>
 
       <h2>7. C&oacute;mo borrar tus datos</h2>
       <p>Como todos tus datos viven solo en tu dispositivo, puedes borrarlos en cualquier momento de dos formas:</p>

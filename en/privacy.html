@@ -297,10 +297,15 @@
       <p>Bolsillos does NOT collect personal information. All your financial data is stored exclusively on your device.</p>
 
       <h2>2. Data storage</h2>
-      <p>Your data is saved locally on your iPhone, protected with bank-grade encryption (AES-256 via SQLCipher). Nobody &mdash; not even us &mdash; can access your information.</p>
+      <p>Your data is saved locally on your device, protected with AES-256 encryption at the database layer (SQLite3 Multiple Ciphers / sqlite3mc) and, on iOS, an additional layer of system Data Protection. Nobody &mdash; not even us &mdash; can access your financial information.</p>
 
       <h2>3. Third-party services</h2>
-      <p>The only external service we use is RevenueCat to process in-app subscription payments. RevenueCat only receives the information necessary to manage your subscription (anonymous Apple purchase identifier). It does not receive your financial data, transactions, or personal information. You can review RevenueCat's privacy policy on their website.</p>
+      <p>Bolsillos uses two external services with limited purposes and without transmitting your financial data:</p>
+      <ul>
+        <li><strong>RevenueCat</strong> &mdash; Processes in-app subscription payments. Only receives an anonymous Apple purchase identifier necessary to manage your subscription. Does not receive your transactions or financial data.</li>
+        <li><strong>Supabase</strong> &mdash; Tracks limited-cohort programs (Founder, Pioneer cohorts) and the referral program. Only receives: the purchased SKU, an anonymous event identifier, and referral codes. Does not receive your transactions, amounts, payees, or pocket names. Data lives on Bolsillos-owned servers in Supabase, protected by Row Level Security.</li>
+      </ul>
+      <p>You can review the privacy policies of RevenueCat and Supabase on their respective websites.</p>
 
       <h2>4. Analytics and tracking</h2>
       <p>We don't use analytics. We don't use tracking cookies. We don't use tracking pixels. We don't sell or share data with third parties. There is no user profile on our servers.</p>
@@ -310,10 +315,10 @@
 
       <h2>6. Voice and on-device recognition</h2>
       <p>Bolsillos Pro includes two features that may look like "AI" but run entirely on your device:</p>
-      <p><strong>Voice input.</strong> On iOS, we use Apple Speech Framework with <code>requiresOnDeviceRecognition</code> enabled &mdash; audio never leaves your iPhone. If your iPhone doesn't have the Spanish on-device model downloaded, voice input is automatically disabled.</p>
-      <p>On Android, voice input is <strong>off by default</strong>. Bolsillos checks whether your device (Android 13 or higher) has Spanish on-device recognition installed and only then offers to enable it. On older Android versions, or if the Spanish language pack isn't installed locally, voice input doesn't work &mdash; we prefer to disable it rather than use Google Speech Services and send your audio to the cloud.</p>
-      <p><strong>Receipt scanning (OCR).</strong> On iOS we use Apple Vision Framework. On Android we use ML Kit Text Recognition in on-device mode. In both cases, processing happens on your device.</p>
-      <p>In all cases, recognition only transcribes audio or text. <strong>You always choose the category of each transaction.</strong> We don't use LLMs (language models like GPT, Claude, Gemini) to suggest, categorize, or predict anything.</p>
+      <p><strong>Voice input.</strong> On iOS, we use Apple Speech Framework with <code>requiresOnDeviceRecognition</code> enabled &mdash; audio never leaves your iPhone.</p>
+      <p>On Android, behavior depends on your device model. Modern devices with on-device speech recognition (Pixel 6 and newer, Galaxy S22 and newer, and equivalent models) process audio locally. On devices without that capability, the Android operating system may temporarily send audio to Google Speech Services for transcription &mdash; this behavior is governed by Android, not by Bolsillos. If this concerns you and you're unsure of your device's capability, don't use voice input: any transaction can be entered manually. Bolsillos does not store or send to its servers either the audio or the transcription.</p>
+      <p><strong>Receipt scanning (OCR).</strong> Both on iOS and Android we use Google ML Kit Text Recognition in on-device mode &mdash; the Latin text recognition model is embedded in the app bundle and never contacts external servers. The receipt image is processed locally.</p>
+      <p>In all cases, recognition only transcribes audio or text. <strong>You always choose the category of each transaction.</strong> We don't use LLMs (language models like GPT, Claude, Gemini) to suggest, categorize, or predict anything. We don't send your transactions or spending patterns to any AI service.</p>
 
       <h2>7. How to delete your data</h2>
       <p>Since all your data lives only on your device, you can delete it at any time in two ways:</p>
