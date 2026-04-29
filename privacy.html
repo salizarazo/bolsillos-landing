@@ -308,7 +308,14 @@
       <h2>5. Backups</h2>
       <p>Si activas los backups en iCloud (funci&oacute;n Pro), tus datos se almacenan en tu cuenta personal de iCloud Drive, protegidos por la seguridad de Apple. Nosotros no tenemos acceso a estos archivos. Los backups locales se guardan en tu dispositivo.</p>
 
-      <h2>6. C&oacute;mo borrar tus datos</h2>
+      <h2>6. Voz y reconocimiento on-device</h2>
+      <p>Bolsillos Pro incluye dos funciones que pueden parecer "IA" pero corren completamente en tu dispositivo:</p>
+      <p><strong>Transcripci&oacute;n de voz (voice input).</strong> En iOS, usamos Apple Speech Framework con la opci&oacute;n <code>requiresOnDeviceRecognition</code> activada &mdash; el audio nunca sale de tu iPhone. Si tu iPhone no tiene el modelo de espa&ntilde;ol on-device descargado, voice input se deshabilita autom&aacute;ticamente.</p>
+      <p>En Android, voice input est&aacute; <strong>apagado por defecto</strong>. Bolsillos verifica si tu dispositivo (Android 13 o superior) tiene reconocimiento on-device para espa&ntilde;ol instalado y solo entonces ofrece activarlo. En versiones anteriores de Android o si el paquete de espa&ntilde;ol no est&aacute; instalado localmente, voice input no funciona &mdash; preferimos desactivarlo a usar Google Speech Services y mandar tu audio a la nube.</p>
+      <p><strong>Lectura de recibos (OCR).</strong> En iOS usamos Apple Vision Framework. En Android usamos ML Kit Text Recognition en modo on-device. En ambos casos el procesamiento ocurre en tu dispositivo.</p>
+      <p>En todos los casos el reconocimiento solo transcribe audio o texto. <strong>La categor&iacute;a de cada transacci&oacute;n la eliges t&uacute;, siempre.</strong> No usamos LLMs (modelos de lenguaje tipo GPT, Claude, Gemini) para sugerir, categorizar o predecir nada.</p>
+
+      <h2>7. C&oacute;mo borrar tus datos</h2>
       <p>Como todos tus datos viven solo en tu dispositivo, puedes borrarlos en cualquier momento de dos formas:</p>
       <ol>
         <li><strong>Desde la app:</strong> Ajustes &rarr; Borrar todos los datos. Esta opci&oacute;n elimina permanentemente todas tus cuentas, bolsillos, transacciones, transferencias y reportes locales.</li>
@@ -317,13 +324,13 @@
       <p>Si activaste backups en iCloud (funci&oacute;n Pro), esos archivos viven en tu cuenta personal de iCloud Drive y puedes eliminarlos desde Ajustes &rarr; iCloud &rarr; Administrar almacenamiento &rarr; Bolsillos en tu dispositivo.</p>
       <p>Si tuviste una suscripci&oacute;n Bolsillos Pro gestionada por Apple a trav&eacute;s de RevenueCat, RevenueCat conserva un identificador an&oacute;nimo asociado a tu Apple ID por temas de cumplimiento de pagos. Puedes solicitarnos por correo a <a href="mailto:soporte@bolsillos.app">soporte@bolsillos.app</a> que iniciemos el proceso de eliminaci&oacute;n de ese identificador.</p>
 
-      <h2>7. Datos de menores</h2>
+      <h2>8. Datos de menores</h2>
       <p>Bolsillos no est&aacute; dirigida a menores de 13 a&ntilde;os y no recopilamos informaci&oacute;n de menores de forma consciente.</p>
 
-      <h2>8. Cambios a esta pol&iacute;tica</h2>
+      <h2>9. Cambios a esta pol&iacute;tica</h2>
       <p>Si realizamos cambios significativos, actualizaremos la fecha de &ldquo;&uacute;ltima actualizaci&oacute;n&rdquo; en esta p&aacute;gina.</p>
 
-      <h2>9. Contacto</h2>
+      <h2>10. Contacto</h2>
       <p>Si tienes preguntas sobre esta pol&iacute;tica, esc&iacute;benos a <a href="mailto:soporte@bolsillos.app">soporte@bolsillos.app</a>.</p>
     </div>
   </main>

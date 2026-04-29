@@ -308,7 +308,14 @@
       <h2>5. Backups</h2>
       <p>If you enable iCloud backups (Pro feature), your data is stored in your personal iCloud Drive account, protected by Apple's security. We have no access to these files. Local backups are stored on your device.</p>
 
-      <h2>6. How to delete your data</h2>
+      <h2>6. Voice and on-device recognition</h2>
+      <p>Bolsillos Pro includes two features that may look like "AI" but run entirely on your device:</p>
+      <p><strong>Voice input.</strong> On iOS, we use Apple Speech Framework with <code>requiresOnDeviceRecognition</code> enabled &mdash; audio never leaves your iPhone. If your iPhone doesn't have the Spanish on-device model downloaded, voice input is automatically disabled.</p>
+      <p>On Android, voice input is <strong>off by default</strong>. Bolsillos checks whether your device (Android 13 or higher) has Spanish on-device recognition installed and only then offers to enable it. On older Android versions, or if the Spanish language pack isn't installed locally, voice input doesn't work &mdash; we prefer to disable it rather than use Google Speech Services and send your audio to the cloud.</p>
+      <p><strong>Receipt scanning (OCR).</strong> On iOS we use Apple Vision Framework. On Android we use ML Kit Text Recognition in on-device mode. In both cases, processing happens on your device.</p>
+      <p>In all cases, recognition only transcribes audio or text. <strong>You always choose the category of each transaction.</strong> We don't use LLMs (language models like GPT, Claude, Gemini) to suggest, categorize, or predict anything.</p>
+
+      <h2>7. How to delete your data</h2>
       <p>Since all your data lives only on your device, you can delete it at any time in two ways:</p>
       <ol>
         <li><strong>From the app:</strong> Settings &rarr; Delete all data. This permanently removes all your accounts, pockets, transactions, transfers, and local reports.</li>
@@ -317,13 +324,13 @@
       <p>If you enabled iCloud backups (Pro feature), those files live in your personal iCloud Drive account and you can delete them from Settings &rarr; iCloud &rarr; Manage storage &rarr; Bolsillos on your device.</p>
       <p>If you had a Bolsillos Pro subscription managed by Apple through RevenueCat, RevenueCat retains an anonymous identifier associated with your Apple ID for payment compliance reasons. You can email us at <a href="mailto:support@bolsillos.app">support@bolsillos.app</a> to request that we initiate the deletion process for that identifier.</p>
 
-      <h2>7. Children's data</h2>
+      <h2>8. Children's data</h2>
       <p>Bolsillos is not directed at children under 13, and we do not knowingly collect information from minors.</p>
 
-      <h2>8. Changes to this policy</h2>
+      <h2>9. Changes to this policy</h2>
       <p>If we make significant changes, we will update the &ldquo;last updated&rdquo; date on this page.</p>
 
-      <h2>9. Contact</h2>
+      <h2>10. Contact</h2>
       <p>If you have questions about this policy, write to us at <a href="mailto:support@bolsillos.app">support@bolsillos.app</a>.</p>
     </div>
   </main>
