@@ -291,10 +291,11 @@
   <main>
     <div class="prose">
       <h1>Privacy Policy</h1>
-      <p>Last updated: April 29, 2026</p>
+      <p>Last updated: April 30, 2026</p>
 
       <h2>1. Information we collect</h2>
-      <p>Bolsillos does NOT collect personal information. All your financial data is stored exclusively on your device.</p>
+      <p>Bolsillos does NOT collect personally identifiable information. Your financial data &mdash; accounts, transactions, pockets, goals, receipts, notes &mdash; is stored exclusively on your device and never leaves it.</p>
+      <p>We do send anonymous app usage events to our servers for the sole purpose of understanding which features work, which don't, and where users abandon flows. These events contain no financial data and no information that identifies you &mdash; see section 4 for the full detail, including how to disable them.</p>
 
       <h2>2. Data storage</h2>
       <p>Your data is saved locally on your device, protected with AES-256 encryption at the database layer (SQLite3 Multiple Ciphers / sqlite3mc) and, on iOS, an additional layer of system Data Protection. Nobody &mdash; not even us &mdash; can access your financial information.</p>
@@ -303,12 +304,18 @@
       <p>Bolsillos uses two external services with limited purposes and without transmitting your financial data:</p>
       <ul>
         <li><strong>RevenueCat</strong> &mdash; Processes in-app subscription payments. Only receives an anonymous Apple purchase identifier necessary to manage your subscription. Does not receive your transactions or financial data.</li>
-        <li><strong>Supabase</strong> &mdash; Tracks limited-cohort programs (Founder, Pioneer cohorts) and the referral program. Only receives: the purchased SKU, an anonymous event identifier, and referral codes. Does not receive your transactions, amounts, payees, or pocket names. Data lives on Bolsillos-owned servers in Supabase, protected by Row Level Security.</li>
+        <li><strong>Supabase</strong> &mdash; Tracks limited-cohort programs (Founder, Pioneer cohorts), the referral program, and anonymous usage events (see section 4). Only receives: the purchased SKU, referral codes, and anonymous events composed of a SHA-256 device_hash + an event name from a closed whitelist + a payload with no PII. Does not receive your transactions, amounts, payees, or pocket names. Data lives on Bolsillos-owned servers in Supabase, protected by Row Level Security.</li>
       </ul>
       <p>You can review the privacy policies of RevenueCat and Supabase on their respective websites.</p>
 
-      <h2>4. Analytics and tracking</h2>
-      <p>We don't use analytics. We don't use tracking cookies. We don't use tracking pixels. We don't sell or share data with third parties. There is no user profile on our servers.</p>
+      <h2>4. Anonymous analytics, no tracking</h2>
+      <p>To improve the app we need to know which parts get used, which don't, and where users abandon flows. For that we send anonymous events to our servers. Here is exactly what we collect:</p>
+      <p><strong>Anonymous.</strong> On first launch we generate a random UUID v4 on your device and hash it with SHA-256. That 64-character hash is the only identifier that reaches our servers. It cannot be reversed to your Apple ID, email, IDFA, IDFV, or any other identifier tied to your identity.</p>
+      <p><strong>No PII.</strong> Events come from a closed whitelist of 33 names defined in the app's source code (e.g. &ldquo;onboarding_completed&rdquo;, &ldquo;first_envelope_created&rdquo;, &ldquo;paywall_viewed&rdquo;, &ldquo;voice_input_used&rdquo;). The payload contains only enums, numbers, or booleans. We NEVER send: amounts, payee names, custom categories, notes, receipt text, IPs, or anything that could identify you or reveal your financial situation.</p>
+      <p><strong>No cross-app tracking.</strong> We do not cross-reference these events with any external service. We do not share them with advertisers or data brokers. We do not use them to profile you or to personalize ads &mdash; Bolsillos shows no advertising. We do not use cookies, pixels, Google Analytics, Firebase Analytics, or any third-party tracking SDK. This is our own infrastructure on Supabase.</p>
+      <p><strong>Retention.</strong> Events are automatically deleted after 1 year via a scheduled job in the database.</p>
+      <p><strong>How to disable.</strong> You can disable anonymous analytics at any time from <strong>Settings &rarr; Privacy &rarr; Anonymous analytics</strong>. When you turn it off we stop sending events immediately. Previously sent events (anonymous, not associable with you) remain in our database until the retention cleanup.</p>
+      <p>If you have questions about which specific events we send or want us to email you the full list, write to <a href="mailto:support@bolsillos.app">support@bolsillos.app</a>.</p>
 
       <h2>5. Backups</h2>
       <p>If you enable iCloud backups (Pro feature), your data is stored in your personal iCloud Drive account, protected by Apple's security. We have no access to these files. Local backups are stored on your device.</p>
