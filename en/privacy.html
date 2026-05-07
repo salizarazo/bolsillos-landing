@@ -314,7 +314,7 @@
       <p><strong>No PII.</strong> Events come from a closed whitelist of 39 names defined in the app's source code (e.g. &ldquo;onboarding_completed&rdquo;, &ldquo;first_envelope_created&rdquo;, &ldquo;paywall_viewed&rdquo;, &ldquo;voice_input_used&rdquo;). The payload contains only enums, numbers, or booleans. We NEVER send: amounts, payee names, custom categories, notes, receipt text, IPs, or anything that could identify you or reveal your financial situation.</p>
       <p><strong>No cross-app tracking.</strong> We do not cross-reference these events with any external service. We do not share them with advertisers or data brokers. We do not use them to profile you or to personalize ads &mdash; Bolsillos shows no advertising. We do not use cookies, pixels, Google Analytics, Firebase Analytics, or any third-party tracking SDK. This is our own infrastructure on Supabase.</p>
       <p><strong>Retention.</strong> Events are automatically deleted after 1 year via a scheduled job in the database.</p>
-      <p><strong>How to disable.</strong> You can disable anonymous analytics at any time from <strong>Settings &rarr; Privacy &rarr; Anonymous analytics</strong>. When you turn it off we stop sending events immediately. Previously sent events (anonymous, not associable with you) remain in our database until the retention cleanup.</p>
+      <p><strong>How to disable.</strong> You can disable anonymous analytics at any time from <strong>Settings &rarr; Privacy &amp; data &rarr; Usage analytics</strong>. When you turn it off we stop sending events immediately. Previously sent events (anonymous, not associable with you) remain in our database until the retention cleanup.</p>
       <p>If you have questions about which specific events we send or want us to email you the full list, write to <a href="mailto:support@bolsillos.app">support@bolsillos.app</a>.</p>
 
       <h2>5. Backups</h2>
@@ -330,7 +330,7 @@
       <h2 id="data-deletion">7. How to delete your data</h2>
       <p>Since all your data lives only on your device, you can delete it at any time in two ways:</p>
       <ol>
-        <li><strong>From the app:</strong> Settings &rarr; Privacy &rarr; &ldquo;Delete all my data&rdquo;. This option requires two-step confirmation and then permanently removes all your accounts, pockets, transactions, transfers, receipts, goals, local backups, and configuration.</li>
+        <li><strong>From the app:</strong> Settings &rarr; Privacy &amp; data &rarr; &ldquo;Delete all my data&rdquo;. This option requires two-step confirmation and then permanently removes all your accounts, pockets, transactions, transfers, receipts, goals, local backups, and configuration.</li>
         <li><strong>By uninstalling the app:</strong> when you remove Bolsillos App from your device, all local data is permanently deleted. No copies remain on any server because we never upload anything.</li>
       </ol>
       <p>If you enabled iCloud backups (Pro feature), those files live in your personal iCloud Drive account, encrypted with a key derived from your personal password via PBKDF2-HMAC-SHA256 (80,000 iterations). You can delete them from Settings &rarr; iCloud &rarr; Manage storage &rarr; Bolsillos on your device.</p>
