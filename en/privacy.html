@@ -291,14 +291,14 @@
   <main>
     <div class="prose">
       <h1>Privacy Policy</h1>
-      <p>Last updated: April 30, 2026</p>
+      <p>Last updated: May 7, 2026</p>
 
       <h2>1. Information we collect</h2>
       <p>Bolsillos does NOT collect personally identifiable information. Your financial data &mdash; accounts, transactions, pockets, goals, receipts, notes &mdash; is stored exclusively on your device and never leaves it.</p>
       <p>We do send anonymous app usage events to our servers for the sole purpose of understanding which features work, which don't, and where users abandon flows. These events contain no financial data and no information that identifies you &mdash; see section 4 for the full detail, including how to disable them.</p>
 
       <h2>2. Data storage</h2>
-      <p>Your data is saved locally on your device, protected with AES-256 encryption at the database layer (SQLite3 Multiple Ciphers / sqlite3mc) and, on iOS, an additional layer of system Data Protection. Nobody &mdash; not even us &mdash; can access your financial information.</p>
+      <p>Your data is saved locally on your device. On iOS, it is protected with iOS Data Protection (AES-256 encryption tied to the device passcode, managed by the operating system). On Android, we use database-layer encryption provided by SQLite3 Multiple Ciphers (sqlite3mc) with AES-256. In both cases, not even we can access your financial information.</p>
 
       <h2>3. Third-party services</h2>
       <p>Bolsillos uses two external services with limited purposes and without transmitting your financial data:</p>
@@ -311,7 +311,7 @@
       <h2>4. Anonymous analytics, no tracking</h2>
       <p>To improve the app we need to know which parts get used, which don't, and where users abandon flows. For that we send anonymous events to our servers. Here is exactly what we collect:</p>
       <p><strong>Anonymous.</strong> On first launch we generate a random UUID v4 on your device and hash it with SHA-256. That 64-character hash is the only identifier that reaches our servers. It cannot be reversed to your Apple ID, email, IDFA, IDFV, or any other identifier tied to your identity.</p>
-      <p><strong>No PII.</strong> Events come from a closed whitelist of 33 names defined in the app's source code (e.g. &ldquo;onboarding_completed&rdquo;, &ldquo;first_envelope_created&rdquo;, &ldquo;paywall_viewed&rdquo;, &ldquo;voice_input_used&rdquo;). The payload contains only enums, numbers, or booleans. We NEVER send: amounts, payee names, custom categories, notes, receipt text, IPs, or anything that could identify you or reveal your financial situation.</p>
+      <p><strong>No PII.</strong> Events come from a closed whitelist of 39 names defined in the app's source code (e.g. &ldquo;onboarding_completed&rdquo;, &ldquo;first_envelope_created&rdquo;, &ldquo;paywall_viewed&rdquo;, &ldquo;voice_input_used&rdquo;). The payload contains only enums, numbers, or booleans. We NEVER send: amounts, payee names, custom categories, notes, receipt text, IPs, or anything that could identify you or reveal your financial situation.</p>
       <p><strong>No cross-app tracking.</strong> We do not cross-reference these events with any external service. We do not share them with advertisers or data brokers. We do not use them to profile you or to personalize ads &mdash; Bolsillos shows no advertising. We do not use cookies, pixels, Google Analytics, Firebase Analytics, or any third-party tracking SDK. This is our own infrastructure on Supabase.</p>
       <p><strong>Retention.</strong> Events are automatically deleted after 1 year via a scheduled job in the database.</p>
       <p><strong>How to disable.</strong> You can disable anonymous analytics at any time from <strong>Settings &rarr; Privacy &rarr; Anonymous analytics</strong>. When you turn it off we stop sending events immediately. Previously sent events (anonymous, not associable with you) remain in our database until the retention cleanup.</p>
@@ -327,13 +327,13 @@
       <p><strong>Receipt scanning (OCR).</strong> Both on iOS and Android we use Google ML Kit Text Recognition in on-device mode &mdash; the Latin text recognition model is embedded in the app bundle and never contacts external servers. The receipt image is processed locally.</p>
       <p>In all cases, recognition only transcribes audio or text. <strong>You always choose the category of each transaction.</strong> We don't use LLMs (language models like GPT, Claude, Gemini) to suggest, categorize, or predict anything. We don't send your transactions or spending patterns to any AI service.</p>
 
-      <h2>7. How to delete your data</h2>
+      <h2 id="data-deletion">7. How to delete your data</h2>
       <p>Since all your data lives only on your device, you can delete it at any time in two ways:</p>
       <ol>
-        <li><strong>From the app:</strong> Settings &rarr; Delete all data. This permanently removes all your accounts, pockets, transactions, transfers, and local reports.</li>
+        <li><strong>From the app:</strong> Settings &rarr; Privacy &rarr; &ldquo;Delete all my data&rdquo;. This option requires two-step confirmation and then permanently removes all your accounts, pockets, transactions, transfers, receipts, goals, local backups, and configuration.</li>
         <li><strong>By uninstalling the app:</strong> when you remove Bolsillos App from your device, all local data is permanently deleted. No copies remain on any server because we never upload anything.</li>
       </ol>
-      <p>If you enabled iCloud backups (Pro feature), those files live in your personal iCloud Drive account and you can delete them from Settings &rarr; iCloud &rarr; Manage storage &rarr; Bolsillos on your device.</p>
+      <p>If you enabled iCloud backups (Pro feature), those files live in your personal iCloud Drive account, encrypted with a key derived from your personal password via PBKDF2-HMAC-SHA256 (80,000 iterations). You can delete them from Settings &rarr; iCloud &rarr; Manage storage &rarr; Bolsillos on your device.</p>
       <p>If you had a Bolsillos Pro subscription managed by Apple through RevenueCat, RevenueCat retains an anonymous identifier associated with your Apple ID for payment compliance reasons. You can email us at <a href="mailto:support@bolsillos.app">support@bolsillos.app</a> to request that we initiate the deletion process for that identifier.</p>
 
       <h2>8. Children's data</h2>

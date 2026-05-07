@@ -291,14 +291,14 @@
   <main>
     <div class="prose">
       <h1>Pol&iacute;tica de Privacidad</h1>
-      <p>&Uacute;ltima actualizaci&oacute;n: 30 de abril de 2026</p>
+      <p>&Uacute;ltima actualizaci&oacute;n: 7 de mayo de 2026</p>
 
       <h2>1. Informaci&oacute;n que recopilamos</h2>
       <p>Bolsillos NO recopila informaci&oacute;n personal identificable. Tus datos financieros &mdash; cuentas, transacciones, bolsillos, metas, recibos, notas &mdash; se almacenan exclusivamente en tu dispositivo y nunca salen de &eacute;l.</p>
       <p>S&iacute; enviamos a nuestros servidores eventos an&oacute;nimos de uso de la app con el &uacute;nico fin de entender qu&eacute; funciona, qu&eacute; no, y d&oacute;nde la gente abandona los flujos. Estos eventos no contienen datos financieros ni informaci&oacute;n que te identifique &mdash; ver secci&oacute;n 4 para el detalle completo, incluyendo c&oacute;mo desactivarlos.</p>
 
       <h2>2. Almacenamiento de datos</h2>
-      <p>Tus datos se guardan localmente en tu dispositivo, protegidos con encriptaci&oacute;n AES-256 a nivel de base de datos (SQLite3 Multiple Ciphers / sqlite3mc) y, en iOS, una capa adicional de Data Protection del sistema operativo. Nadie &mdash; ni siquiera nosotros &mdash; puede acceder a tu informaci&oacute;n financiera.</p>
+      <p>Tus datos se guardan localmente en tu dispositivo. En iOS, est&aacute;n protegidos con iOS Data Protection (encriptaci&oacute;n AES-256 amarrada al passcode del dispositivo, gestionada por el sistema operativo). En Android, usamos encriptaci&oacute;n a nivel de base de datos provista por SQLite3 Multiple Ciphers (sqlite3mc) con AES-256. En ambos casos, ni siquiera nosotros podemos acceder a tu informaci&oacute;n financiera.</p>
 
       <h2>3. Servicios de terceros</h2>
       <p>Bolsillos usa dos servicios externos, con propósitos limitados y sin transmitir tus datos financieros:</p>
@@ -311,7 +311,7 @@
       <h2>4. Analytics an&oacute;nima y sin tracking</h2>
       <p>Para mejorar la app necesitamos saber qu&eacute; partes se usan, qu&eacute; partes no, y d&oacute;nde la gente abandona los flujos. Para eso enviamos eventos an&oacute;nimos a nuestros servidores. Esta es exactamente la informaci&oacute;n que recolectamos:</p>
       <p><strong>An&oacute;nima.</strong> En el primer launch generamos un UUID v4 aleatorio en tu dispositivo y lo hasheamos con SHA-256. Ese hash de 64 caracteres es el &uacute;nico identificador que llega a nuestros servidores. No se puede revertir a tu Apple ID, email, IDFA, IDFV ni ning&uacute;n otro identificador asociado a tu identidad.</p>
-      <p><strong>Sin PII.</strong> Los eventos vienen de una lista blanca cerrada de 33 nombres definidos en el c&oacute;digo de la app (por ejemplo: &ldquo;onboarding_completed&rdquo;, &ldquo;first_envelope_created&rdquo;, &ldquo;paywall_viewed&rdquo;, &ldquo;voice_input_used&rdquo;). El payload solo contiene enums, n&uacute;meros o booleanos. NUNCA enviamos: montos, nombres de payees, categor&iacute;as personalizadas, notas, texto de recibos, IPs, ni nada que pueda identificarte o revelar tu situaci&oacute;n financiera.</p>
+      <p><strong>Sin PII.</strong> Los eventos vienen de una lista blanca cerrada de 39 nombres definidos en el c&oacute;digo de la app (por ejemplo: &ldquo;onboarding_completed&rdquo;, &ldquo;first_envelope_created&rdquo;, &ldquo;paywall_viewed&rdquo;, &ldquo;voice_input_used&rdquo;). El payload solo contiene enums, n&uacute;meros o booleanos. NUNCA enviamos: montos, nombres de payees, categor&iacute;as personalizadas, notas, texto de recibos, IPs, ni nada que pueda identificarte o revelar tu situaci&oacute;n financiera.</p>
       <p><strong>Sin tracking cruzado.</strong> No cruzamos estos eventos con ning&uacute;n servicio externo. No los compartimos con anunciantes ni data brokers. No los usamos para perfilarte ni para personalizar publicidad &mdash; Bolsillos no muestra publicidad. No usamos cookies, ni p&iacute;xeles, ni Google Analytics, ni Firebase Analytics, ni ning&uacute;n SDK de tracking de terceros. Es nuestra propia infraestructura en Supabase.</p>
       <p><strong>Retenci&oacute;n.</strong> Los eventos se borran autom&aacute;ticamente despu&eacute;s de 1 a&ntilde;o mediante un job programado en la base de datos.</p>
       <p><strong>C&oacute;mo desactivar.</strong> Puedes desactivar la analytics an&oacute;nima en cualquier momento desde <strong>Ajustes &rarr; Privacidad &rarr; Analytics an&oacute;nima</strong>. Cuando lo desactivas, dejamos de enviar eventos inmediatamente. Los eventos enviados previamente (an&oacute;nimos, no asociables a ti) permanecen en nuestra base hasta el cleanup de retenci&oacute;n.</p>
@@ -327,13 +327,13 @@
       <p><strong>Lectura de recibos (OCR).</strong> Tanto en iOS como en Android usamos Google ML Kit Text Recognition en modo on-device &mdash; el modelo de reconocimiento de texto Latin viene embedded en el bundle de la app y nunca contacta servidores externos. La imagen del recibo se procesa localmente.</p>
       <p>En todos los casos, el reconocimiento solo transcribe audio o texto. <strong>La categor&iacute;a de cada transacci&oacute;n la eliges t&uacute;, siempre.</strong> No usamos LLMs (modelos de lenguaje tipo GPT, Claude, Gemini) para sugerir, categorizar o predecir nada. No mandamos tus transacciones ni patrones de gasto a ning&uacute;n servicio de IA.</p>
 
-      <h2>7. C&oacute;mo borrar tus datos</h2>
+      <h2 id="data-deletion">7. C&oacute;mo borrar tus datos</h2>
       <p>Como todos tus datos viven solo en tu dispositivo, puedes borrarlos en cualquier momento de dos formas:</p>
       <ol>
-        <li><strong>Desde la app:</strong> Ajustes &rarr; Borrar todos los datos. Esta opci&oacute;n elimina permanentemente todas tus cuentas, bolsillos, transacciones, transferencias y reportes locales.</li>
+        <li><strong>Desde la app:</strong> Ajustes &rarr; Privacidad &rarr; &ldquo;Borrar todos mis datos&rdquo;. Esta opci&oacute;n pide confirmaci&oacute;n de dos pasos y luego elimina permanentemente todas tus cuentas, bolsillos, transacciones, transferencias, recibos, metas, backups locales y configuraci&oacute;n.</li>
         <li><strong>Desinstalando la app:</strong> al eliminar Bolsillos App de tu dispositivo, todos los datos locales se eliminan permanentemente. No quedan copias en ning&uacute;n servidor porque nunca subimos nada.</li>
       </ol>
-      <p>Si activaste backups en iCloud (funci&oacute;n Pro), esos archivos viven en tu cuenta personal de iCloud Drive y puedes eliminarlos desde Ajustes &rarr; iCloud &rarr; Administrar almacenamiento &rarr; Bolsillos en tu dispositivo.</p>
+      <p>Si activaste backups en iCloud (funci&oacute;n Pro), esos archivos viven en tu cuenta personal de iCloud Drive, encriptados con una llave derivada de tu contrase&ntilde;a personal v&iacute;a PBKDF2-HMAC-SHA256 (80.000 iteraciones). Puedes eliminarlos desde Ajustes &rarr; iCloud &rarr; Administrar almacenamiento &rarr; Bolsillos en tu dispositivo.</p>
       <p>Si tuviste una suscripci&oacute;n Bolsillos Pro gestionada por Apple a trav&eacute;s de RevenueCat, RevenueCat conserva un identificador an&oacute;nimo asociado a tu Apple ID por temas de cumplimiento de pagos. Puedes solicitarnos por correo a <a href="mailto:soporte@bolsillos.app">soporte@bolsillos.app</a> que iniciemos el proceso de eliminaci&oacute;n de ese identificador.</p>
 
       <h2>8. Datos de menores</h2>
