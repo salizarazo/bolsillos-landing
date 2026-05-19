@@ -1,2 +1,7 @@
 .superpowers/
 .DS_Store
+
+# Internal feedback / testing artifacts — never publish
+images/testflight_feedback/
+images/testflight_feedback.zip
+images/screenshots/

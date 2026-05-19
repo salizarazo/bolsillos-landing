@@ -65,6 +65,7 @@ type SlideCopy = {
   manifesto: string;
   headline: string; // _word_ wrapped = italic burgundy
   sub: string;
+  chip?: string; // optional pill rendered below sub (e.g. report breadcrumb)
 };
 
 type SlideKey =
@@ -72,9 +73,10 @@ type SlideKey =
   | "home"
   | "dreams"
   | "decisiones"
+  | "capture"
   | "debts"
   | "pace"
-  | "privacy";
+  | "recap";
 
 const COPY: Record<Locale, Record<SlideKey, SlideCopy>> = {
   es: {
@@ -83,7 +85,7 @@ const COPY: Record<Locale, Record<SlideKey, SlideCopy>> = {
       num: "NÚM. 1",
       manifesto: "— sobre vivir sin culpa —",
       headline: "Sin culpa.\nSin _pánico_.",
-      sub: "Cada gasto en su bolsillo.",
+      sub: "Cada gasto en su bolsillo. Sin chatbot, sin venta de datos.",
     },
     home: {
       tag: "BOLSILLOS",
@@ -106,26 +108,34 @@ const COPY: Record<Locale, Record<SlideKey, SlideCopy>> = {
       headline: "No es _fuerza de voluntad_.\nSon siete preguntas.",
       sub: "Para no quitarle dinero a tus metas.",
     },
-    debts: {
+    capture: {
       tag: "BOLSILLOS",
       num: "NÚM. 5",
+      manifesto: "— sobre el momento del registro —",
+      headline: "Tan _rápida_\no tan detallada\ncomo quieras.",
+      sub: "Voz, foto del recibo, manual o importado. Con recordatorios, repetición y adjuntos.",
+    },
+    debts: {
+      tag: "BOLSILLOS",
+      num: "NÚM. 6",
       manifesto: "— sobre la salida —",
       headline: "Tu fecha\n_libre_ de\ndeudas.",
       sub: "Avalancha o Bola de Nieve, tú decides.",
     },
     pace: {
       tag: "BOLSILLOS",
-      num: "NÚM. 6",
+      num: "NÚM. 7",
       manifesto: "— sobre el ritmo del mes —",
       headline: "¿Adelantado\no _atrasado_?",
       sub: "Tu ritmo de gasto, sin sorpresas.",
+      chip: "+ Bienestar, Margen, Patrimonio y 8 más",
     },
-    privacy: {
+    recap: {
       tag: "BOLSILLOS",
-      num: "NÚM. 7",
-      manifesto: "— sobre la confianza —",
-      headline: "Tu dinero\n_vive_ en\ntu iPhone.",
-      sub: "Sin banco, sin nube, sin culpa.",
+      num: "NÚM. 8",
+      manifesto: "— sobre mirar atrás —",
+      headline: "Tu año,\n_contado_\nbonito.",
+      sub: "Year Recap: ocho cards animadas y una para compartir.",
     },
   },
   en: {
@@ -134,7 +144,7 @@ const COPY: Record<Locale, Record<SlideKey, SlideCopy>> = {
       num: "NO. 1",
       manifesto: "— on living without shame —",
       headline: "No shame.\nNo _panic_.",
-      sub: "Every expense in its envelope.",
+      sub: "Every expense in its envelope. No chatbots, no data selling.",
     },
     home: {
       tag: "BOLSILLOS",
@@ -157,26 +167,34 @@ const COPY: Record<Locale, Record<SlideKey, SlideCopy>> = {
       headline: "It's not _willpower_.\nIt's seven questions.",
       sub: "So your goals stay funded.",
     },
-    debts: {
+    capture: {
       tag: "BOLSILLOS",
       num: "NO. 5",
+      manifesto: "— on the moment of capture —",
+      headline: "As _fast_\nor as detailed\nas you want.",
+      sub: "Voice, receipt photo, manual or imported. With reminders, repeats, and attachments.",
+    },
+    debts: {
+      tag: "BOLSILLOS",
+      num: "NO. 6",
       manifesto: "— on the way out —",
       headline: "Your\n_debt-free_\ndate.",
       sub: "Avalanche or Snowball, you choose.",
     },
     pace: {
       tag: "BOLSILLOS",
-      num: "NO. 6",
+      num: "NO. 7",
       manifesto: "— on the rhythm of the month —",
       headline: "Ahead\nor _behind_?",
       sub: "Your spending pace, no surprises.",
+      chip: "+ Wellness, Margin Finder, Net Worth, and 8 more",
     },
-    privacy: {
+    recap: {
       tag: "BOLSILLOS",
-      num: "NO. 7",
-      manifesto: "— on trust —",
-      headline: "Your money\n_lives_ on\nyour iPhone.",
-      sub: "No bank, no cloud, no shame.",
+      num: "NO. 8",
+      manifesto: "— on looking back —",
+      headline: "Your year,\n_told_\nbeautifully.",
+      sub: "Year Recap: eight animated cards plus one to share.",
     },
   },
 };
@@ -374,6 +392,26 @@ function Caption({ copy }: { copy: SlideCopy }) {
       >
         {copy.sub}
       </p>
+      {copy.chip && (
+        <div
+          style={{
+            marginTop: 0.04 * W,
+            paddingTop: 0.022 * W,
+            width: 0.45 * W,
+            marginLeft: "auto",
+            marginRight: "auto",
+            borderTop: `1px solid ${EDITORIAL.rule}`,
+            fontFamily: EDITORIAL.bodySerif,
+            fontStyle: "italic",
+            fontWeight: 400,
+            fontSize: 0.026 * W,
+            color: EDITORIAL.inkMuted,
+            letterSpacing: "0.02em",
+          }}
+        >
+          {copy.chip}
+        </div>
+      )}
     </div>
   );
 }
@@ -460,9 +498,10 @@ const SLIDE_KEYS: SlideKey[] = [
   "home",
   "dreams",
   "decisiones",
+  "capture",
   "debts",
   "pace",
-  "privacy",
+  "recap",
 ];
 
 export default function ScreenshotsPage() {
@@ -586,7 +625,7 @@ export default function ScreenshotsPage() {
             fontSize: 12,
           }}
         >
-          {exporting ? "Exporting…" : "Export 7 × 4 sizes"}
+          {exporting ? "Exporting…" : "Export 8 × 4 sizes"}
         </button>
         <span
           style={{
