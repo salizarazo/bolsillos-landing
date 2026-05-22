@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrusel Top 5 Razones — Bolsillos · 6 slides 1080×1350</title>
+  <meta name="color-scheme" content="light">
+  <!--
+  ─────────────────────────────────────────────────────────────────
+  DESIGN.md spec v1 (Google Labs format) — Bolsillos Editorial
+  ─────────────────────────────────────────────────────────────────
+  design_version: 1
+  mode: light
+  surface: instagram_carousel_4x5
+  canvas: { w: 1080, h: 1350 }
+  approach: pure_typography_no_phones
+    # Las PNGs del editorial deck (1320×2868) no croppean limpio a 4:5.
+    # Decision: carrusel 100% tipográfico, cohesivo con cover slide.
+    # Las pruebas visuales de la app viven en el carrusel de Lanzamiento,
+    # IG Stories y App Store screenshots.
+
+  tokens:
+    color:
+      bg:        { value: "#F2EBDB", role: "surface" }
+      ink:       { value: "#1F1612", role: "text_primary" }
+      ink_muted: { value: "#5A4738", role: "text_secondary" }
+      burgundy:  { value: "#A8442D", role: "accent_italic" }
+      rule:      { value: "rgba(31,22,18,0.18)", role: "separator" }
+    type:
+      tagbar:    { family: "Inter",            weight: 600, size: 26,  letter_spacing_em:  0.180, transform: "uppercase" }
+      manifesto: { family: "Source Serif 4",   style: italic,  size: 30,  letter_spacing_em:  0.010 }
+      headline_cover: { family: "DM Serif Display", weight: 400, size: 124, line_height: 1.00, letter_spacing_em: -0.015 }
+      headline_razon: { family: "DM Serif Display", weight: 400, size: 110, line_height: 1.05, letter_spacing_em: -0.015 }
+      sym:       { family: "Source Serif 4",   style: italic,  size: 54,  opacity: 0.6 }
+      sub:       { family: "Source Serif 4",   style: italic,  size: 37,  line_height: 1.40, max_width: 810 }
+      chip:      { family: "Source Serif 4",   style: italic,  size: 28,  letter_spacing_em: 0.020 }
+      cta_line1: { family: "DM Serif Display", style: italic,  size: 42 }
+      cta_line2: { family: "Inter",            weight: 400, size: 26,  letter_spacing_em:  0.050 }
+
+  wcag_audit:
+    ink_on_bg:        { ratio: 14.9, AA: pass, AAA: pass }
+    ink_muted_on_bg:  { ratio:  6.7, AA: pass, AAA: pass_large_only }
+    burgundy_on_bg:   { ratio:  4.8, AA: pass, AAA: pass_large_only }
+    # Regla: burgundy SOLO en headline (110-124px) o CTA italic (42px). Nunca body text.
+
+  rationale:
+    - "Cream BG #F2EBDB reduce fatiga visual vs blanco en feed IG."
+    - "DM Serif Display + italic burgundy = inversión de categoría: presupuesto literario, no spreadsheet."
+    - "Cover usa headline 124px (manifesto). Razones 2-6 usan 110px (acomoda 3-line headlines)."
+    - "Cohesión visual total: 6 slides con la misma arquitectura tipográfica."
+  ─────────────────────────────────────────────────────────────────
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Serif+4:ital,wght@0,400;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --bg:           #F2EBDB;
+      --ink:          #1F1612;
+      --ink-muted:    #5A4738;
+      --burgundy:     #A8442D;
+      --rule:         rgba(31,22,18,0.18);
+
+      --slide-w:      1080px;
+      --slide-h:      1350px;
+
+      --font-serif:   'DM Serif Display', 'Playfair Display', Georgia, serif;
+      --font-body:    'Source Serif 4', 'Source Serif Pro', 'Lora', Georgia, serif;
+      --font-sans:    'Inter', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: #161310;
+      font-family: var(--font-body);
+      color: #E5DCC8;
+    }
+
+    body {
+      padding: 48px 24px 96px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 56px;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      text-align: center;
+      max-width: 760px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(229,220,200,0.15);
+    }
+    .page-header h1 {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      color: #F2EBDB;
+      margin-bottom: 8px;
+    }
+    .page-header p  {
+      font-size: 14px;
+      color: #B8AC93;
+      line-height: 1.6;
+    }
+    .page-header code {
+      background: rgba(255,255,255,0.06);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    /* ── Slide wrapper ── */
+    .slide-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .slide-label {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: #B8AC93;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .slide {
+      width: var(--slide-w);
+      height: var(--slide-h);
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+    .slide-wrap > .slide {
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    body.exporting .slide-wrap > .slide {
+      box-shadow: none !important;
+    }
+
+    /* ────────────────────────────────────────────────────────────
+       Editorial composition — shared by ALL 6 slides
+       ──────────────────────────────────────────────────────────── */
+    .editorial { position: relative; }
+
+    .editorial .tagbar {
+      position: absolute;
+      top: 100px;
+      left: 92px;
+      right: 92px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 26px;
+      color: var(--ink);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .editorial .manifesto {
+      position: absolute;
+      top: 270px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 30px;
+      color: var(--ink-muted);
+      letter-spacing: 0.01em;
+    }
+
+    .editorial .headline {
+      position: absolute;
+      top: 380px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: var(--font-serif);
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: -0.015em;
+    }
+    .editorial .headline .italic-burgundy {
+      font-style: italic;
+      color: var(--burgundy);
+    }
+
+    .editorial.cover .headline {
+      font-size: 124px;
+      line-height: 1.0;
+    }
+    .editorial.razon .headline {
+      font-size: 110px;
+      line-height: 1.05;
+    }
+
+    .editorial .section-sym {
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 54px;
+      color: var(--ink);
+      opacity: 0.6;
+    }
+    /* § position varies by headline line count */
+    .editorial.cover .section-sym { top: 720px; }
+    .editorial.razon.h2 .section-sym { top: 740px; }   /* 2-line headline */
+    .editorial.razon.h3 .section-sym { top: 870px; }   /* 3-line headline */
+
+    .editorial .sub {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 810px;
+      text-align: center;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 37px;
+      color: var(--ink-muted);
+      line-height: 1.4;
+    }
+    .editorial.cover .sub { top: 830px; }
+    .editorial.razon.h2 .sub { top: 850px; }
+    .editorial.razon.h3 .sub { top: 980px; }
+
+    /* Slide 4 (pace) — chip extra debajo del sub */
+    .editorial .chip {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 180px;
+      padding-top: 32px;
+      width: 640px;
+      text-align: center;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 28px;
+      color: var(--ink-muted);
+      letter-spacing: 0.02em;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* Slide 1 (cover) signature */
+    .editorial .signature {
+      position: absolute;
+      bottom: 100px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: 18px;
+      color: var(--ink-muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+
+    /* Slide 6 (dreams) — CTA box at bottom */
+    .editorial .cta {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 56px 92px 72px;
+      text-align: center;
+      border-top: 1px solid var(--rule);
+    }
+    .editorial .cta-line1 {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 46px;
+      color: var(--ink);
+    }
+    .editorial .cta-line2 {
+      margin-top: 14px;
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: 26px;
+      color: var(--ink-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Export buttons ── */
+    .export-btn {
+      font-family: var(--font-sans);
+      background: #A8442D;
+      color: #F2EBDB;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 10px 22px;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      transition: transform 120ms;
+    }
+    .export-btn:hover { transform: translateY(-1px); }
+    .export-btn:disabled { background: #5A4738; color: #B8AC93; cursor: not-allowed; }
+
+    #export-all {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 9999;
+    }
+
+    /* ── Playwright snippet block ── */
+    .pw-block {
+      max-width: 760px;
+      width: 100%;
+      background: #1F1B18;
+      border: 1px solid rgba(229,220,200,0.12);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-top: 32px;
+    }
+    .pw-block h2 {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: #F2EBDB;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 12px;
+    }
+    .pw-block pre {
+      font-family: 'Menlo', 'Monaco', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #D6CCB6;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .pw-block code { color: #99F6E4; }
+
+    @media print {
+      body { background: white; padding: 0; gap: 0; }
+      .page-header, .pw-block, .export-btn, .slide-label, #export-all { display: none; }
+      .slide-wrap { gap: 0; page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+  <button id="export-all" class="export-btn" onclick="exportAll()">Export all 6 PNGs</button>
+
+  <header class="page-header">
+    <h1>Carrusel Top 5 Razones — "El dinero no desaparece"</h1>
+    <p>
+      6 slides Instagram 4:5 (1080×1350). Composición 100% tipográfica (sin iPhones) para máxima cohesión.<br>
+      IDs estables <code>#slide-1</code>..<code>#slide-6</code> para Playwright. Snippet abajo. ↓
+    </p>
+  </header>
+
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 1 — Cover · NÚM. 0                                     -->
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <div class="slide-wrap">
+    <div class="slide-label">Slide 1 — Cover · NÚM. 0</div>
+    <div id="slide-1" class="slide editorial cover" role="img"
+         aria-label="Cover — Manifiesto en cinco actos. El dinero no desaparece, se va donde no lo pusiste.">
+      <div class="tagbar"><span>BOLSILLOS</span><span>NÚM. 0</span></div>
+      <div class="manifesto">— un manifiesto en cinco actos —</div>
+      <div class="headline">
+        El dinero no<br>
+        <span class="italic-burgundy">desaparece</span>.
+      </div>
+      <div class="section-sym">§</div>
+      <div class="sub">
+        Se va donde no lo pusiste.<br>
+        Cinco cosas que cambian cuando<br>
+        cada peso tiene un trabajo.
+      </div>
+      <div class="signature">@bolsillos.app</div>
+    </div>
+    <button class="export-btn" onclick="exportOne('slide-1')">Export PNG</button>
+  </div>
+
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 2 — NÚM. 2 (home)                                      -->
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <div class="slide-wrap">
+    <div class="slide-label">Slide 2 — NÚM. 2 · Cada peso ya tiene un trabajo</div>
+    <div id="slide-2" class="slide editorial razon h3" role="img"
+         aria-label="NÚM. 2: Cada peso ya tiene un trabajo. Presupuesto base cero para freelancers e independientes.">
+      <div class="tagbar"><span>BOLSILLOS</span><span>NÚM. 2</span></div>
+      <div class="manifesto">— un manifiesto en miniatura —</div>
+      <div class="headline">
+        Cada peso<br>
+        <span class="italic-burgundy">ya tiene</span><br>
+        un trabajo.
+      </div>
+      <div class="section-sym">§</div>
+      <div class="sub">
+        Presupuesto base cero,<br>
+        para freelancers e independientes.
+      </div>
+    </div>
+    <button class="export-btn" onclick="exportOne('slide-2')">Export PNG</button>
+  </div>
+
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 3 — NÚM. 1 (bolsillos)                                 -->
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <div class="slide-wrap">
+    <div class="slide-label">Slide 3 — NÚM. 1 · Sin culpa, sin pánico</div>
+    <div id="slide-3" class="slide editorial razon h2" role="img"
+         aria-label="NÚM. 1: Sin culpa, sin pánico. Cada gasto en su bolsillo, sin chatbot ni venta de datos.">
+      <div class="tagbar"><span>BOLSILLOS</span><span>NÚM. 1</span></div>
+      <div class="manifesto">— sobre vivir sin culpa —</div>
+      <div class="headline">
+        Sin culpa.<br>
+        Sin <span class="italic-burgundy">pánico</span>.
+      </div>
+      <div class="section-sym">§</div>
+      <div class="sub">
+        Cada gasto en su bolsillo.<br>
+        Sin chatbot, sin venta de datos.
+      </div>
+    </div>
+    <button class="export-btn" onclick="exportOne('slide-3')">Export PNG</button>
+  </div>
+
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 4 — NÚM. 7 (pace) — incluye chip                       -->
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <div class="slide-wrap">
+    <div class="slide-label">Slide 4 — NÚM. 7 · ¿Adelantado o atrasado?</div>
+    <div id="slide-4" class="slide editorial razon h2" role="img"
+         aria-label="NÚM. 7: ¿Adelantado o atrasado? Tu ritmo de gasto sin sorpresas. Más bienestar, margen, patrimonio y 8 reportes más.">
+      <div class="tagbar"><span>BOLSILLOS</span><span>NÚM. 7</span></div>
+      <div class="manifesto">— sobre el ritmo del mes —</div>
+      <div class="headline">
+        ¿Adelantado<br>
+        o <span class="italic-burgundy">atrasado</span>?
+      </div>
+      <div class="section-sym">§</div>
+      <div class="sub">
+        Tu ritmo de gasto, sin sorpresas.
+      </div>
+      <div class="chip">
+        + Bienestar, Margen, Patrimonio<br>y 8 reportes más
+      </div>
+    </div>
+    <button class="export-btn" onclick="exportOne('slide-4')">Export PNG</button>
+  </div>
+
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 5 — NÚM. 6 (debts) — clímax PAS                        -->
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <div class="slide-wrap">
+    <div class="slide-label">Slide 5 — NÚM. 6 · Tu fecha libre de deudas · clímax PAS</div>
+    <div id="slide-5" class="slide editorial razon h3" role="img"
+         aria-label="NÚM. 6: Tu fecha libre de deudas. Avalancha o Bola de Nieve, tú decides.">
+      <div class="tagbar"><span>BOLSILLOS</span><span>NÚM. 6</span></div>
+      <div class="manifesto">— sobre la salida —</div>
+      <div class="headline">
+        Tu fecha<br>
+        <span class="italic-burgundy">libre</span> de<br>
+        deudas.
+      </div>
+      <div class="section-sym">§</div>
+      <div class="sub">
+        Avalancha o Bola de Nieve,<br>
+        tú decides.
+      </div>
+    </div>
+    <button class="export-btn" onclick="exportOne('slide-5')">Export PNG</button>
+  </div>
+
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 6 — NÚM. 3 (dreams) + CTA                              -->
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <div class="slide-wrap">
+    <div class="slide-label">Slide 6 — NÚM. 3 · Tu viaje pagado, tu maestría lista · CTA</div>
+    <div id="slide-6" class="slide editorial razon h2" role="img"
+         aria-label="NÚM. 3: Tu viaje pagado, tu maestría lista. 50 metas con Dream Board. Bolsillos en App Store, @bolsillos.app">
+      <div class="tagbar"><span>BOLSILLOS</span><span>NÚM. 3</span></div>
+      <div class="manifesto">— sobre lo posible —</div>
+      <div class="headline">
+        Tu viaje, <span class="italic-burgundy">pagado</span>.<br>
+        Tu maestría, <span class="italic-burgundy">lista</span>.
+      </div>
+      <div class="section-sym">§</div>
+      <div class="sub">
+        50+ metas con Dream Board.
+      </div>
+      <div class="cta">
+        <div class="cta-line1">Bolsillos en App Store.</div>
+        <div class="cta-line2">@bolsillos.app</div>
+      </div>
+    </div>
+    <button class="export-btn" onclick="exportOne('slide-6')">Export PNG</button>
+  </div>
+
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <!-- Playwright snippet                                           -->
+  <!-- ──────────────────────────────────────────────────────────── -->
+  <div class="pw-block">
+    <h2>Playwright export (pixel-perfect 1080×1350)</h2>
+<pre>
+<span style="color:#B8AC93"># Setup una sola vez:</span>
+<span style="color:#99F6E4">cd bolsillos-landing/screenshots
+npm install --save-dev playwright
+npx playwright install chromium</span>
+
+<span style="color:#B8AC93"># Run:</span>
+<span style="color:#99F6E4">node carrusel-top5/export.mjs</span>
+
+<span style="color:#B8AC93"># Output:</span>
+<span style="color:#D6CCB6">bolsillos-landing/screenshots/carrusel-top5/exports/
+  ├── top5-slide-1.png
+  ├── top5-slide-2.png
+  ├── top5-slide-3.png
+  ├── top5-slide-4.png
+  ├── top5-slide-5.png
+  └── top5-slide-6.png</span>
+</pre>
+  </div>
+
+  <script>
+    async function exportOne(slideId) {
+      const node = document.getElementById(slideId);
+      if (!node) return;
+      const btns = document.querySelectorAll('.export-btn');
+      btns.forEach(b => b.disabled = true);
+      document.body.classList.add('exporting');
+
+      try {
+        await document.fonts.ready;
+
+        const canvas = await html2canvas(node, {
+          width: 1080,
+          height: 1350,
+          windowWidth: 1080,
+          windowHeight: 1350,
+          scale: 1,
+          backgroundColor: '#F2EBDB',
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+        });
+
+        const out = document.createElement('canvas');
+        out.width = 1080;
+        out.height = 1350;
+        const ctx = out.getContext('2d');
+        ctx.drawImage(canvas, 0, 0, 1080, 1350);
+
+        const link = document.createElement('a');
+        link.download = 'top5-' + slideId + '.png';
+        link.href = out.toDataURL('image/png');
+        link.click();
+      } catch (err) {
+        alert('Export falló: ' + err.message + '\n\nUsa Playwright:\n  node carrusel-top5/export.mjs');
+        console.error(err);
+      } finally {
+        document.body.classList.remove('exporting');
+        btns.forEach(b => b.disabled = false);
+      }
+    }
+
+    async function exportAll() {
+      for (let i = 1; i <= 6; i++) {
+        await exportOne('slide-' + i);
+        await new Promise(r => setTimeout(r, 500));
+      }
+    }
+  </script>
+
+</body>
+</html>
