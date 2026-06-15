@@ -6,6 +6,9 @@
   <title>Bolsillos &mdash; Organize your money | Personal finance app from Colombia</title>
   <meta name="description" content="The personal finance app for freelancers and independent workers. Organize your money into envelopes, log expenses with your voice. No spreadsheets.">
 
+  <!-- Smart App Banner — prompts iOS Safari visitors to get the app from the App Store -->
+  <meta name="apple-itunes-app" content="app-id=6760193935">
+
   <!-- Open Graph -->
   <meta property="og:title" content="Bolsillos &mdash; Organize your money">
   <meta property="og:description" content="The personal finance app for freelancers and independent workers. Organize your money into envelopes, log expenses with your voice. No spreadsheets.">
@@ -261,6 +264,21 @@
       transition: background 0.2s, color 0.2s;
     }
     .btn-appstore-soon:hover { background: #DCDCD8; color: var(--azul-oscuro); }
+    /* Official "Download on the App Store" badge — used "as is", unmodified,
+       per Apple Marketing Resources & Identity Guidelines. */
+    .btn-appstore-badge {
+      display: inline-flex;
+      align-items: center;
+      transition: opacity 0.2s;
+    }
+    .btn-appstore-badge:hover { opacity: 0.85; }
+    .btn-appstore-badge img { display: block; height: 52px; width: auto; }
+    .footer-legal {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--texto-hint);
+      opacity: 0.85;
+    }
     .launch-note {
       width: 100%;
       font-size: 13px;
@@ -921,9 +939,11 @@
     <h1><span id="hero-rotate">Organize your money</span></h1>
     <p class="subtitle">It&rsquo;s not a bank&rsquo;s pocket feature. It&rsquo;s a method for freelancers and independent workers to organize all their money &mdash;across banks, cash, and dollars&mdash; before spending it.</p>
     <div class="hero-ctas">
-      <a href="#ios" class="btn-appstore-soon">Coming Soon on the App Store &rarr;</a>
-      <a href="#android" class="btn-android">Coming Soon on Android &rarr;</a>
-      <p class="launch-note">Founder beta closed &middot; Launching soon on iOS</p>
+      <a href="https://apps.apple.com/app/id6760193935" class="btn-appstore-badge" target="_blank" rel="noopener" aria-label="Download Bolsillos on the App Store">
+        <img src="../appstore/download-on-app-store-en.svg" alt="Download on the App Store" width="156" height="52">
+      </a>
+      <a href="#android" class="btn-android">Coming soon on Android &rarr;</a>
+      <p class="launch-note">Now on the App Store &middot; Android coming soon</p>
     </div>
     <div class="screenshots">
       <img src="../images/screenshot-budget.png" alt="Budget in Bolsillos" class="screenshot-card side left" loading="eager">
@@ -1195,10 +1215,15 @@
 
     <hr class="cta-divider">
 
-    <!-- iOS waitlist -->
-    <div id="ios" class="sender-embed-wrapper" style="max-width: 520px; margin: 32px auto 24px;">
-      <div style="text-align: left" class="sender-form-field" data-sender-form-id="egJqW9"></div>
+    <!-- iOS — live on the App Store -->
+    <div id="ios" style="margin: 32px auto 24px;">
+      <a href="https://apps.apple.com/app/id6760193935" class="btn-appstore-badge" target="_blank" rel="noopener" aria-label="Download Bolsillos on the App Store">
+        <img src="../appstore/download-on-app-store-en.svg" alt="Download on the App Store" width="180" height="60" style="height:60px;">
+      </a>
     </div>
+
+    <h3>Android (coming soon)</h3>
+    <p class="android-sub">Leave your email and we'll let you know the moment it's out.</p>
 
     <!-- Android waitlist -->
     <div id="android" class="sender-embed-wrapper" style="max-width: 520px; margin: 0 auto;">
@@ -1223,7 +1248,7 @@
           <ul>
             <li><a href="#features">Features</a></li>
             <li><a href="#pricing">Pricing</a></li>
-            <li><span style="color:var(--texto-hint)">iOS (coming soon)</span></li>
+            <li><a href="https://apps.apple.com/app/id6760193935" target="_blank" rel="noopener">iOS &mdash; App Store</a></li>
             <li><a href="#android">Android (coming soon)</a></li>
           </ul>
         </div>
@@ -1244,6 +1269,7 @@
         </div>
       </div>
       <p class="footer-copy">&copy; 2026 Bolsillos &middot; Made with &#x1F49A; in Colombia</p>
+      <p class="footer-legal">Apple, the Apple logo, and App Store are trademarks of Apple Inc. App Store is a service mark of Apple Inc.</p>
     </div>
   </footer>
 
