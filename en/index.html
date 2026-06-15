@@ -300,6 +300,39 @@
       text-align: center;
       user-select: none;
     }
+    .btn-appstore-card { display: flex; justify-content: center; width: 100%; margin-top: 4px; }
+
+    /* Launch cohort offers (Founder / Pioneer) */
+    .cohort-offers { max-width: 700px; margin: 40px auto 0; text-align: center; }
+    .cohort-title {
+      font-family: 'Quicksand', sans-serif; font-weight: 700;
+      font-size: 20px; color: var(--azul-oscuro); margin-bottom: 4px;
+    }
+    .cohort-sub { font-size: 14px; color: var(--texto-hint); margin-bottom: 20px; }
+    .cohort-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .cohort-card {
+      background: var(--blanco); border: 2px dashed var(--azul);
+      border-radius: 16px; padding: 28px; text-align: center;
+    }
+    .cohort-badge {
+      display: inline-block; background: var(--verde-claro); color: var(--verde-oscuro);
+      font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 13px;
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+    }
+    .cohort-price {
+      font-family: 'Quicksand', sans-serif; font-weight: 700;
+      font-size: 28px; color: var(--texto); margin-bottom: 12px;
+    }
+    .cohort-price span {
+      font-size: 13px; font-weight: 500; color: var(--texto-hint);
+      display: block; margin-top: 2px;
+    }
+    .cohort-benefit { font-size: 14px; color: var(--texto); margin-bottom: 14px; line-height: 1.5; }
+    .cohort-remaining { font-size: 14px; color: var(--azul-oscuro); margin-bottom: 16px; }
+    .cohort-remaining strong {
+      font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 18px; color: var(--azul);
+    }
+    @media (max-width: 600px) { .cohort-grid { grid-template-columns: 1fr; } }
 
     /* Screenshot stack */
     .screenshots {
@@ -1088,7 +1121,9 @@
           <li>Goals</li>
           <li>Local backup</li>
         </ul>
-        <div class="btn-coming-soon">Coming Soon</div>
+        <a href="https://apps.apple.com/app/id6760193935" class="btn-appstore-badge btn-appstore-card" target="_blank" rel="noopener" aria-label="Download Bolsillos on the App Store">
+          <img src="../appstore/download-on-app-store-en.svg" alt="Download on the App Store" width="156" height="52">
+        </a>
       </div>
 
       <!-- Pro -->
@@ -1096,7 +1131,7 @@
         <div class="popular-badge">Popular</div>
         <h3>Pro</h3>
         <div class="pricing-price" id="pro-price">
-          $50/year
+          $49.99/year
           <span>~$4.17/month</span>
         </div>
         <ul class="pricing-features">
@@ -1110,10 +1145,43 @@
           <li>iCloud backup</li>
           <li>YNAB import</li>
         </ul>
-        <div class="btn-coming-soon">Coming Soon</div>
+        <a href="https://apps.apple.com/app/id6760193935" class="btn-appstore-badge btn-appstore-card" target="_blank" rel="noopener" aria-label="Download Bolsillos on the App Store">
+          <img src="../appstore/download-on-app-store-en.svg" alt="Download on the App Store" width="156" height="52">
+        </a>
         <p class="trial-text" id="pro-trial">3 months free with annual plan</p>
       </div>
 
+    </div>
+
+    <!-- Launch offers (live slots from Supabase) -->
+    <div class="cohort-offers" id="cohort-offers" hidden>
+      <h3 class="cohort-title">Launch offers</h3>
+      <p class="cohort-sub">For the first to believe in Bolsillos. Limited spots.</p>
+      <div class="cohort-grid">
+
+        <!-- Founder -->
+        <div class="cohort-card" data-cohort="founder" hidden>
+          <span class="cohort-badge">Founder</span>
+          <div class="cohort-price">$199.99<span>one-time &middot; Pro for life</span></div>
+          <p class="cohort-benefit">Bolsillos Pro forever + private channel with the creator.</p>
+          <p class="cohort-remaining"><strong data-remaining>&mdash;</strong> of <span data-cap>50</span> spots left</p>
+          <a href="https://apps.apple.com/app/id6760193935" class="btn-appstore-badge btn-appstore-card" target="_blank" rel="noopener" aria-label="Download Bolsillos on the App Store">
+            <img src="../appstore/download-on-app-store-en.svg" alt="Download on the App Store" width="156" height="52">
+          </a>
+        </div>
+
+        <!-- Pioneer -->
+        <div class="cohort-card" data-cohort="pioneer-2026" hidden>
+          <span class="cohort-badge">Pioneer</span>
+          <div class="cohort-price">$29.99<span>/year &middot; 40% for life</span></div>
+          <p class="cohort-benefit">40% off forever, as long as your subscription stays active.</p>
+          <p class="cohort-remaining"><strong data-remaining>&mdash;</strong> of <span data-cap>100</span> spots left</p>
+          <a href="https://apps.apple.com/app/id6760193935" class="btn-appstore-badge btn-appstore-card" target="_blank" rel="noopener" aria-label="Download Bolsillos on the App Store">
+            <img src="../appstore/download-on-app-store-en.svg" alt="Download on the App Store" width="156" height="52">
+          </a>
+        </div>
+
+      </div>
     </div>
   </section>
 
@@ -1328,16 +1396,44 @@
       btnMensual.addEventListener('click', function() {
         btnMensual.classList.add('active');
         btnAnual.classList.remove('active');
-        proPrice.innerHTML = '$5/month';
+        proPrice.innerHTML = '$4.99/month';
         proTrial.textContent = '15 days free';
       });
 
       btnAnual.addEventListener('click', function() {
         btnAnual.classList.add('active');
         btnMensual.classList.remove('active');
-        proPrice.innerHTML = '$50/year<span>~$4.17/month</span>';
+        proPrice.innerHTML = '$49.99/year<span>~$4.17/month</span>';
         proTrial.textContent = '3 months free with annual plan';
       });
+    })();
+
+    // --- Launch offers: live remaining slots ---
+    (function() {
+      var wrap = document.getElementById('cohort-offers');
+      if (!wrap || !window.fetch) return;
+      var url = 'https://nikexrzipcotlqsiomob.supabase.co/rest/v1/cohort_status?select=*';
+      // Anon key: RLS-protected, SELECT-only on the cohort_status view. Safe to ship client-side.
+      var key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pa2V4cnppcGNvdGxxc2lvbW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3ODg1NDAsImV4cCI6MjA4OTM2NDU0MH0.wUodUEEii1Oj1PBTHG_AhUpNq-L3uex2Ob7PZPpN350';
+      fetch(url, { headers: { apikey: key, Authorization: 'Bearer ' + key, Accept: 'application/json' } })
+        .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
+        .then(function(rows) {
+          if (!Array.isArray(rows)) return;
+          var shown = false;
+          rows.forEach(function(c) {
+            if (!c || typeof c.remaining !== 'number' || c.remaining <= 0) return;
+            var card = wrap.querySelector('.cohort-card[data-cohort="' + c.slug + '"]');
+            if (!card) return;
+            var rem = card.querySelector('[data-remaining]');
+            var cap = card.querySelector('[data-cap]');
+            if (rem) rem.textContent = c.remaining;
+            if (cap && typeof c.cap === 'number') cap.textContent = c.cap;
+            card.hidden = false;
+            shown = true;
+          });
+          if (shown) wrap.hidden = false;
+        })
+        .catch(function() { /* backend unreachable: offers stay hidden */ });
     })();
 
     // --- Hamburger menu ---
