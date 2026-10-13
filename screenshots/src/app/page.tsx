@@ -7,24 +7,26 @@ import { toPng } from "html-to-image";
 // CONSTANTS
 // =============================================================================
 
-const W = 1320;
-const H = 2868;
+// Devices. `stacked` = caption on top, device peeking from below (iPhone,
+// iPad portrait). `split` = caption in a left column, device on the right
+// (wide canvases: iPad landscape, Mac).
+const DEVICES = {
+  iphone: { label: "iPhone", w: 1320, h: 2868, layout: "stacked" },
+  ipad: { label: "iPad-13in", w: 2064, h: 2752, layout: "stacked" },
+  "ipad-landscape": { label: "iPad-13in-landscape", w: 2752, h: 2064, layout: "split" },
+  mac: { label: "Mac", w: 2880, h: 1800, layout: "split" },
+} as const;
+type DeviceKey = keyof typeof DEVICES;
+const DEVICE_KEYS = Object.keys(DEVICES) as DeviceKey[];
 
-// CSS-only iPhone frame (replaces external mockup.png).
-// Dimensions ported from Claude Design's Editorial slide — ratio 940/2030 ≈
-// 0.463 matches the real iPhone 17 Pro Max body. Bezel a uniform 14px.
+// CSS-only iPhone frame (ratio 940/2030 ≈ 0.463 = iPhone 17 Pro Max body).
 const PHONE_W = 940;
 const PHONE_H = 2030;
 const BEZEL = 14;
 const FRAME_RADIUS = 120;
 const SCREEN_RADIUS = FRAME_RADIUS - BEZEL; // 106
-// Constant gap between the caption's last line and the top of the iPhone.
-// The iPhone sits in flow (not absolute), so this gap is identical on every
-// slide regardless of how long the headline is. The slide's overflow:hidden
-// clips the iPhone's bottom naturally — slides with shorter captions show
-// more of the screen content, slides with longer captions show less.
-// Tuned ~slightly larger than slide 3's reference gap per user feedback.
-const PHONE_TOP_GAP_RATIO = 0.085; // 0.085 × W ≈ 112px at W=1320
+// Constant gap between the caption's last line and the top of the device.
+const PHONE_TOP_GAP_RATIO = 0.085; // × W
 const DI_W = 280;
 const DI_H = 60;
 const DI_TOP = 18;
@@ -66,6 +68,12 @@ type SlideCopy = {
   headline: string; // _word_ wrapped = italic burgundy
   sub: string;
   chip?: string; // optional pill rendered below sub (e.g. report breadcrumb)
+};
+
+// macOS has no receipt scan (ML Kit is iOS/Android only): same story without it.
+const MAC_CAPTURE_SUB: Record<Locale, string> = {
+  es: "Voz, manual o importado. Con recordatorios, repetición y adjuntos.",
+  en: "Voice, manual or imported. With reminders, repeats, and attachments.",
 };
 
 type SlideKey =
@@ -212,7 +220,6 @@ function renderHeadline(headline: string) {
       <span key={lineIdx} style={{ display: "block" }}>
         {parts.map((part, partIdx) => {
           if (part.startsWith("_") && part.endsWith("_")) {
-            const inner = part.slice(1, -1);
             return (
               <em
                 key={partIdx}
@@ -222,7 +229,7 @@ function renderHeadline(headline: string) {
                   fontFamily: EDITORIAL.serif,
                 }}
               >
-                {inner}
+                {part.slice(1, -1)}
               </em>
             );
           }
@@ -234,19 +241,24 @@ function renderHeadline(headline: string) {
 }
 
 // =============================================================================
-// COMPONENTS
+// DEVICE FRAMES
 // =============================================================================
 
-function IPhoneFrame({
-  src,
-  alt,
-}: {
-  src: string;
-  alt: string;
-}) {
-  // Pure-CSS iPhone frame in flow layout. The slide's overflow:hidden
-  // clips the bottom of the frame naturally — that "asoma desde abajo"
-  // effect is preserved without per-slide tuning.
+const SHADOW =
+  "0 60px 120px rgba(0,0,0,0.28), inset 0 0 0 1.5px rgba(255,255,255,0.08)";
+
+function Img({ src, alt, fit = "cover" }: { src: string; alt: string; fit?: "cover" | "contain" }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt={alt}
+      style={{ width: "100%", height: "100%", objectFit: fit, objectPosition: "top", display: "block" }}
+    />
+  );
+}
+
+function IPhoneFrame({ src, alt }: { src: string; alt: string }) {
   return (
     <div
       style={{
@@ -257,8 +269,7 @@ function IPhoneFrame({
         borderRadius: FRAME_RADIUS,
         background: "#2B1D17",
         padding: BEZEL,
-        boxShadow:
-          "0 60px 120px rgba(0,0,0,0.28), inset 0 0 0 1.5px rgba(255,255,255,0.08)",
+        boxShadow: SHADOW,
       }}
     >
       <div
@@ -271,7 +282,6 @@ function IPhoneFrame({
           background: "#FAF6EE",
         }}
       >
-        {/* Dynamic Island — absolute, on top of everything */}
         <div
           style={{
             position: "absolute",
@@ -285,24 +295,119 @@ function IPhoneFrame({
             zIndex: 4,
           }}
         />
-        {/* Real screenshot — captures already include iPhone status bar */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          alt={alt}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "top",
-          }}
-        />
+        <Img src={src} alt={alt} />
       </div>
     </div>
   );
 }
 
-function TagBar({ copy }: { copy: SlideCopy }) {
+// iPad: uniform bezel, no notch; a tiny camera dot on the top edge.
+function TabletFrame({
+  src,
+  alt,
+  width,
+  aspect,
+}: {
+  src: string;
+  alt: string;
+  width: number; // outer width in canvas px
+  aspect: number; // screen width / height
+}) {
+  const bezel = Math.round(width * 0.02);
+  const screenW = width - bezel * 2;
+  const screenH = Math.round(screenW / aspect);
+  const radius = Math.round(width * 0.045);
+  return (
+    <div
+      style={{
+        width,
+        height: screenH + bezel * 2,
+        borderRadius: radius,
+        background: "#2B1D17",
+        padding: bezel,
+        boxShadow: SHADOW,
+        position: "relative",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          borderRadius: radius - bezel,
+          overflow: "hidden",
+          background: "#FAF6EE",
+        }}
+      >
+        <Img src={src} alt={alt} />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: bezel / 2 - 5,
+          left: "50%",
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          background: "#0a0a0a",
+          transform: "translateX(-50%)",
+        }}
+      />
+    </div>
+  );
+}
+
+// Mac: the capture is the app window itself (traffic lights included), so it
+// is shown as a floating window with a soft shadow, not inside a laptop body.
+function MacWindowFrame({ src, alt, width }: { src: string; alt: string; width: number }) {
+  const height = Math.round((width * 900) / 1440);
+  return (
+    <div
+      style={{
+        width,
+        height,
+        borderRadius: Math.round(width * 0.0075),
+        overflow: "hidden",
+        boxShadow:
+          "0 70px 140px rgba(0,0,0,0.30), 0 0 0 1px rgba(31,22,18,0.14)",
+        background: "#fff",
+      }}
+    >
+      {/* −0.25 % per side drops the window-corner pixels of the capture */}
+      <div style={{ width: "100.5%", height: "100.5%", margin: "-0.25%" }}>
+        <Img src={src} alt={alt} />
+      </div>
+    </div>
+  );
+}
+
+function DeviceFrame({
+  device,
+  src,
+  alt,
+  width,
+}: {
+  device: DeviceKey;
+  src: string;
+  alt: string;
+  width: number;
+}) {
+  if (device === "iphone") return <IPhoneFrame src={src} alt={alt} />;
+  if (device === "mac") return <MacWindowFrame src={src} alt={alt} width={width} />;
+  return (
+    <TabletFrame
+      src={src}
+      alt={alt}
+      width={width}
+      aspect={device === "ipad" ? 2064 / 2752 : 2752 / 2064}
+    />
+  );
+}
+
+// =============================================================================
+// COMPONENTS
+// =============================================================================
+
+function TagBar({ copy, w, h, split }: { copy: SlideCopy; w: number; h: number; split: boolean }) {
   return (
     <div
       style={{
@@ -310,10 +415,10 @@ function TagBar({ copy }: { copy: SlideCopy }) {
         justifyContent: "space-between",
         alignItems: "center",
         width: "100%",
-        padding: `0 ${0.085 * W}px`,
-        marginTop: 0.06 * H,
+        padding: split ? 0 : `0 ${0.085 * w}px`,
+        marginTop: split ? 0 : 0.06 * h,
         fontFamily: EDITORIAL.sans,
-        fontSize: 0.024 * W,
+        fontSize: (split ? 0.0105 : 0.024) * w,
         fontWeight: 600,
         letterSpacing: "0.18em",
         color: EDITORIAL.ink,
@@ -326,13 +431,25 @@ function TagBar({ copy }: { copy: SlideCopy }) {
   );
 }
 
-function Caption({ copy }: { copy: SlideCopy }) {
+function Caption({
+  copy,
+  w,
+  split,
+}: {
+  copy: SlideCopy;
+  w: number;
+  split: boolean;
+}) {
+  // Stacked canvases keep the iPhone proportions (× W). Split canvases use
+  // smaller type and left-aligned text so a 3-line headline fits its column.
+  const k = split ? 0.45 : 1;
+  const align = split ? "left" : "center";
   return (
     <div
       style={{
-        textAlign: "center",
+        textAlign: align,
         color: EDITORIAL.ink,
-        padding: `${0.04 * W}px ${0.085 * W}px 0`,
+        padding: split ? 0 : `${0.04 * w}px ${0.085 * w}px 0`,
         width: "100%",
       }}
     >
@@ -341,11 +458,11 @@ function Caption({ copy }: { copy: SlideCopy }) {
           fontFamily: EDITORIAL.bodySerif,
           fontStyle: "italic",
           fontWeight: 400,
-          fontSize: 0.028 * W,
+          fontSize: 0.028 * w * k,
           color: EDITORIAL.inkMuted,
           letterSpacing: "0.01em",
           margin: 0,
-          marginBottom: 0.04 * W,
+          marginBottom: 0.04 * w * k,
         }}
       >
         {copy.manifesto}
@@ -354,7 +471,7 @@ function Caption({ copy }: { copy: SlideCopy }) {
         style={{
           fontFamily: EDITORIAL.serif,
           fontWeight: 400,
-          fontSize: 0.115 * W,
+          fontSize: 0.115 * w * k,
           lineHeight: 1.0,
           letterSpacing: "-0.015em",
           color: EDITORIAL.ink,
@@ -367,10 +484,10 @@ function Caption({ copy }: { copy: SlideCopy }) {
         style={{
           fontFamily: EDITORIAL.serif,
           fontStyle: "italic",
-          fontSize: 0.05 * W,
+          fontSize: 0.05 * w * k,
           color: EDITORIAL.ink,
-          marginTop: 0.04 * W,
-          marginBottom: 0.025 * W,
+          marginTop: 0.04 * w * k,
+          marginBottom: 0.025 * w * k,
           opacity: 0.6,
         }}
       >
@@ -381,13 +498,13 @@ function Caption({ copy }: { copy: SlideCopy }) {
           fontFamily: EDITORIAL.bodySerif,
           fontStyle: "italic",
           fontWeight: 400,
-          fontSize: 0.034 * W,
+          fontSize: 0.034 * w * k,
           lineHeight: 1.4,
           color: EDITORIAL.inkMuted,
           margin: 0,
-          maxWidth: 0.75 * W,
-          marginLeft: "auto",
-          marginRight: "auto",
+          maxWidth: split ? undefined : 0.75 * w,
+          marginLeft: split ? 0 : "auto",
+          marginRight: split ? 0 : "auto",
         }}
       >
         {copy.sub}
@@ -395,16 +512,16 @@ function Caption({ copy }: { copy: SlideCopy }) {
       {copy.chip && (
         <div
           style={{
-            marginTop: 0.04 * W,
-            paddingTop: 0.022 * W,
-            width: 0.45 * W,
-            marginLeft: "auto",
-            marginRight: "auto",
+            marginTop: 0.04 * w * k,
+            paddingTop: 0.022 * w * k,
+            width: split ? "80%" : 0.45 * w,
+            marginLeft: split ? 0 : "auto",
+            marginRight: split ? 0 : "auto",
             borderTop: `1px solid ${EDITORIAL.rule}`,
             fontFamily: EDITORIAL.bodySerif,
             fontStyle: "italic",
             fontWeight: 400,
-            fontSize: 0.026 * W,
+            fontSize: 0.026 * w * k,
             color: EDITORIAL.inkMuted,
             letterSpacing: "0.02em",
           }}
@@ -416,35 +533,83 @@ function Caption({ copy }: { copy: SlideCopy }) {
   );
 }
 
+function copyFor(device: DeviceKey, locale: Locale, key: SlideKey): SlideCopy {
+  const base = COPY[locale][key];
+  if (device === "mac" && key === "capture") {
+    return { ...base, sub: MAC_CAPTURE_SUB[locale] };
+  }
+  return base;
+}
+
 function Slide({
   slideKey,
   locale,
+  device,
   exportRef,
 }: {
   slideKey: SlideKey;
   locale: Locale;
+  device: DeviceKey;
   exportRef?: (el: HTMLDivElement | null) => void;
 }) {
-  const copy = COPY[locale][slideKey];
-  const screenshotPath = `/screenshots/apple/iphone/${locale}/${slideKey}.png`;
+  const { w, h, layout } = DEVICES[device];
+  const copy = copyFor(device, locale, slideKey);
+  const dir = device === "iphone" ? "iphone" : device;
+  const src = `/screenshots/apple/${dir}/${locale}/${slideKey}.png`;
+  const split = layout === "split";
+  const frame = {
+    position: "relative" as const,
+    width: w,
+    height: h,
+    background: EDITORIAL.bgSubtle,
+    overflow: "hidden" as const,
+  };
 
-  return (
-    <div
-      ref={exportRef}
-      style={{
-        width: W,
-        height: H,
-        background: EDITORIAL.bgSubtle,
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <TagBar copy={copy} />
-      <div style={{ marginTop: 0.025 * H }}>
-        <Caption copy={copy} />
+  if (split) {
+    const devW = Math.round(w * 0.6);
+    const devH =
+      device === "mac" ? (devW * 900) / 1440 : (devW * 2064) / 2752;
+    return (
+      <div ref={exportRef} style={frame}>
+        <div
+          style={{
+            position: "absolute",
+            left: 0.05 * w,
+            top: 0,
+            height: h,
+            width: 0.31 * w,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <TagBar copy={copy} w={w} h={h} split />
+          <div style={{ marginTop: 0.05 * h }}>
+            <Caption copy={copy} w={w} split />
+          </div>
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: 0.375 * w,
+            top: (h - devH) / 2,
+          }}
+        >
+          <DeviceFrame device={device} src={src} alt={slideKey} width={devW} />
+        </div>
       </div>
-      <div style={{ marginTop: PHONE_TOP_GAP_RATIO * W }}>
-        <IPhoneFrame src={screenshotPath} alt={slideKey} />
+    );
+  }
+
+  const devW = device === "iphone" ? PHONE_W : Math.round(w * 0.82);
+  return (
+    <div ref={exportRef} style={frame}>
+      <TagBar copy={copy} w={w} h={h} split={false} />
+      <div style={{ marginTop: 0.025 * h }}>
+        <Caption copy={copy} w={w} split={false} />
+      </div>
+      <div style={{ marginTop: PHONE_TOP_GAP_RATIO * w, display: "flex", justifyContent: "center" }}>
+        <DeviceFrame device={device} src={src} alt={slideKey} width={devW} />
       </div>
     </div>
   );
@@ -457,17 +622,20 @@ function Slide({
 function Preview({
   slideKey,
   locale,
-  scale = 0.18,
+  device,
+  scale,
 }: {
   slideKey: SlideKey;
   locale: Locale;
-  scale?: number;
+  device: DeviceKey;
+  scale: number;
 }) {
+  const { w, h } = DEVICES[device];
   return (
     <div
       style={{
-        width: W * scale,
-        height: H * scale,
+        width: w * scale,
+        height: h * scale,
         overflow: "hidden",
         position: "relative",
         boxShadow: "0 4px 18px rgba(0,0,0,0.12)",
@@ -477,13 +645,13 @@ function Preview({
     >
       <div
         style={{
-          width: W,
-          height: H,
+          width: w,
+          height: h,
           transform: `scale(${scale})`,
           transformOrigin: "top left",
         }}
       >
-        <Slide slideKey={slideKey} locale={locale} />
+        <Slide slideKey={slideKey} locale={locale} device={device} />
       </div>
     </div>
   );
@@ -506,9 +674,17 @@ const SLIDE_KEYS: SlideKey[] = [
 
 export default function ScreenshotsPage() {
   const [locale, setLocale] = useState<Locale>("es");
+  const [device, setDevice] = useState<DeviceKey>("iphone");
   const [exporting, setExporting] = useState(false);
 
   const exportRefs = useRef<Map<SlideKey, HTMLDivElement | null>>(new Map());
+  const { w, h, label } = DEVICES[device];
+
+  // iPhone exports the 4 store sizes; iPad / Mac export their native size.
+  const sizes =
+    device === "iphone"
+      ? IPHONE_SIZES.map((s) => ({ tag: s.label.replace('"', "in"), w: s.w }))
+      : [{ tag: label, w }];
 
   async function exportSlide(slideKey: SlideKey, sizeIdx: number) {
     const el = exportRefs.current.get(slideKey);
@@ -516,19 +692,15 @@ export default function ScreenshotsPage() {
       console.error("no el for", slideKey);
       return;
     }
-    const target = IPHONE_SIZES[sizeIdx];
-    const pixelRatio = target.w / W;
+    const target = sizes[sizeIdx];
     const dataUrl = await toPng(el, {
-      pixelRatio,
-      width: W,
-      height: H,
+      pixelRatio: target.w / w,
+      width: w,
+      height: h,
       cacheBust: true,
     });
     const link = document.createElement("a");
-    link.download = `${slideKey}-${locale}-editorial-${target.label.replace(
-      '"',
-      "in"
-    )}.png`;
+    link.download = `${slideKey}-${locale}-editorial-${target.tag}.png`;
     link.href = dataUrl;
     link.click();
   }
@@ -537,7 +709,7 @@ export default function ScreenshotsPage() {
     setExporting(true);
     try {
       for (const key of SLIDE_KEYS) {
-        for (let i = 0; i < IPHONE_SIZES.length; i++) {
+        for (let i = 0; i < sizes.length; i++) {
           await exportSlide(key, i);
           await new Promise((r) => setTimeout(r, 250));
         }
@@ -546,6 +718,32 @@ export default function ScreenshotsPage() {
       setExporting(false);
     }
   }
+
+  const previewScale = device === "iphone" || device === "ipad" ? 0.2 : 0.12;
+
+  const select = (
+    value: string,
+    onChange: (v: string) => void,
+    options: readonly string[]
+  ) => (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      style={{
+        padding: "4px 10px",
+        borderRadius: 6,
+        border: `1px solid ${EDITORIAL.rule}`,
+        background: "#fff",
+        fontFamily: EDITORIAL.sans,
+      }}
+    >
+      {options.map((o) => (
+        <option key={o} value={o}>
+          {o}
+        </option>
+      ))}
+    </select>
+  );
 
   return (
     <div
@@ -585,28 +783,10 @@ export default function ScreenshotsPage() {
         >
           Bolsillos · Editorial
         </strong>
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <label style={{ fontSize: 12, color: EDITORIAL.inkMuted }}>
-            Locale
-          </label>
-          <select
-            value={locale}
-            onChange={(e) => setLocale(e.target.value as Locale)}
-            style={{
-              padding: "4px 10px",
-              borderRadius: 6,
-              border: `1px solid ${EDITORIAL.rule}`,
-              background: "#fff",
-              fontFamily: EDITORIAL.sans,
-            }}
-          >
-            {LOCALES.map((l) => (
-              <option key={l} value={l}>
-                {l.toUpperCase()}
-              </option>
-            ))}
-          </select>
-        </div>
+        <label style={{ fontSize: 12, color: EDITORIAL.inkMuted }}>Device</label>
+        {select(device, (v) => setDevice(v as DeviceKey), DEVICE_KEYS)}
+        <label style={{ fontSize: 12, color: EDITORIAL.inkMuted }}>Locale</label>
+        {select(locale, (v) => setLocale(v as Locale), LOCALES)}
         <button
           onClick={exportAll}
           disabled={exporting}
@@ -625,7 +805,7 @@ export default function ScreenshotsPage() {
             fontSize: 12,
           }}
         >
-          {exporting ? "Exporting…" : "Export 8 × 4 sizes"}
+          {exporting ? "Exporting…" : `Export 8 × ${sizes.length} size${sizes.length > 1 ? "s" : ""}`}
         </button>
         <span
           style={{
@@ -636,29 +816,15 @@ export default function ScreenshotsPage() {
             fontFamily: EDITORIAL.bodySerif,
           }}
         >
-          Locale: {locale} · Canvas {W}×{H} · {SLIDE_KEYS.length} slides
+          {device} · {locale} · Canvas {w}×{h} · {SLIDE_KEYS.length} slides
         </span>
       </div>
 
       {/* GRID — ALL SLIDES IN STORY ORDER */}
-      <h2
-        style={{
-          fontSize: 18,
-          fontFamily: EDITORIAL.serif,
-          fontStyle: "italic",
-          fontWeight: 400,
-          color: EDITORIAL.ink,
-          marginBottom: 16,
-          letterSpacing: "-0.01em",
-        }}
-      >
-        Editorial · {locale.toUpperCase()} · {SLIDE_KEYS.length} slides en
-        orden de historia
-      </h2>
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+          gridTemplateColumns: `repeat(auto-fill, minmax(${Math.round(w * previewScale) + 28}px, 1fr))`,
           gap: 20,
           marginBottom: 24,
         }}
@@ -686,7 +852,7 @@ export default function ScreenshotsPage() {
             >
               {idx + 1}. {key}
             </div>
-            <Preview slideKey={key} locale={locale} scale={0.2} />
+            <Preview slideKey={key} locale={locale} device={device} scale={previewScale} />
             <button
               onClick={() => exportSlide(key, 0)}
               style={{
@@ -705,7 +871,7 @@ export default function ScreenshotsPage() {
                 color: EDITORIAL.ink,
               }}
             >
-              Export 6.9″
+              Export {device === "iphone" ? "6.9″" : label}
             </button>
           </div>
         ))}
@@ -718,6 +884,7 @@ export default function ScreenshotsPage() {
             key={key}
             slideKey={key}
             locale={locale}
+            device={device}
             exportRef={(el) => exportRefs.current.set(key, el)}
           />
         ))}
