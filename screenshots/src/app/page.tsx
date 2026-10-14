@@ -380,6 +380,182 @@ function MacWindowFrame({ src, alt, width }: { src: string; alt: string; width: 
   );
 }
 
+// Mac hero layout: one short headline on top, the app window large and
+// bleeding off the bottom edge, optional floating callout (a zoomed crop).
+const MAC_HERO: Record<Locale, Record<SlideKey, string>> = {
+  es: {
+    bolsillos: "Sin culpa. Sin _pánico_.",
+    home: "Cada peso _ya tiene_ un trabajo.",
+    dreams: "Tu viaje, _pagado_. Tu maestría, _lista_.",
+    decisiones: "Siete preguntas antes del _clic_.",
+    capture: "Tan _rápida_ o detallada como quieras.",
+    debts: "Tu fecha _libre_ de deudas.",
+    pace: "¿Adelantado o _atrasado_?",
+    recap: "Tu año, _contado_ bonito.",
+  },
+  en: {
+    bolsillos: "No shame. No _panic_.",
+    home: "Every dollar _has a job_.",
+    dreams: "Your trip, _paid_. Grad school, _ready_.",
+    decisiones: "Seven questions before the _click_.",
+    capture: "As _fast_ or as detailed as you want.",
+    debts: "Your _debt-free_ date.",
+    pace: "Ahead or _behind_?",
+    recap: "Your year, _told_ beautifully.",
+  },
+};
+
+type MacCallout = {
+  x0: number; y0: number; x1: number; y1: number; // crop, fractions of the capture
+  w: number; // rendered width, × canvas W
+  left: number; top: number; // position, × canvas W / H
+};
+const MAC_CALLOUT: Partial<Record<SlideKey, MacCallout>> = {};
+
+// Per-slide crop of the 1440×900 capture (fractions): drops dead space at the
+// bottom (y1), the sidebar (x0, traffic lights are redrawn) and paints out
+// stray title-bar text (patches, white boxes).
+type MacCrop = {
+  capW?: number; // capture width in px when the app window was narrower than 1440
+  x0?: number;
+  y1?: number;
+  patches?: { x: number; y: number; w: number; h: number }[];
+};
+const MAC_CROP: Partial<Record<SlideKey, MacCrop>> = {
+  dreams: { y1: 0.74, patches: [{ x: 0.05, y: 0.003, w: 0.055, h: 0.04 }] },
+  decisiones: { y1: 0.66 },
+  recap: { capW: 1000, y1: 0.68 },
+};
+
+function MacHero({
+  copy,
+  headline,
+  src,
+  callout,
+  crop,
+  w,
+  h,
+  exportRef,
+}: {
+  copy: SlideCopy;
+  headline: string;
+  src: string;
+  callout?: MacCallout;
+  crop?: MacCrop;
+  w: number;
+  h: number;
+  exportRef?: (el: HTMLDivElement | null) => void;
+}) {
+  const capW = crop?.capW ?? 1440;
+  const winW = Math.round((w * 0.86 * capW) / 1440);
+  const winH = Math.round((winW * 900) / capW);
+  const x0 = crop?.x0 ?? 0;
+  const y1 = crop?.y1 ?? 1;
+  const boxH = Math.round(winH * (y1 / (1 - x0)));
+  const cropped = y1 < 1;
+  const winTop0 = Math.round(h * 0.285);
+  const winTop = cropped ? winTop0 + Math.max(0, Math.round((h - winTop0 - boxH) / 2)) : winTop0;
+  const imgW = winW / (1 - x0);
+  const cw = callout ? Math.round(w * callout.w) : 0;
+  const cx = callout ? callout.x1 - callout.x0 : 1;
+  const cy = callout ? callout.y1 - callout.y0 : 1;
+  const ch = Math.round((cw * cy * 900) / (cx * 1440));
+  return (
+    <div
+      ref={exportRef}
+      style={{
+        position: "relative",
+        width: w,
+        height: h,
+        overflow: "hidden",
+        background:
+          "radial-gradient(1500px 800px at 85% -10%, rgba(168,68,45,0.20), transparent 70%), linear-gradient(165deg, #F7EDD8 0%, #EBCDAA 100%)",
+      }}
+    >
+      <div style={{ position: "absolute", top: 0.062 * h, left: 0, width: w, textAlign: "center", color: EDITORIAL.ink }}>
+        <div
+          style={{
+            fontFamily: EDITORIAL.serif,
+            fontSize: 0.052 * w,
+            lineHeight: 1.05,
+            letterSpacing: "-0.01em",
+          }}
+        >
+          {renderHeadline(headline)}
+        </div>
+        <p
+          style={{
+            fontFamily: EDITORIAL.bodySerif,
+            fontStyle: "italic",
+            fontSize: 0.0175 * w,
+            color: EDITORIAL.inkMuted,
+            margin: `${0.016 * h}px 0 0`,
+          }}
+        >
+          {copy.sub}
+        </p>
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: (w - winW) / 2,
+          top: winTop,
+          width: winW,
+          height: cropped ? boxH : winH,
+          borderRadius: cropped
+            ? Math.round(w * 0.0085)
+            : `${Math.round(w * 0.0085)}px ${Math.round(w * 0.0085)}px 0 0`,
+          overflow: "hidden",
+          boxShadow: "0 -10px 90px rgba(60,30,10,0.22), 0 0 0 1px rgba(31,22,18,0.16)",
+          background: "#fff",
+        }}
+      >
+        <div style={{ width: imgW * 1.005, marginLeft: -x0 * imgW - imgW * 0.0025, marginTop: -imgW * 0.0025 }}>
+          <Img src={src} alt="" />
+        </div>
+        {(crop?.patches ?? []).map((pt, i) => (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: pt.x * winW,
+              top: pt.y * winH,
+              width: pt.w * winW,
+              height: pt.h * winH,
+              background: "#fff",
+            }}
+          />
+        ))}
+        {x0 > 0 && (
+          <div style={{ position: "absolute", left: winW * 0.0125, top: winW * 0.0075, display: "flex", gap: winW * 0.0075 }}>
+            {["#FF5F57", "#FEBC2E", "#28C840"].map((c) => (
+              <div key={c} style={{ width: winW * 0.0085, height: winW * 0.0085, borderRadius: "50%", background: c }} />
+            ))}
+          </div>
+        )}
+      </div>
+      {callout && (
+        <div
+          style={{
+            position: "absolute",
+            left: callout.left * w,
+            top: callout.top * h,
+            width: cw,
+            height: ch,
+            borderRadius: Math.round(w * 0.011),
+            overflow: "hidden",
+            boxShadow: "0 40px 110px rgba(60,30,10,0.38), 0 0 0 3px rgba(255,255,255,0.9)",
+            backgroundImage: `url(${src})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: `${cw / cx}px auto`,
+            backgroundPosition: `${-(callout.x0 / cx) * cw}px ${-((callout.y0 * 900) / (cy * 1440)) * cw}px`,
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
 function DeviceFrame({
   device,
   src,
@@ -539,18 +715,66 @@ function Caption({
 // content best. Landscape = whole device visible with wide master-detail
 // layouts; portrait = tall screens (sheets, single-column detail, recap).
 const IPAD_ORIENTATION: Record<SlideKey, "portrait" | "landscape"> = {
-  bolsillos: "landscape",
+  bolsillos: "portrait",
   home: "landscape",
-  dreams: "landscape",
+  dreams: "portrait",
   decisiones: "landscape",
-  capture: "landscape",
+  capture: "portrait",
   debts: "portrait",
   pace: "landscape",
   recap: "portrait",
 };
 
 // iPad landscape canvas: slides whose screen is tall/narrow use the portrait iPad.
-const IPAD_LANDSCAPE_PORTRAIT = new Set<SlideKey>(["decisiones", "debts", "recap"]);
+const IPAD_LANDSCAPE_PORTRAIT = new Set<SlideKey>(["bolsillos", "dreams", "capture", "decisiones", "debts", "recap"]);
+
+// Zoom crops (iPad portrait canvas): show only a vertical band of the screen
+// (fractions of screen height) so the device bleeds off the canvas edge.
+type Crop = { y0: number; y1: number; x0?: number; x1?: number; tw?: number; pb?: number };
+const IPAD_CROP: Partial<Record<SlideKey, Crop>> = {
+  dreams: { y0: 0, y1: 0.66 },
+  // landscape iPad: drop the left sidebar, keep sheet + report
+  decisiones: { x0: 0.18, y0: 0, y1: 0.87 },
+  debts: { y0: 0, y1: 0.62 },
+  // Bolsillos with the "+" speed-dial open: rows + FAB menu, no sidebar
+  capture: { y0: 0.47, y1: 1, tw: 0.96, pb: 0.03 },
+  recap: { y0: 0, y1: 0.52 },
+};
+
+// Shows a rectangular window of the tablet (fractions of the screen). The
+// window width fills `targetW`; anything outside is clipped by the canvas.
+function CroppedTablet({
+  src,
+  alt,
+  aspect,
+  targetW,
+  crop,
+}: {
+  src: string;
+  alt: string;
+  aspect: number;
+  targetW: number;
+  crop: Crop;
+}) {
+  const { y0, y1, x0 = 0, x1 = 1 } = crop;
+  const width = Math.round(targetW / (x1 - x0));
+  const bezel = Math.round(width * 0.02);
+  const outerH = Math.round((width - bezel * 2) / aspect) + bezel * 2;
+  return (
+    <div
+      style={{
+        width: Math.round(width * (x1 - x0)),
+        height: Math.round(outerH * (y1 - y0)),
+        overflow: "hidden",
+        flexShrink: 0,
+      }}
+    >
+      <div style={{ marginTop: -Math.round(outerH * y0), marginLeft: -Math.round(width * x0) }}>
+        <TabletFrame src={src} alt={alt} width={width} aspect={aspect} />
+      </div>
+    </div>
+  );
+}
 
 // Fills the space left under the caption and sizes the tablet so the WHOLE
 // device is always visible (never cropped by the canvas edge).
@@ -614,6 +838,20 @@ function Slide({
   const dir = device === "iphone" ? "iphone" : device;
   const src = `/screenshots/apple/${dir}/${locale}/${slideKey}.png`;
   const split = layout === "split";
+  if (device === "mac") {
+    return (
+      <MacHero
+        copy={copy}
+        headline={MAC_HERO[locale][slideKey]}
+        src={src}
+        callout={MAC_CALLOUT[slideKey]}
+        crop={MAC_CROP[slideKey]}
+        w={w}
+        h={h}
+        exportRef={exportRef}
+      />
+    );
+  }
   const frame = {
     position: "relative" as const,
     width: w,
@@ -672,6 +910,26 @@ function Slide({
   if (device === "ipad") {
     const landscape = IPAD_ORIENTATION[slideKey] === "landscape";
     const iSrc = `/screenshots/apple/${landscape ? "ipad-landscape" : "ipad"}/${locale}/${slideKey}.png`;
+    const crop = IPAD_CROP[slideKey];
+    if (crop) {
+      return (
+        <div ref={exportRef} style={{ ...frame, display: "flex", flexDirection: "column" }}>
+          <TagBar copy={copy} w={w} h={h} split={false} />
+          <div style={{ marginTop: 0.012 * h }}>
+            <Caption copy={copy} w={w} split={false} scale={0.62} />
+          </div>
+          <div style={{ flex: 1, minHeight: 0, display: "flex", justifyContent: crop.x0 ? "flex-start" : "center", alignItems: "flex-end", paddingTop: 0.04 * h, paddingBottom: (crop.pb ?? 0) * h }}>
+            <CroppedTablet
+              src={iSrc}
+              alt={slideKey}
+              aspect={landscape ? 2752 / 2064 : 2064 / 2752}
+              targetW={Math.round(w * (crop.tw ?? (crop.x0 ? 0.95 : 0.9)))}
+              crop={crop}
+            />
+          </div>
+        </div>
+      );
+    }
     return (
       <div ref={exportRef} style={{ ...frame, display: "flex", flexDirection: "column" }}>
         <TagBar copy={copy} w={w} h={h} split={false} />
@@ -769,7 +1027,32 @@ const SLIDE_KEYS: SlideKey[] = [
   "recap",
 ];
 
+function SoloSlide({ device, locale, slideKey }: { device: DeviceKey; locale: Locale; slideKey: SlideKey }) {
+  // Full-size single slide for headless capture: /?solo=<slide>&device=<d>&locale=<l>
+  return (
+    <div id="solo" style={{ width: DEVICES[device].w, height: DEVICES[device].h }}>
+      <style>{"nextjs-portal{display:none!important}"}</style>
+      <Slide slideKey={slideKey} locale={locale} device={device} />
+    </div>
+  );
+}
+
 export default function ScreenshotsPage() {
+  const solo =
+    typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+  if (solo?.get("solo")) {
+    return (
+      <SoloSlide
+        device={(solo.get("device") as DeviceKey) ?? "ipad"}
+        locale={(solo.get("locale") as Locale) ?? "es"}
+        slideKey={solo.get("solo") as SlideKey}
+      />
+    );
+  }
+  return <ScreenshotsPageInner />;
+}
+
+function ScreenshotsPageInner() {
   const [locale, setLocale] = useState<Locale>("es");
   const [device, setDevice] = useState<DeviceKey>("iphone");
   const [exporting, setExporting] = useState(false);
