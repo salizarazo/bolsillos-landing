@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { toPng } from "html-to-image";
 
 // =============================================================================
@@ -435,14 +435,16 @@ function Caption({
   copy,
   w,
   split,
+  scale,
 }: {
   copy: SlideCopy;
   w: number;
   split: boolean;
+  scale?: number; // type scale for stacked canvases wider than an iPhone
 }) {
   // Stacked canvases keep the iPhone proportions (× W). Split canvases use
   // smaller type and left-aligned text so a 3-line headline fits its column.
-  const k = split ? 0.45 : 1;
+  const k = scale ?? (split ? 0.45 : 1);
   const align = split ? "left" : "center";
   return (
     <div
@@ -533,6 +535,61 @@ function Caption({
   );
 }
 
+// iPad canvas (portrait): each slide picks the iPad orientation that shows its
+// content best. Landscape = whole device visible with wide master-detail
+// layouts; portrait = tall screens (sheets, single-column detail, recap).
+const IPAD_ORIENTATION: Record<SlideKey, "portrait" | "landscape"> = {
+  bolsillos: "landscape",
+  home: "landscape",
+  dreams: "landscape",
+  decisiones: "landscape",
+  capture: "landscape",
+  debts: "portrait",
+  pace: "landscape",
+  recap: "portrait",
+};
+
+// iPad landscape canvas: slides whose screen is tall/narrow use the portrait iPad.
+const IPAD_LANDSCAPE_PORTRAIT = new Set<SlideKey>(["decisiones", "debts", "recap"]);
+
+// Fills the space left under the caption and sizes the tablet so the WHOLE
+// device is always visible (never cropped by the canvas edge).
+function FittedTablet({
+  src,
+  alt,
+  aspect,
+  maxW,
+}: {
+  src: string;
+  alt: string;
+  aspect: number;
+  maxW: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [w, setW] = useState(maxW);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // outer height = innerW / aspect + 2 bezels = w * (0.96 / aspect + 0.04)
+    const fit = el.clientHeight / (0.96 / aspect + 0.04);
+    setW(Math.floor(Math.min(maxW, fit * 0.97)));
+  }, [aspect, maxW, src]);
+  return (
+    <div
+      ref={ref}
+      style={{
+        flex: 1,
+        minHeight: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <TabletFrame src={src} alt={alt} width={w} aspect={aspect} />
+    </div>
+  );
+}
+
 function copyFor(device: DeviceKey, locale: Locale, key: SlideKey): SlideCopy {
   const base = COPY[locale][key];
   if (device === "mac" && key === "capture") {
@@ -566,9 +623,16 @@ function Slide({
   };
 
   if (split) {
-    const devW = Math.round(w * 0.6);
-    const devH =
-      device === "mac" ? (devW * 900) / 1440 : (devW * 2064) / 2752;
+    // On the iPad landscape canvas, tall screens use the portrait iPad.
+    const tall = device === "ipad-landscape" && IPAD_LANDSCAPE_PORTRAIT.has(slideKey);
+    const sSrc = tall ? `/screenshots/apple/ipad/${locale}/${slideKey}.png` : src;
+    const devH0 = Math.round(h * 0.84);
+    const devW = tall ? Math.round((devH0 * 0.96 - 0) * (2064 / 2752)) + 0 : Math.round(w * 0.6);
+    const devH = tall
+      ? devH0
+      : device === "mac"
+        ? (devW * 900) / 1440
+        : (devW * 2064) / 2752;
     return (
       <div ref={exportRef} style={frame}>
         <div
@@ -591,11 +655,44 @@ function Slide({
         <div
           style={{
             position: "absolute",
-            left: 0.375 * w,
+            left: tall ? 0.375 * w + (0.6 * w - devW) / 2 : 0.375 * w,
             top: (h - devH) / 2,
           }}
         >
-          <DeviceFrame device={device} src={src} alt={slideKey} width={devW} />
+          {tall ? (
+            <TabletFrame src={sSrc} alt={slideKey} width={devW} aspect={2064 / 2752} />
+          ) : (
+            <DeviceFrame device={device} src={src} alt={slideKey} width={devW} />
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (device === "ipad") {
+    const landscape = IPAD_ORIENTATION[slideKey] === "landscape";
+    const iSrc = `/screenshots/apple/${landscape ? "ipad-landscape" : "ipad"}/${locale}/${slideKey}.png`;
+    return (
+      <div ref={exportRef} style={{ ...frame, display: "flex", flexDirection: "column" }}>
+        <TagBar copy={copy} w={w} h={h} split={false} />
+        <div style={{ marginTop: 0.012 * h }}>
+          <Caption copy={copy} w={w} split={false} scale={0.62} />
+        </div>
+        <div
+          style={{
+            flex: 1,
+            minHeight: 0,
+            display: "flex",
+            flexDirection: "column",
+            padding: `${0.03 * h}px ${0.05 * w}px ${0.045 * h}px`,
+          }}
+        >
+          <FittedTablet
+            src={iSrc}
+            alt={slideKey}
+            aspect={landscape ? 2752 / 2064 : 2064 / 2752}
+            maxW={Math.round(w * 0.9)}
+          />
         </div>
       </div>
     );
